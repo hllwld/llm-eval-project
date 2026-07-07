@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM 评测仪表板 — llm-eval-project</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #333; }
+    .header { background: linear-gradient(135deg, #1a237e, #283593); color: #fff; padding: 24px 32px; text-align: center; }
+    .header h1 { font-size: 24px; margin-bottom: 4px; }
+    .header p { opacity: 0.8; font-size: 14px; }
+    .container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 20px 24px; margin-bottom: 20px; }
+    .card h2 { font-size: 18px; margin-bottom: 16px; border-left: 4px solid #1a237e; padding-left: 10px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .kpi { display: flex; gap: 16px; }
+    .kpi-item { flex:1; text-align: center; padding: 16px; background: #f0f4ff; border-radius: 8px; }
+    .kpi-item .num { font-size: 28px; font-weight: bold; color: #1a237e; }
+    .kpi-item .label { font-size: 12px; color: #666; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #fafafa; font-weight: 600; color: #555; }
+    tr:hover { background: #f8f9ff; }
+    .footer { text-align: center; padding: 16px; color: #999; font-size: 12px; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📊 LLM 评测仪表板</h1>
+    <p>国产三模型基线对比 — DeepSeek-V3 / Qwen-Plus / GLM-4-Plus</p>
+</div>
+
+<div class="container">
+
+    <!-- KPI 概览 -->
+    <div class="card">
+        <h2>核心指标</h2>
+        <div class="kpi">
+            <div class="kpi-item">
+                <div class="num">3</div>
+                <div class="label">评测模型数</div>
+            </div>
+            <div class="kpi-item">
+                <div class="num">3</div>
+                <div class="label">评测数据集</div>
+            </div>
+            <div class="kpi-item">
+                <div class="num">13</div>
+                <div class="label">Badcase 总数</div>
+            </div>
+            <div class="kpi-item">
+                <div class="num">92.3%</div>
+                <div class="label">RAG 可改善率</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模型对比表格 -->
+    <div class="card">
+        <h2>三模型对比总表</h2>
+        <table>
+            <thead>
+                <tr><th>模型</th><th>gsm8k (数学)</th><th>arc (科学常识)</th><th>hellaswag (常识推理)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>DeepSeek-V3</strong></td><td style="color:#4CAF50;font-weight:bold;text-align:center;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">95%</td><td style="color:#FF9800;font-weight:bold;text-align:center;">75%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="color:#4CAF50;font-weight:bold;text-align:center;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">95%</td><td style="color:#FF9800;font-weight:bold;text-align:center;">85%</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="color:#4CAF50;font-weight:bold;text-align:center;">95%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">90%</td><td style="color:#F44336;font-weight:bold;text-align:center;">45%</td></tr>
+            </tbody>
+        </table>
+        <p style="margin-top:12px;font-size:12px;color:#888;">
+            🔍 样本数：每数据集 20 条 | 评测时间：2026-07-07 | EvalScope v1.8.1
+        </p>
+    </div>
+
+    <div class="grid">
+        <!-- Badcase 按模型分布 -->
+        <div class="card">
+            <h2>Badcase 按模型分布</h2>
+            <div style="display:flex;align-items:center;margin:4px 0;">
+            <span style="width:100px;text-align:right;margin-right:8px;font-size:12px;">DeepSeek-V3</span>
+            <div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;">
+                <div style="width:66.66666666666666%;height:100%;background:#4CAF50;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;">
+                    <span style="color:#fff;font-size:11px;">4</span>
+                </div>
+            </div>
+        </div>
+<div style="display:flex;align-items:center;margin:4px 0;">
+            <span style="width:100px;text-align:right;margin-right:8px;font-size:12px;">Qwen-Plus</span>
+            <div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;">
+                <div style="width:66.66666666666666%;height:100%;background:#2196F3;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;">
+                    <span style="color:#fff;font-size:11px;">4</span>
+                </div>
+            </div>
+        </div>
+<div style="display:flex;align-items:center;margin:4px 0;">
+            <span style="width:100px;text-align:right;margin-right:8px;font-size:12px;">GLM-4-Plus</span>
+            <div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;">
+                <div style="width:83.33333333333334%;height:100%;background:#FF9800;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;">
+                    <span style="color:#fff;font-size:11px;">5</span>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Badcase 按数据集 -->
+        <div class="card">
+            <h2>Badcase 按数据集</h2>
+            <div style="display:flex;align-items:center;margin:4px 0;">
+            <span style="width:100px;text-align:right;margin-right:8px;font-size:12px;">数学推理(gsm8k)</span>
+            <div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;">
+                <div style="width:14.285714285714285%;height:100%;background:#4CAF50;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;">
+                    <span style="color:#fff;font-size:11px;">1</span>
+                </div>
+            </div>
+        </div>
+<div style="display:flex;align-items:center;margin:4px 0;">
+            <span style="width:100px;text-align:right;margin-right:8px;font-size:12px;">知识错误(arc)</span>
+            <div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;">
+                <div style="width:85.71428571428571%;height:100%;background:#2196F3;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;">
+                    <span style="color:#fff;font-size:11px;">6</span>
+                </div>
+            </div>
+        </div>
+<div style="display:flex;align-items:center;margin:4px 0;">
+            <span style="width:100px;text-align:right;margin-right:8px;font-size:12px;">上下文不足(hellaswag)</span>
+            <div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;">
+                <div style="width:85.71428571428571%;height:100%;background:#FF9800;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;">
+                    <span style="color:#fff;font-size:11px;">6</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- 错误分类分布 -->
+    <div class="card">
+        <h2>错误分类（一级标签）</h2>
+        <div style="display:flex;align-items:center;margin:4px 0;">
+            <span style="width:80px;text-align:right;margin-right:8px;font-size:12px;">知识错误</span>
+            <div style="flex:1;height:30px;background:#eee;border-radius:4px;overflow:hidden;">
+                <div style="width:46.15384615384615%;height:100%;background:#2196F3;border-radius:4px;display:flex;align-items:center;padding-left:8px;box-sizing:border-box;">
+                    <span style="color:#fff;font-size:12px;font-weight:bold;">6 条 (46.2%)</span>
+                </div>
+            </div>
+        </div>
+<div style="display:flex;align-items:center;margin:4px 0;">
+            <span style="width:80px;text-align:right;margin-right:8px;font-size:12px;">推理错误</span>
+            <div style="flex:1;height:30px;background:#eee;border-radius:4px;overflow:hidden;">
+                <div style="width:53.84615384615385%;height:100%;background:#F44336;border-radius:4px;display:flex;align-items:center;padding-left:8px;box-sizing:border-box;">
+                    <span style="color:#fff;font-size:12px;font-weight:bold;">7 条 (53.8%)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分级统计 -->
+    <div class="card">
+        <h2>三级标签统计</h2>
+        <table>
+            <thead>
+                <tr><th>RAG 适配度</th><th>数量</th><th>占比</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span style="background:#2196F3;color:#fff;padding:2px 8px;border-radius:10px;">🔵 RAG可解</span></td>
+                    <td style="text-align:center;font-weight:bold;">6</td>
+                    <td style="text-align:center;">46.2%</td>
+                    <td>知识类错误，补充文档即可纠正</td>
+                </tr>
+                <tr>
+                    <td><span style="background:#FF9800;color:#fff;padding:2px 8px;border-radius:10px;">🟡 RAG部分可解</span></td>
+                    <td style="text-align:center;font-weight:bold;">6</td>
+                    <td style="text-align:center;">46.2%</td>
+                    <td>上下文理解类，RAG辅助+Pompt优化</td>
+                </tr>
+                <tr>
+                    <td><span style="background:#F44336;color:#fff;padding:2px 8px;border-radius:10px;">🔴 RAG不可解</span></td>
+                    <td style="text-align:center;font-weight:bold;">1</td>
+                    <td style="text-align:center;">7.7%</td>
+                    <td>数学推理类，需微调或CoT优化</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 关键洞察 -->
+    <div class="card">
+        <h2>关键洞察</h2>
+        <ul style="line-height:2;padding-left:20px;">
+            <li>📐 <strong>数学推理</strong>：三模型均接近满分（95%~100%），能力差距极小</li>
+            <li>🧠 <strong>科学常识</strong>：三模型 90%~95%，表现稳定</li>
+            <li>💬 <strong>常识推理 (hellaswag)</strong>：GLM-4-Plus 仅 45%，为最显著短板</li>
+            <li>🔵 <strong>RAG 可改善</strong>：92% 的 Badcase 可通过知识库补充解决</li>
+            <li>🔴 <strong>不可解</strong>：仅 1 条数学推理错误（gsm8k），需微调或 CoT 优化</li>
+        </ul>
+    </div>
+
+    <!-- 逐条错误分析 -->
+    <div class="card">
+        <h2>逐条 Badcase 分析（共 13 条）</h2>
+        
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #2196F3;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#1 DeepSeek-V3 — arc (arc_ARC-Challenge)</strong>
+                <span style="background:#2196F3;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🔵 RAG可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+An astronaut drops a 1.0 kg object and a 5.0 kg object on the Moon. Both object
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>D</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: C...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #2196F3;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#2 DeepSeek-V3 — arc (arc_ARC-Easy)</strong>
+                <span style="background:#2196F3;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🔵 RAG可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+All living and nonliving material is composed of
+
+A) air
+B) elements
+C) water
+D
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>2</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: B...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #FF9800;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#3 DeepSeek-V3 — hellaswag (hellaswag_default)</strong>
+                <span style="background:#FF9800;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🟡 RAG部分可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+A boy is running down a track. The boy
+
+A) runs into a car.
+B) gets in a mat.
+C
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>C</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: D...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #FF9800;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#4 DeepSeek-V3 — hellaswag (hellaswag_default)</strong>
+                <span style="background:#FF9800;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🟡 RAG部分可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+A cartoon animation video is shown with people wandering around and rockets bei
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>A</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: D...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #2196F3;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#5 Qwen-Plus — arc (arc_ARC-Challenge)</strong>
+                <span style="background:#2196F3;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🔵 RAG可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+An astronaut drops a 1.0 kg object and a 5.0 kg object on the Moon. Both object
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>D</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: C...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #2196F3;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#6 Qwen-Plus — arc (arc_ARC-Easy)</strong>
+                <span style="background:#2196F3;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🔵 RAG可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+All living and nonliving material is composed of
+
+A) air
+B) elements
+C) water
+D
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>2</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: B...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #FF9800;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#7 Qwen-Plus — hellaswag (hellaswag_default)</strong>
+                <span style="background:#FF9800;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🟡 RAG部分可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+A man is standing in front of a camera. He starts playing a harmonica for the c
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>C</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: A...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #FF9800;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#8 Qwen-Plus — hellaswag (hellaswag_default)</strong>
+                <span style="background:#FF9800;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🟡 RAG部分可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+A cartoon animation video is shown with people wandering around and rockets bei
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>A</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: D...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #F44336;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#9 GLM-4-Plus — gsm8k (gsm8k_main)</strong>
+                <span style="background:#F44336;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🔴 RAG不可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>Here are some examples of how to solve similar problems:
+
+Natalia sold clips to 48 of her friends in April, and then she sold half as many clips in Ma
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>13</span>
+                <span>❌ <strong>模型输出：</strong>Reasoning:
+First, let's calculate the net profit Carlos makes each year. He sell...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>推理错误 → 理解偏差 → 🔴 RAG不可解 | 📝 数学推理需要模型自身能力，给外部文档无法解决问题
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #2196F3;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#10 GLM-4-Plus — arc (arc_ARC-Challenge)</strong>
+                <span style="background:#2196F3;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🔵 RAG可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+An astronaut drops a 1.0 kg object and a 5.0 kg object on the Moon. Both object
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>D</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: C...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #2196F3;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#11 GLM-4-Plus — arc (arc_ARC-Challenge)</strong>
+                <span style="background:#2196F3;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🔵 RAG可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+Devil facial tumor disease (DFTD) is a disease that is decimating the populatio
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>B</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: D...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #FF9800;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#12 GLM-4-Plus — hellaswag (hellaswag_default)</strong>
+                <span style="background:#FF9800;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🟡 RAG部分可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+A lady walks to a barbell. She bends down and grabs the pole. The lady
+
+A) swin
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>D</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: B...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
+            </div>
+        </div>
+
+        <div style="padding:14px;margin-bottom:12px;background:#fff;border-radius:6px;border-left:3px solid #FF9800;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="font-size:13px;">#13 GLM-4-Plus — hellaswag (hellaswag_default)</strong>
+                <span style="background:#FF9800;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">🟡 RAG部分可解</span>
+            </div>
+            <div style="font-size:12px;color:#555;margin-bottom:4px;">
+                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
+
+Two women in a child are shown in a canoe while a man pulls the canoe while sta
+            </div>
+            <div style="font-size:12px;color:#555;display:flex;gap:16px;">
+                <span>✅ <strong>正确答案：</strong>C</span>
+                <span>❌ <strong>模型输出：</strong>ANSWER: B...</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">
+                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    生成时间：2026-07-07 | 项目：llm-eval-project | 框架：EvalScope v1.8.1
+</div>
+
+</body>
+</html>
