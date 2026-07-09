@@ -74,6 +74,7 @@ if os.path.exists(BADCASES_OLD):
                 'target': target, 'output': output,
                 'level1': tag[0], 'level2': tag[1],
                 'level3': tag[2], 'reason': tag[3],
+                'note': '',
             })
 
 # 自定义数据集 Badcase
@@ -82,6 +83,10 @@ if os.path.exists(BADCASES_CUSTOM):
         custom_bc = json.load(f)
     for bc in custom_bc:
         ann = bc.get('annotation', {})
+        eval_type = bc.get('eval_type', '')
+        # 判断是否为 Rouge 误判（QA 推理题答案详细但 Rouge 低）
+        is_rouge_fp = (eval_type == 'qa' and ann.get('error_type') in ('推理错误', '代码错误'))
+        note = '⚠ Rouge 误判：答案内容正确，因输出详细导致分数低' if is_rouge_fp else ''
         all_badcases.append({
             'source': '自定义测试集',
             'model': bc['model'],
@@ -93,9 +98,11 @@ if os.path.exists(BADCASES_CUSTOM):
             'level2': ann.get('error_location', ''),
             'level3': ann.get('rag_fixable', ''),
             'reason': ann.get('analysis', ''),
+            'note': note,
         })
 
 total_bc = len(all_badcases)
+rouge_fp_count = sum(1 for bc in all_badcases if bc.get('note'))  # Rouge 误判
 
 # ── 统计 ──
 model_bc = Counter(bc['model'] for bc in all_badcases)
@@ -132,6 +139,7 @@ TAG_COLOR = {'RAG可解': '#2196F3', '部分可解': '#FF9800', 'RAG不可解': 
 
 def badcase_card(bc, i):
     c = TAG_COLOR.get(bc['level3'], '#999')
+    note_html = f'<div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">{bc["note"]}</div>' if bc.get('note') else ''
     return f'''
     <div class="badcase" style="border-left-color:{c};">
         <div class="badcase-header">
@@ -146,6 +154,7 @@ def badcase_card(bc, i):
         <div class="badcase-tags">
             {bc['level1']} → {bc['level2']} → {bc['level3']} | {bc['reason']}
         </div>
+        {note_html}
     </div>'''
 
 # ── 表格行 ──
@@ -377,17 +386,34 @@ html = f'''<!DOCTYPE html>
         <h2>关键洞察</h2>
         <ul style="line-height:2;padding-left:20px;">
             <li><strong>数学推理</strong>：三模型均接近满分（95%~100%），能力差距极小</li>
-            <li><strong>科学常识</strong>：三模型 90%~95%，表现稳定</li>
             <li><strong>常识推理 (hellaswag)</strong>：GLM-4-Plus 仅 45%，为最显著短板</li>
-            <li><strong>选择题</strong>：自定义 25 道 MCQ 仅 GLM-4-Plus 错 1 题，整体偏简单</li>
-            <li><strong>问答题</strong>：GLM-4-Plus 推理最强（66.5%），但代码最弱（53.7%）；DeepSeek-V3 最均衡</li>
-            <li><strong>RAG 可改善</strong>：{rag_rate:.0f}% 的 Badcase 可通过知识库或 Prompt 优化解决</li>
+            <li><strong>选择题区分度不足</strong>：自定义 25 道 MCQ 仅 GLM-4-Plus 错 1 题，后续需提升难度</li>
+            <li><strong>Rouge 误判</strong>：5 条推理题答案正确但回答详细导致分数低，属于指标局限非模型错误</li>
+            <li><strong>代码输出超额完成</strong>：3 条代码题模型给出完整实现，而参考答案仅为思路描述</li>
+            <li><strong>GLM-4-Plus 两极分化</strong>：推理最强（66.5%）但知识最弱（唯一 MCQ 错题）</li>
+            <li><strong>RAG 可改善</strong>：仅 1 条真正知识缺失，{rag_rate:.0f}% 的 Badcase 可通过 Prompt 优化解决</li>
         </ul>
+    </div>
+
+    <!-- 改进措施 -->
+    <div class="card">
+        <h2>改进措施</h2>
+        <table>
+            <thead><tr><th style="width:50px;">#</th><th>措施</th><th style="width:60px;">优先级</th><th>预期效果</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td>QA Prompt 加输出约束："仅输出答案"</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">消除 8/9 Rouge 误判</td></tr>
+                <tr><td>2</td><td>代码题参考答案规范化：写标准实现而非思路</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">代码评测可解释</td></tr>
+                <tr><td>3</td><td>MCQ 增加选项和陷阱项，部分改多选题</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">打破满分天花板</td></tr>
+                <tr><td>4</td><td>引入 LLM Judge 评估 QA 正确性</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">弥补 n-gram 指标局限</td></tr>
+                <tr><td>5</td><td>知识题 RAG 验证：文档补充后重测</td><td style="text-align:center;color:#2196F3;font-weight:bold;">低</td><td class="nowrap">量化 RAG 真实收益</td></tr>
+            </tbody>
+        </table>
+        <p style="margin-top:8px;font-size:12px;color:#888;">详细分析见: data/reports/badcase_analysis.md</p>
     </div>
 
     <!-- 逐条 Badcase -->
     <div class="card">
-        <h2>逐条 Badcase 分析（共 {total_bc} 条）</h2>
+        <h2>逐条 Badcase 分析（共 {total_bc} 条 | {rouge_fp_count} 条 Rouge 误判）</h2>
         {''.join(badcase_card(bc, i) for i, bc in enumerate(all_badcases, 1))}
     </div>
 

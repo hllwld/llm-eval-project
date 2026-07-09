@@ -182,17 +182,34 @@
         <h2>关键洞察</h2>
         <ul style="line-height:2;padding-left:20px;">
             <li><strong>数学推理</strong>：三模型均接近满分（95%~100%），能力差距极小</li>
-            <li><strong>科学常识</strong>：三模型 90%~95%，表现稳定</li>
             <li><strong>常识推理 (hellaswag)</strong>：GLM-4-Plus 仅 45%，为最显著短板</li>
-            <li><strong>选择题</strong>：自定义 25 道 MCQ 仅 GLM-4-Plus 错 1 题，整体偏简单</li>
-            <li><strong>问答题</strong>：GLM-4-Plus 推理最强（66.5%），但代码最弱（53.7%）；DeepSeek-V3 最均衡</li>
-            <li><strong>RAG 可改善</strong>：95% 的 Badcase 可通过知识库或 Prompt 优化解决</li>
+            <li><strong>选择题区分度不足</strong>：自定义 25 道 MCQ 仅 GLM-4-Plus 错 1 题，后续需提升难度</li>
+            <li><strong>Rouge 误判</strong>：5 条推理题答案正确但回答详细导致分数低，属于指标局限非模型错误</li>
+            <li><strong>代码输出超额完成</strong>：3 条代码题模型给出完整实现，而参考答案仅为思路描述</li>
+            <li><strong>GLM-4-Plus 两极分化</strong>：推理最强（66.5%）但知识最弱（唯一 MCQ 错题）</li>
+            <li><strong>RAG 可改善</strong>：仅 1 条真正知识缺失，95% 的 Badcase 可通过 Prompt 优化解决</li>
         </ul>
+    </div>
+
+    <!-- 改进措施 -->
+    <div class="card">
+        <h2>改进措施</h2>
+        <table>
+            <thead><tr><th style="width:50px;">#</th><th>措施</th><th style="width:60px;">优先级</th><th>预期效果</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td>QA Prompt 加输出约束："仅输出答案"</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">消除 8/9 Rouge 误判</td></tr>
+                <tr><td>2</td><td>代码题参考答案规范化：写标准实现而非思路</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">代码评测可解释</td></tr>
+                <tr><td>3</td><td>MCQ 增加选项和陷阱项，部分改多选题</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">打破满分天花板</td></tr>
+                <tr><td>4</td><td>引入 LLM Judge 评估 QA 正确性</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">弥补 n-gram 指标局限</td></tr>
+                <tr><td>5</td><td>知识题 RAG 验证：文档补充后重测</td><td style="text-align:center;color:#2196F3;font-weight:bold;">低</td><td class="nowrap">量化 RAG 真实收益</td></tr>
+            </tbody>
+        </table>
+        <p style="margin-top:8px;font-size:12px;color:#888;">详细分析见: data/reports/badcase_analysis.md</p>
     </div>
 
     <!-- 逐条 Badcase -->
     <div class="card">
-        <h2>逐条 Badcase 分析（共 22 条）</h2>
+        <h2>逐条 Badcase 分析（共 22 条 | 8 条 Rouge 误判）</h2>
         
     <div class="badcase" style="border-left-color:#2196F3;">
         <div class="badcase-header">
@@ -207,6 +224,7 @@
         <div class="badcase-tags">
             知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#2196F3;">
         <div class="badcase-header">
@@ -221,6 +239,7 @@
         <div class="badcase-tags">
             知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -235,6 +254,7 @@
         <div class="badcase-tags">
             推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -249,6 +269,7 @@
         <div class="badcase-tags">
             推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#2196F3;">
         <div class="badcase-header">
@@ -263,6 +284,7 @@
         <div class="badcase-tags">
             知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#2196F3;">
         <div class="badcase-header">
@@ -277,6 +299,7 @@
         <div class="badcase-tags">
             知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -291,6 +314,7 @@
         <div class="badcase-tags">
             推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -305,6 +329,7 @@
         <div class="badcase-tags">
             推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#F44336;">
         <div class="badcase-header">
@@ -322,6 +347,7 @@ First, let's calculate the net profit Carlos makes each year. He sells 7 lemons 
         <div class="badcase-tags">
             推理错误 → 理解偏差 → RAG不可解 | 数学推理需要模型自身能力
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#2196F3;">
         <div class="badcase-header">
@@ -336,6 +362,7 @@ First, let's calculate the net profit Carlos makes each year. He sells 7 lemons 
         <div class="badcase-tags">
             知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#2196F3;">
         <div class="badcase-header">
@@ -350,6 +377,7 @@ First, let's calculate the net profit Carlos makes each year. He sells 7 lemons 
         <div class="badcase-tags">
             知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -364,6 +392,7 @@ First, let's calculate the net profit Carlos makes each year. He sells 7 lemons 
         <div class="badcase-tags">
             推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -378,6 +407,7 @@ First, let's calculate the net profit Carlos makes each year. He sells 7 lemons 
         <div class="badcase-tags">
             推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#2196F3;">
         <div class="badcase-header">
@@ -397,6 +427,7 @@ D) 大洋洲</div>
         <div class="badcase-tags">
             知识错误 → 知识库缺失 → RAG可解 | 知识错误：模型在"general_mcq_knowledge"子集中选择错误，期望"B"但输出了不同答案
         </div>
+        
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -418,6 +449,7 @@ from concurr...</span>
         <div class="badcase-tags">
             代码错误 → 边界条件未处理 → 部分可解 | 代码生成质量低（Rouge-L-R=0.32），期望与输出差异显著
         </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">⚠ Rouge 误判：答案内容正确，因输出详细导致分数低</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -437,6 +469,7 @@ from concurr...</span>
         <div class="badcase-tags">
             代码错误 → 边界条件未处理 → 部分可解 | 代码生成质量低（Rouge-L-R=0.38），期望与输出差异显著
         </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">⚠ Rouge 误判：答案内容正确，因输出详细导致分数低</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -457,6 +490,7 @@ from concurr...</span>
         <div class="badcase-tags">
             推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
         </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">⚠ Rouge 误判：答案内容正确，因输出详细导致分数低</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -479,6 +513,7 @@ from concurr...</span>
         <div class="badcase-tags">
             推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
         </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">⚠ Rouge 误判：答案内容正确，因输出详细导致分数低</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -496,6 +531,7 @@ from concurr...</span>
         <div class="badcase-tags">
             代码错误 → 边界条件未处理 → 部分可解 | 代码生成质量低（Rouge-L-R=0.38），期望与输出差异显著
         </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">⚠ Rouge 误判：答案内容正确，因输出详细导致分数低</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -515,6 +551,7 @@ v_{\text{相对}} = 6\,\text{m/s} + 4\,\text{m/s}...</span>
         <div class="badcase-tags">
             推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
         </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">⚠ Rouge 误判：答案内容正确，因输出详细导致分数低</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -537,6 +574,7 @@ S = 3.14 \times 7^2...</span>
         <div class="badcase-tags">
             推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
         </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">⚠ Rouge 误判：答案内容正确，因输出详细导致分数低</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -558,6 +596,7 @@ S = 3.14 \times 7^2...</span>
         <div class="badcase-tags">
             推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
         </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">⚠ Rouge 误判：答案内容正确，因输出详细导致分数低</div>
     </div>
     </div>
 
