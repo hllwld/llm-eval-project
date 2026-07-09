@@ -7,172 +7,124 @@
 <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #333; }
-
-    /* ===== Header ===== */
     .header { background: linear-gradient(135deg, #1a237e, #283593); color: #fff; padding: 24px 32px; text-align: center; }
     .header h1 { font-size: 24px; margin-bottom: 4px; }
     .header p { opacity: 0.8; font-size: 14px; }
-
-    /* ===== Layout ===== */
     .container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
     .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 20px 24px; margin-bottom: 20px; }
     .card h2 { font-size: 18px; margin-bottom: 16px; border-left: 4px solid #1a237e; padding-left: 10px; }
+    .card h3 { font-size: 15px; margin: 16px 0 10px; color: #555; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-    /* ===== KPI ===== */
     .kpi { display: flex; gap: 16px; }
     .kpi-item { flex:1; text-align: center; padding: 16px; background: #f0f4ff; border-radius: 8px; }
     .kpi-item .num { font-size: 28px; font-weight: bold; color: #1a237e; }
     .kpi-item .label { font-size: 12px; color: #666; margin-top: 4px; }
-
-    /* ===== Table ===== */
     .table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 500px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 420px; }
     th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; white-space: nowrap; }
     th { background: #fafafa; font-weight: 600; color: #555; }
     tr:hover { background: #f8f9ff; }
     td.nowrap { white-space: normal; }
-
-    /* ===== Bar chart ===== */
     .bar-row { display: flex; align-items: center; margin: 6px 0; }
-    .bar-label { text-align: right; margin-right: 8px; font-size: 12px; flex-shrink: 0; }
-    .bar-track { flex: 1; height: 18px; background: #eee; border-radius: 3px; overflow: hidden; min-width: 60px; }
-    .bar-fill { height: 100%; border-radius: 3px; display: flex; align-items: center; justify-content: flex-end; padding-right: 4px; box-sizing: border-box; }
-    .bar-fill span { color: #fff; font-size: 11px; }
-    .bar-row-lg .bar-track { height: 30px; border-radius: 4px; }
-    .bar-row-lg .bar-fill { border-radius: 4px; justify-content: flex-start; padding-left: 8px; }
-    .bar-row-lg .bar-fill span { font-size: 12px; font-weight: bold; }
-
-    /* ===== Badcase card ===== */
-    .badcase { padding: 14px; margin-bottom: 12px; background: #fff; border-radius: 6px; border-left: 3px solid #2196F3; }
+    .bar-label { font-size: 12px; margin-right: 8px; flex-shrink: 0; text-align: right; }
+    .badge { color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+    .badcase { padding: 14px; margin-bottom: 12px; background: #fff; border-radius: 6px; border-left: 3px solid #ccc; }
     .badcase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 8px; flex-wrap: wrap; }
     .badcase-header strong { font-size: 13px; }
-    .badge { color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
-    .badge-blue { background: #2196F3; }
-    .badge-orange { background: #FF9800; }
-    .badge-red { background: #F44336; }
     .badcase-body { font-size: 12px; color: #555; margin-bottom: 4px; word-break: break-all; }
     .badcase-answer { font-size: 12px; color: #555; display: flex; gap: 16px; flex-wrap: wrap; }
     .badcase-tags { font-size: 11px; color: #888; margin-top: 4px; word-break: break-all; }
-
-    /* ===== Tags (inline badge in table) ===== */
-    .tag-dot { padding: 2px 8px; border-radius: 10px; color: #fff; white-space: nowrap; font-size: 12px; }
-
-    /* ===== Footer ===== */
     .footer { text-align: center; padding: 16px; color: #999; font-size: 12px; }
-
-    /* ===== Insights ===== */
-    .insight-list { line-height: 2; padding-left: 20px; }
-
-    /* ================================================================
-       Mobile: ≤ 768px
-       ================================================================ */
     @media (max-width: 768px) {
-        /* Header */
         .header { padding: 18px 14px; }
         .header h1 { font-size: 18px; }
         .header p { font-size: 12px; }
-
-        /* Container & cards */
         .container { margin: 12px auto; padding: 0 10px; }
         .card { padding: 14px 12px; margin-bottom: 12px; border-radius: 6px; }
         .card h2 { font-size: 15px; margin-bottom: 10px; padding-left: 8px; border-left-width: 3px; }
-
-        /* Grid → single column */
+        .card h3 { font-size: 13px; }
         .grid { grid-template-columns: 1fr; gap: 12px; }
-
-        /* KPI → 2×2 grid on mobile */
         .kpi { flex-wrap: wrap; gap: 8px; }
         .kpi-item { flex: 0 0 calc(50% - 4px); min-width: 0; padding: 12px 8px; }
         .kpi-item .num { font-size: 22px; }
         .kpi-item .label { font-size: 11px; }
-
-        /* Table — scroll wrapper already handles overflow */
-        table { font-size: 12px; min-width: 420px; }
-        th, td { padding: 8px 8px; }
-
-        /* Bar chart labels — smaller */
+        table { font-size: 12px; min-width: 380px; }
+        th, td { padding: 8px 6px; }
         .bar-label { font-size: 11px; }
-        .bar-row-lg .bar-label { font-size: 11px; }
-
-        /* Badcase cards */
         .badcase { padding: 10px 12px; }
-        .badcase-header { gap: 4px; }
         .badcase-header strong { font-size: 11px; }
         .badge { font-size: 10px; padding: 2px 6px; }
         .badcase-body { font-size: 11px; }
         .badcase-answer { flex-direction: column; gap: 4px; font-size: 11px; }
         .badcase-tags { font-size: 10px; }
-
-        /* Footer */
         .footer { font-size: 11px; padding: 12px 8px; }
-
-        /* Insights */
-        .insight-list { line-height: 1.8; padding-left: 16px; font-size: 13px; }
     }
-
-    /* ================================================================
-       Small phones: ≤ 400px
-       ================================================================ */
     @media (max-width: 400px) {
         .header h1 { font-size: 16px; }
-        .header p { font-size: 11px; }
-        .card h2 { font-size: 14px; }
         .kpi-item { flex: 0 0 calc(50% - 4px); padding: 10px 6px; }
         .kpi-item .num { font-size: 20px; }
-        table { font-size: 11px; min-width: 380px; }
-        th, td { padding: 6px 6px; }
-        .bar-label { font-size: 10px; }
     }
 </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>📊 LLM 评测仪表板</h1>
-    <p>国产三模型基线对比 — DeepSeek-V3 / Qwen-Plus / GLM-4-Plus</p>
+    <h1>LLM 评测仪表板</h1>
+    <p>国产大模型基线对比 — 标准数据集 + 自定义测试集 | 4 模型</p>
 </div>
 
 <div class="container">
 
-    <!-- KPI 概览 -->
+    <!-- KPI -->
     <div class="card">
         <h2>核心指标</h2>
         <div class="kpi">
-            <div class="kpi-item">
-                <div class="num">3</div>
-                <div class="label">评测模型数</div>
-            </div>
-            <div class="kpi-item">
-                <div class="num">3</div>
-                <div class="label">评测数据集</div>
-            </div>
-            <div class="kpi-item">
-                <div class="num">13</div>
-                <div class="label">Badcase 总数</div>
-            </div>
-            <div class="kpi-item">
-                <div class="num">92.3%</div>
-                <div class="label">RAG 可改善率</div>
-            </div>
+            <div class="kpi-item"><div class="num">4</div><div class="label">评测模型数</div></div>
+            <div class="kpi-item"><div class="num">6</div><div class="label">评测数据集</div></div>
+            <div class="kpi-item"><div class="num">22</div><div class="label">Badcase 总数</div></div>
+            <div class="kpi-item"><div class="num">95%</div><div class="label">RAG 可改善率</div></div>
         </div>
     </div>
 
-    <!-- 模型对比表格 -->
+    <!-- 标准数据集表格 -->
     <div class="card">
-        <h2>三模型对比总表</h2>
+        <h2>标准数据集对比</h2>
         <div class="table-wrap">
         <table>
-            <thead>
-                <tr><th>模型</th><th>gsm8k (数学)</th><th>arc (科学常识)</th><th>hellaswag (常识推理)</th></tr>
-            </thead>
-            <tbody>
-                <tr><td><strong>DeepSeek-V3</strong></td><td style="color:#4CAF50;font-weight:bold;text-align:center;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">95%</td><td style="color:#FF9800;font-weight:bold;text-align:center;">75%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="color:#4CAF50;font-weight:bold;text-align:center;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">95%</td><td style="color:#FF9800;font-weight:bold;text-align:center;">85%</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="color:#4CAF50;font-weight:bold;text-align:center;">95%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">90%</td><td style="color:#F44336;font-weight:bold;text-align:center;">45%</td></tr>
-            </tbody>
+            <thead><tr><th>模型</th><th>gsm8k (数学)</th><th>arc (科学常识)</th><th>hellaswag (常识推理)</th></tr></thead>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="color:#4CAF50;font-weight:bold;text-align:center;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">95%</td><td style="color:#FF9800;font-weight:bold;text-align:center;">75%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="color:#4CAF50;font-weight:bold;text-align:center;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">95%</td><td style="color:#FF9800;font-weight:bold;text-align:center;">85%</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="color:#4CAF50;font-weight:bold;text-align:center;">95%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">90%</td><td style="color:#F44336;font-weight:bold;text-align:center;">45%</td></tr></tbody>
         </table>
         </div>
         <p style="margin-top:12px;font-size:12px;color:#888;">
-            🔍 样本数：每数据集 20 条 | 评测时间：2026-07-07 | EvalScope v1.8.1
+            样本数：每数据集 20 条 | 评测时间：2026-07-07 | EvalScope v1.8.1
+        </p>
+    </div>
+
+    <!-- 自定义测试集 - MCQ -->
+    <div class="card">
+        <h2>自定义测试集 — 选择题 (Accuracy)</h2>
+        <div class="table-wrap">
+        <table>
+            <thead><tr><th>模型</th><th>知识 (20题)</th><th>安全 (5题)</th><th>总分</th></tr></thead>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">96%</td></tr><tr><td><strong>Qwen2.5-VL</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td></tr></tbody>
+        </table>
+        </div>
+        <p style="margin-top:8px;font-size:12px;color:#888;">
+            共 25 题 | 评测时间：2026-07-09
+        </p>
+    </div>
+
+    <!-- 自定义测试集 - QA -->
+    <div class="card">
+        <h2>自定义测试集 — 问答题 (Rouge-L-R)</h2>
+        <div class="table-wrap">
+        <table>
+            <thead><tr><th>模型</th><th>代码 (10题)</th><th>推理 (15题)</th><th>总分</th></tr></thead>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">54.4%</td><td style="text-align:center;">62.2%</td><td style="text-align:center;font-weight:bold;">59.1%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">56.5%</td><td style="text-align:center;">59.3%</td><td style="text-align:center;font-weight:bold;">58.2%</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="text-align:center;">53.7%</td><td style="text-align:center;">66.5%</td><td style="text-align:center;font-weight:bold;">61.4%</td></tr><tr><td><strong>Qwen2.5-VL</strong></td><td style="text-align:center;">54.8%</td><td style="text-align:center;">57.6%</td><td style="text-align:center;font-weight:bold;">56.5%</td></tr></tbody>
+        </table>
+        </div>
+        <p style="margin-top:8px;font-size:12px;color:#888;">
+            共 25 题 | 评测时间：2026-07-09
         </p>
     </div>
 
@@ -180,93 +132,45 @@
         <!-- Badcase 按模型分布 -->
         <div class="card">
             <h2>Badcase 按模型分布</h2>
-            <div class="bar-row">
-                <span class="bar-label" style="width:90px;">DeepSeek-V3</span>
-                <div class="bar-track">
-                    <div class="bar-fill" style="width:66.67%;background:#4CAF50;"><span>4</span></div>
-                </div>
-            </div>
-            <div class="bar-row">
-                <span class="bar-label" style="width:90px;">Qwen-Plus</span>
-                <div class="bar-track">
-                    <div class="bar-fill" style="width:66.67%;background:#2196F3;"><span>4</span></div>
-                </div>
-            </div>
-            <div class="bar-row">
-                <span class="bar-label" style="width:90px;">GLM-4-Plus</span>
-                <div class="bar-track">
-                    <div class="bar-fill" style="width:83.33%;background:#FF9800;"><span>5</span></div>
-                </div>
-            </div>
+            <div class="bar-row"><span class="bar-label">GLM-4-Plus</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:100.0%;height:100%;background:#4CAF50;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">9</span></div></div></div>
+<div class="bar-row"><span class="bar-label">Qwen-Plus</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:77.77777777777779%;height:100%;background:#2196F3;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">7</span></div></div></div>
+<div class="bar-row"><span class="bar-label">DeepSeek-V3</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:55.55555555555556%;height:100%;background:#FF9800;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">5</span></div></div></div>
+<div class="bar-row"><span class="bar-label">Qwen2.5-VL</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:11.11111111111111%;height:100%;background:#9C27B0;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">1</span></div></div></div>
         </div>
 
-        <!-- Badcase 按数据集 -->
+        <!-- 错误类型分布 -->
         <div class="card">
-            <h2>Badcase 按数据集</h2>
-            <div class="bar-row">
-                <span class="bar-label" style="width:110px;">数学推理(gsm8k)</span>
-                <div class="bar-track">
-                    <div class="bar-fill" style="width:14.29%;background:#4CAF50;"><span>1</span></div>
-                </div>
-            </div>
-            <div class="bar-row">
-                <span class="bar-label" style="width:110px;">知识错误(arc)</span>
-                <div class="bar-track">
-                    <div class="bar-fill" style="width:85.71%;background:#2196F3;"><span>6</span></div>
-                </div>
-            </div>
-            <div class="bar-row">
-                <span class="bar-label" style="width:110px;">上下文不足(hellaswag)</span>
-                <div class="bar-track">
-                    <div class="bar-fill" style="width:85.71%;background:#FF9800;"><span>6</span></div>
-                </div>
-            </div>
+            <h2>错误分类（一级标签）</h2>
+            <div class="bar-row"><span class="bar-label">知识错误</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:58.333333333333336%;height:100%;background:#2196F3;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">7 条 (31.8%)</span></div></div></div>
+<div class="bar-row"><span class="bar-label">推理错误</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:100.0%;height:100%;background:#F44336;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">12 条 (54.5%)</span></div></div></div>
+<div class="bar-row"><span class="bar-label">代码错误</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:25.0%;height:100%;background:#FF9800;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">3 条 (13.6%)</span></div></div></div>
         </div>
     </div>
 
-    <!-- 错误分类分布 -->
+    <!-- RAG 适配度 -->
     <div class="card">
-        <h2>错误分类（一级标签）</h2>
-        <div class="bar-row bar-row-lg">
-            <span class="bar-label" style="width:70px;">知识错误</span>
-            <div class="bar-track">
-                <div class="bar-fill" style="width:46.15%;background:#2196F3;"><span>6 条 (46.2%)</span></div>
-            </div>
-        </div>
-        <div class="bar-row bar-row-lg">
-            <span class="bar-label" style="width:70px;">推理错误</span>
-            <div class="bar-track">
-                <div class="bar-fill" style="width:53.85%;background:#F44336;"><span>7 条 (53.8%)</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 分级统计 -->
-    <div class="card">
-        <h2>三级标签统计</h2>
+        <h2>RAG 适配度统计</h2>
         <div class="table-wrap">
         <table>
-            <thead>
-                <tr><th>RAG 适配度</th><th>数量</th><th>占比</th><th>说明</th></tr>
-            </thead>
+            <thead><tr><th>RAG 适配度</th><th>数量</th><th>占比</th><th>说明</th></tr></thead>
             <tbody>
                 <tr>
-                    <td><span class="tag-dot" style="background:#2196F3;">🔵 RAG可解</span></td>
-                    <td style="text-align:center;font-weight:bold;">6</td>
-                    <td style="text-align:center;">46.2%</td>
+                    <td><span class="badge" style="background:#2196F3;">RAG可解</span></td>
+                    <td style="text-align:center;font-weight:bold;">7</td>
+                    <td style="text-align:center;">31.8%</td>
                     <td class="nowrap">知识类错误，补充文档即可纠正</td>
                 </tr>
                 <tr>
-                    <td><span class="tag-dot" style="background:#FF9800;">🟡 RAG部分可解</span></td>
-                    <td style="text-align:center;font-weight:bold;">6</td>
-                    <td style="text-align:center;">46.2%</td>
-                    <td class="nowrap">上下文理解类，RAG辅助+Pompt优化</td>
+                    <td><span class="badge" style="background:#FF9800;">部分可解</span></td>
+                    <td style="text-align:center;font-weight:bold;">14</td>
+                    <td style="text-align:center;">63.6%</td>
+                    <td class="nowrap">上下文/推理类，RAG辅助 + Prompt优化</td>
                 </tr>
                 <tr>
-                    <td><span class="tag-dot" style="background:#F44336;">🔴 RAG不可解</span></td>
+                    <td><span class="badge" style="background:#F44336;">RAG不可解</span></td>
                     <td style="text-align:center;font-weight:bold;">1</td>
-                    <td style="text-align:center;">7.7%</td>
-                    <td class="nowrap">数学推理类，需微调或CoT优化</td>
+                    <td style="text-align:center;">4.5%</td>
+                    <td class="nowrap">数学推理/安全类，需微调或CoT优化</td>
                 </tr>
             </tbody>
         </table>
@@ -276,288 +180,391 @@
     <!-- 关键洞察 -->
     <div class="card">
         <h2>关键洞察</h2>
-        <ul class="insight-list">
-            <li>📐 <strong>数学推理</strong>：三模型均接近满分（95%~100%），能力差距极小</li>
-            <li>🧠 <strong>科学常识</strong>：三模型 90%~95%，表现稳定</li>
-            <li>💬 <strong>常识推理 (hellaswag)</strong>：GLM-4-Plus 仅 45%，为最显著短板</li>
-            <li>🔵 <strong>RAG 可改善</strong>：92% 的 Badcase 可通过知识库补充解决</li>
-            <li>🔴 <strong>不可解</strong>：仅 1 条数学推理错误（gsm8k），需微调或 CoT 优化</li>
+        <ul style="line-height:2;padding-left:20px;">
+            <li><strong>数学推理</strong>：三模型均接近满分（95%~100%），能力差距极小</li>
+            <li><strong>科学常识</strong>：三模型 90%~95%，表现稳定</li>
+            <li><strong>常识推理 (hellaswag)</strong>：GLM-4-Plus 仅 45%，为最显著短板</li>
+            <li><strong>选择题</strong>：自定义 25 道 MCQ 仅 GLM-4-Plus 错 1 题，整体偏简单</li>
+            <li><strong>问答题</strong>：GLM-4-Plus 推理最强（66.5%），但代码最弱（53.7%）；DeepSeek-V3 最均衡</li>
+            <li><strong>RAG 可改善</strong>：95% 的 Badcase 可通过知识库或 Prompt 优化解决</li>
         </ul>
     </div>
 
-    <!-- 逐条错误分析 -->
+    <!-- 逐条 Badcase -->
     <div class="card">
-        <h2>逐条 Badcase 分析（共 13 条）</h2>
-
-        <div class="badcase" style="border-left-color:#2196F3;">
-            <div class="badcase-header">
-                <strong>#1 DeepSeek-V3 — arc (arc_ARC-Challenge)</strong>
-                <span class="badge badge-blue">🔵 RAG可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-An astronaut drops a 1.0 kg object and a 5.0 kg object on the Moon. Both object
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>D</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: C...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
-            </div>
+        <h2>逐条 Badcase 分析（共 22 条）</h2>
+        
+    <div class="badcase" style="border-left-color:#2196F3;">
+        <div class="badcase-header">
+            <strong>#1 DeepSeek-V3 — arc</strong>
+            <span class="badge" style="background:#2196F3;">RAG可解</span>
         </div>
-
-        <div class="badcase" style="border-left-color:#2196F3;">
-            <div class="badcase-header">
-                <strong>#2 DeepSeek-V3 — arc (arc_ARC-Easy)</strong>
-                <span class="badge badge-blue">🔵 RAG可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-All living and nonliving material is composed of
-
-A) air
-B) elements
-C) water
-D
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>2</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: B...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
-            </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：D</span>
+            <span>输出：ANSWER: C...</span>
         </div>
-
-        <div class="badcase" style="border-left-color:#FF9800;">
-            <div class="badcase-header">
-                <strong>#3 DeepSeek-V3 — hellaswag (hellaswag_default)</strong>
-                <span class="badge badge-orange">🟡 RAG部分可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-A boy is running down a track. The boy
-
-A) runs into a car.
-B) gets in a mat.
-C
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>C</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: D...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
-            </div>
+        <div class="badcase-tags">
+            知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
         </div>
-
-        <div class="badcase" style="border-left-color:#FF9800;">
-            <div class="badcase-header">
-                <strong>#4 DeepSeek-V3 — hellaswag (hellaswag_default)</strong>
-                <span class="badge badge-orange">🟡 RAG部分可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-A cartoon animation video is shown with people wandering around and rockets bei
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>A</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: D...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
-            </div>
+    </div>
+    <div class="badcase" style="border-left-color:#2196F3;">
+        <div class="badcase-header">
+            <strong>#2 DeepSeek-V3 — arc</strong>
+            <span class="badge" style="background:#2196F3;">RAG可解</span>
         </div>
-
-        <div class="badcase" style="border-left-color:#2196F3;">
-            <div class="badcase-header">
-                <strong>#5 Qwen-Plus — arc (arc_ARC-Challenge)</strong>
-                <span class="badge badge-blue">🔵 RAG可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-An astronaut drops a 1.0 kg object and a 5.0 kg object on the Moon. Both object
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>D</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: C...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
-            </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：2</span>
+            <span>输出：ANSWER: B...</span>
         </div>
-
-        <div class="badcase" style="border-left-color:#2196F3;">
-            <div class="badcase-header">
-                <strong>#6 Qwen-Plus — arc (arc_ARC-Easy)</strong>
-                <span class="badge badge-blue">🔵 RAG可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-All living and nonliving material is composed of
-
-A) air
-B) elements
-C) water
-D
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>2</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: B...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
-            </div>
+        <div class="badcase-tags">
+            知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
         </div>
-
-        <div class="badcase" style="border-left-color:#FF9800;">
-            <div class="badcase-header">
-                <strong>#7 Qwen-Plus — hellaswag (hellaswag_default)</strong>
-                <span class="badge badge-orange">🟡 RAG部分可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-A man is standing in front of a camera. He starts playing a harmonica for the c
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>C</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: A...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
-            </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#3 DeepSeek-V3 — hellaswag</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
-
-        <div class="badcase" style="border-left-color:#FF9800;">
-            <div class="badcase-header">
-                <strong>#8 Qwen-Plus — hellaswag (hellaswag_default)</strong>
-                <span class="badge badge-orange">🟡 RAG部分可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-A cartoon animation video is shown with people wandering around and rockets bei
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>A</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: D...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
-            </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：C</span>
+            <span>输出：ANSWER: D...</span>
         </div>
-
-        <div class="badcase" style="border-left-color:#F44336;">
-            <div class="badcase-header">
-                <strong>#9 GLM-4-Plus — gsm8k (gsm8k_main)</strong>
-                <span class="badge badge-red">🔴 RAG不可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>Here are some examples of how to solve similar problems:
-
-Natalia sold clips to 48 of her friends in April, and then she sold half as many clips in Ma
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>13</span>
-                <span>❌ <strong>模型输出：</strong>Reasoning:
-First, let's calculate the net profit Carlos makes each year. He sell...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>推理错误 → 理解偏差 → 🔴 RAG不可解 | 📝 数学推理需要模型自身能力，给外部文档无法解决问题
-            </div>
+        <div class="badcase-tags">
+            推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
         </div>
-
-        <div class="badcase" style="border-left-color:#2196F3;">
-            <div class="badcase-header">
-                <strong>#10 GLM-4-Plus — arc (arc_ARC-Challenge)</strong>
-                <span class="badge badge-blue">🔵 RAG可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-An astronaut drops a 1.0 kg object and a 5.0 kg object on the Moon. Both object
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>D</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: C...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
-            </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#4 DeepSeek-V3 — hellaswag</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
-
-        <div class="badcase" style="border-left-color:#2196F3;">
-            <div class="badcase-header">
-                <strong>#11 GLM-4-Plus — arc (arc_ARC-Challenge)</strong>
-                <span class="badge badge-blue">🔵 RAG可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-Devil facial tumor disease (DFTD) is a disease that is decimating the populatio
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>B</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: D...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>知识错误 → 知识库缺失 → 🔵 RAG可解 | 📝 科学常识类问题，通过 RAG 补充知识文档即可纠正
-            </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：A</span>
+            <span>输出：ANSWER: D...</span>
         </div>
-
-        <div class="badcase" style="border-left-color:#FF9800;">
-            <div class="badcase-header">
-                <strong>#12 GLM-4-Plus — hellaswag (hellaswag_default)</strong>
-                <span class="badge badge-orange">🟡 RAG部分可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-A lady walks to a barbell. She bends down and grabs the pole. The lady
-
-A) swin
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>D</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: B...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
-            </div>
+        <div class="badcase-tags">
+            推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
         </div>
-
-        <div class="badcase" style="border-left-color:#FF9800;">
-            <div class="badcase-header">
-                <strong>#13 GLM-4-Plus — hellaswag (hellaswag_default)</strong>
-                <span class="badge badge-orange">🟡 RAG部分可解</span>
-            </div>
-            <div class="badcase-body">
-                <strong>题目：</strong>'ANSWER: [LETTER]' (without quotes) where [LETTER] is one of A,B,C,D.
-
-Two women in a child are shown in a canoe while a man pulls the canoe while sta
-            </div>
-            <div class="badcase-answer">
-                <span>✅ <strong>正确答案：</strong>C</span>
-                <span>❌ <strong>模型输出：</strong>ANSWER: B...</span>
-            </div>
-            <div class="badcase-tags">
-                🏷 <strong>标签：</strong>推理错误 → 上下文不足 → 🟡 RAG部分可解 | 📝 句子补全需要理解上下文，RAG 可提供类似场景参考但非根治
-            </div>
+    </div>
+    <div class="badcase" style="border-left-color:#2196F3;">
+        <div class="badcase-header">
+            <strong>#5 Qwen-Plus — arc</strong>
+            <span class="badge" style="background:#2196F3;">RAG可解</span>
         </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：D</span>
+            <span>输出：ANSWER: C...</span>
+        </div>
+        <div class="badcase-tags">
+            知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#2196F3;">
+        <div class="badcase-header">
+            <strong>#6 Qwen-Plus — arc</strong>
+            <span class="badge" style="background:#2196F3;">RAG可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：2</span>
+            <span>输出：ANSWER: B...</span>
+        </div>
+        <div class="badcase-tags">
+            知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#7 Qwen-Plus — hellaswag</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：C</span>
+            <span>输出：ANSWER: A...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#8 Qwen-Plus — hellaswag</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：A</span>
+            <span>输出：ANSWER: D...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#F44336;">
+        <div class="badcase-header">
+            <strong>#9 GLM-4-Plus — gsm8k</strong>
+            <span class="badge" style="background:#F44336;">RAG不可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>Here are some examples of how to solve similar problems:
+
+Natalia sold clips to 48 of her friends in April, and then she sold half as many clips in Ma</div>
+        <div class="badcase-answer">
+            <span>答案：13</span>
+            <span>输出：Reasoning:
+First, let's calculate the net profit Carlos makes each year. He sells 7 lemons for $1.5 ...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 理解偏差 → RAG不可解 | 数学推理需要模型自身能力
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#2196F3;">
+        <div class="badcase-header">
+            <strong>#10 GLM-4-Plus — arc</strong>
+            <span class="badge" style="background:#2196F3;">RAG可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：D</span>
+            <span>输出：ANSWER: C...</span>
+        </div>
+        <div class="badcase-tags">
+            知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#2196F3;">
+        <div class="badcase-header">
+            <strong>#11 GLM-4-Plus — arc</strong>
+            <span class="badge" style="background:#2196F3;">RAG可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：B</span>
+            <span>输出：ANSWER: D...</span>
+        </div>
+        <div class="badcase-tags">
+            知识错误 → 知识库缺失 → RAG可解 | 科学常识类，通过 RAG 补充即可纠正
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#12 GLM-4-Plus — hellaswag</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：D</span>
+            <span>输出：ANSWER: B...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#13 GLM-4-Plus — hellaswag</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>Answer the following multiple choice question. The entire content of your response should be of the following format: 'ANSWER: [LETTER]' (without quot</div>
+        <div class="badcase-answer">
+            <span>答案：C</span>
+            <span>输出：ANSWER: B...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 上下文不足 → 部分可解 | 上下文理解类，RAG 可提供参考
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#2196F3;">
+        <div class="badcase-header">
+            <strong>#14 GLM-4-Plus — MCQ-knowledge</strong>
+            <span class="badge" style="background:#2196F3;">RAG可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>"赤道"穿过哪个大洲的面积最大？
+选项：
+A) 亚洲
+B) 非洲
+C) 南美洲
+D) 大洋洲</div>
+        <div class="badcase-answer">
+            <span>答案：B</span>
+            <span>输出：答案：A...</span>
+        </div>
+        <div class="badcase-tags">
+            知识错误 → 知识库缺失 → RAG可解 | 知识错误：模型在"general_mcq_knowledge"子集中选择错误，期望"B"但输出了不同答案
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#15 DeepSeek-V3 — QA-code</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个多线程下载器，支持断点续传。</div>
+        <div class="badcase-answer">
+            <span>答案：思路：使用 requests 库的 Range header 分段下载，每段一个线程，最后合并。核心代码需 import requests, threading；通过 Content-Length 获取文件总大小，按线程数等分，各线程写入临时文件，下载完毕后按顺序合并。</span>
+            <span>输出：我来为你写一个支持断点续传的多线程下载器：
+
+```python
+import os
+import requests
+import threading
+import time
+from concurr...</span>
+        </div>
+        <div class="badcase-tags">
+            代码错误 → 边界条件未处理 → 部分可解 | 代码生成质量低（Rouge-L-R=0.32），期望与输出差异显著
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#16 GLM-4-Plus — QA-code</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个多线程下载器，支持断点续传。</div>
+        <div class="badcase-answer">
+            <span>答案：思路：使用 requests 库的 Range header 分段下载，每段一个线程，最后合并。核心代码需 import requests, threading；通过 Content-Length 获取文件总大小，按线程数等分，各线程写入临时文件，下载完毕后按顺序合并。</span>
+            <span>输出：# Python 多线程下载器（支持断点续传）
+
+下面是一个支持断点续传的多线程下载器的实现。这个下载器会：
+1. 使用多线程下载文件
+2. 支持断点续传（从上次中断的位置继续下载）
+3. 显示下载进...</span>
+        </div>
+        <div class="badcase-tags">
+            代码错误 → 边界条件未处理 → 部分可解 | 代码生成质量低（Rouge-L-R=0.38），期望与输出差异显著
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#17 GLM-4-Plus — QA-reasoning</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>甲、乙两人相距 100 米相向而行，甲速度 6m/s，乙 4m/s，几秒后相遇？</div>
+        <div class="badcase-answer">
+            <span>答案：10 秒（100 ÷ (6+4) = 10）</span>
+            <span>输出：要计算甲、乙两人相向而行后相遇的时间，可以按照以下步骤进行：
+
+1. **确定相对速度**：
+   
+   两人相向而行时，他们的相对速度是两者速度之和。
+   \[
+   \text{相对速度} =...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#18 GLM-4-Plus — QA-reasoning</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>一个圆形花坛半径 7 米，面积约多少平方米？（π≈3.14）</div>
+        <div class="badcase-answer">
+            <span>答案：约 153.86 m²（π×7² = 3.14×49 = 153.86）</span>
+            <span>输出：要计算圆形花坛的面积，可以使用圆的面积公式：
+
+\[
+\text{面积} = \pi \times r^2
+\]
+
+其中，\( r \) 是圆的半径，\( \pi \approx 3.14 \)。
+
+...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#19 Qwen-Plus — QA-code</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个多线程下载器，支持断点续传。</div>
+        <div class="badcase-answer">
+            <span>答案：思路：使用 requests 库的 Range header 分段下载，每段一个线程，最后合并。核心代码需 import requests, threading；通过 Content-Length 获取文件总大小，按线程数等分，各线程写入临时文件，下载完毕后按顺序合并。</span>
+            <span>输出：下面是一个使用 Python 编写的**多线程断点续传下载器**，基于 `requests` + `threading` 实现，支持：
+
+✅ 多线程并发下载（可配置线程数）  
+✅ 断点续传（通过 `...</span>
+        </div>
+        <div class="badcase-tags">
+            代码错误 → 边界条件未处理 → 部分可解 | 代码生成质量低（Rouge-L-R=0.38），期望与输出差异显著
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#20 Qwen-Plus — QA-reasoning</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>甲、乙两人相距 100 米相向而行，甲速度 6m/s，乙 4m/s，几秒后相遇？</div>
+        <div class="badcase-answer">
+            <span>答案：10 秒（100 ÷ (6+4) = 10）</span>
+            <span>输出：这是一个**相对运动**问题。
+
+甲和乙**相向而行**，所以他们的**相对速度**是两者速度之和：
+
+$$
+v_{\text{相对}} = 6\,\text{m/s} + 4\,\text{m/s}...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#21 Qwen-Plus — QA-reasoning</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>一个圆形花坛半径 7 米，面积约多少平方米？（π≈3.14）</div>
+        <div class="badcase-answer">
+            <span>答案：约 153.86 m²（π×7² = 3.14×49 = 153.86）</span>
+            <span>输出：圆形花坛的面积公式是：  
+$$
+S = \pi r^2
+$$
+
+已知半径 $ r = 7 $ 米，$ \pi \approx 3.14 $，代入计算：
+
+$$
+S = 3.14 \times 7^2...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
+        </div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#22 Qwen2.5-VL — QA-reasoning</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>一个圆形花坛半径 7 米，面积约多少平方米？（π≈3.14）</div>
+        <div class="badcase-answer">
+            <span>答案：约 153.86 m²（π×7² = 3.14×49 = 153.86）</span>
+            <span>输出：要计算一个圆形花坛的面积，我们可以使用圆的面积公式：
+
+\[ A = \pi r^2 \]
+
+其中：
+- \( A \) 是圆的面积，
+- \( \pi \) 约等于 3.14，
+- \( r \) ...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
+        </div>
+    </div>
     </div>
 
 </div>
 
 <div class="footer">
-    生成时间：2026-07-07 | 项目：llm-eval-project | 框架：EvalScope v1.8.1
+    生成时间：2026-07-09 | 项目：llm-eval-project | 框架：EvalScope v1.8.1
 </div>
 
 </body>
