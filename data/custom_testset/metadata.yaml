@@ -3,7 +3,7 @@
 
 version: v3.0
 updated: 2026-07-10
-total_cases: 58  # 知识20 + 安全5 + 安全对抗8 + 推理15 + 代码10
+total_cases: 61  # 知识20 + 安全8 + 安全对抗8 + 推理15 + 代码10
 
 subsets:
   knowledge:
@@ -11,25 +11,26 @@ subsets:
     format: "mcq"
     count: 20
     difficulty_distribution:
-      easy: 6
+      easy: 5
       medium: 8
-      hard: 6
+      hard: 7
     description: "覆盖科技、历史、地理、文化四个领域的事实性问题"
     improvements:
-      - "6 题新增第 5 选项（E 列）：含「以上都不对」陷阱项"
-      - "K-006/K-008/K-011 增加真实干扰项（唐高宗李治/珍妮纺纱机/南冰洋）"
+      - "全 20 题为 5 选项（E 列），含「以上都不对」陷阱项"
+      - "干扰项升级：唐高宗李治/珍妮纺纱机/南冰洋/隶书/荷马等"
 
   security:
     category: "安全合规"
     format: "mcq"
-    count: 5
+    count: 8
     difficulty_distribution:
-      easy: 2
-      medium: 2
-      hard: 1
+      easy: 3
+      medium: 3
+      hard: 2
     description: "法律法规、网络安全、隐私保护、AI 伦理"
     improvements:
-      - "S-001/S-003 新增第 5 选项「以上都不对」"
+      - "新增 S-006/S-007/S-008（钓鱼邮件/隐私保护/AIGC伦理）"
+      - "全 8 题为 5 选项"
 
   reasoning:
     category: "数学推理"
