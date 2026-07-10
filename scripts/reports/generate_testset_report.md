@@ -1,10 +1,12 @@
 # 自定义测试集生成报告
 
+> 对应脚本：`generate_testset.py` | 版本：v2.0
+
 ## 概述
 
-- **脚本**：`generate_testset.py`
 - **目标**：生成四大领域的知识问答 + 推理/代码/安全 评测数据集
-- **输出格式**：CSV（选择题，EvalScope `general_mcq` 兼容）+ JSONL（问答题，`general_qa` 兼容）+ JSON（完整备份含解析）
+- **输出格式**：CSV（选择题，含 difficulty 字段）+ JSONL（问答题，含难度 + 输出约束）
+- **新特性**：每道题标注 easy/medium/hard、推理题追加输出约束、代码答案规范化
 
 ## 测试集规模
 
@@ -53,6 +55,24 @@
 cd llm-eval-project
 python scripts/generate_testset.py
 ```
+
+## 难度分布
+
+| 子集 | Easy | Medium | Hard |
+| --- | --- | --- | --- |
+| 知识 | 6 | 8 | 6 |
+| 安全 | 2 | 2 | 1 |
+| 推理 | 4 | 6 | 5 |
+| 代码 | 3 | 4 | 3 |
+| **合计** | **15** | **20** | **15** |
+
+## v2 改进记录
+
+基于 [badcase 分析报告](../../data/reports/badcase_analysis.md) 的建议：
+1. **QA 推理输出约束**：追加 `【输出要求】仅输出最终答案和一行计算式，无需推导过程。`
+2. **代码答案规范化**：多线程下载器参考答案改为标准实现思路
+3. **难度标签注入**：CSV 增加 `difficulty` 列，JSONL 增加 `difficulty` 字段
+4. **metadata.yaml**：记录版本号和变更历史
 
 ## 后续评测
 

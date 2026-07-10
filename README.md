@@ -31,14 +31,20 @@ llm-eval-project/
 │   ├── extract_custom_badcases.py     # 从 review 文件中提取 Badcase
 │   ├── label_custom_badcases.py       # 自动标注 Badcase 标签
 │   ├── badcase_report.py              # 生成 Badcase 分析报告
+│   ├── full_benchmark.py              # v2 自定义测试集全量评测（读外部配置）
+│   ├── precheck.py                    # 评测前置校验（规则扫描+LLM自检）
+│   ├── visualize.py                   # 生成可视化图表+HTML仪表板
 │   │
 │   └── reports/                       # 脚本对应的评测/分析报告
 │       ├── quickstart_report.md        # ↳ 环境验证报告
 │       ├── yaml_eval_report.md         # ↳ YAML 配置评测报告
 │       ├── multi_model_benchmark_report.md   # ↳ 多模型对比报告
 │       ├── badcase_classifier_report.md      # ↳ Badcase 分类分析
-│       ├── generate_testset_report.md        # ↳ 测试集题目清单
+│       ├── generate_testset_report.md        # ↳ 测试集 v2 题目清单
 │       ├── run_full_benchmark_report.md      # ↳ 自定义评测结果
+│       ├── full_benchmark_report.md          # ↳ v2 分难度评测报告
+│       ├── precheck_report.md                # ↳ 前置校验说明
+│       ├── visualize_report.md               # ↳ 可视化图表说明
 │       ├── extract_custom_badcases_report.md # ↳ Badcase 提取说明
 │       ├── label_custom_badcases_report.md   # ↳ 自动标注规则
 │       └── badcase_report_report.md          # ↳ 分析报告说明
