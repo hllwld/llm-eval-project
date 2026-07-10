@@ -51,6 +51,7 @@ llm-eval-project/
 │
 ├── data/
 │   ├── custom_testset/                # 自定义测试集
+│   │   ├── metadata.yaml              # 测试集元数据
 │   │   ├── mcq/                       # 选择题 (CSV, EvalScope general_mcq 格式)
 │   │   ├── qa/                        # 问答题 (JSONL, EvalScope general_qa 格式)
 │   │   └── knowledge_qa_all.json      # 全部 25 道选择题 + 解析
@@ -100,6 +101,15 @@ llm-eval-project/
 | Qwen-Plus | 56.53% | 59.27% | **58.17%** |
 | Qwen2.5-VL | 54.76% | 57.62% | **56.48%** |
 
+### v2 测试集（难度标签 + 输出约束）
+
+| 模型 | 知识 | 安全 | 推理 | 代码 | **综合** |
+| --- | --- | --- | --- | --- | --- |
+| DeepSeek-V3 | 100% | 100% | 53.88% | 58.10% | **77.99%** |
+| Qwen2.5-VL | 100% | 100% | 40.58% | 56.11% | **74.17%** |
+| GLM-4-Plus | 95% | 100% | 43.51% | 53.41% | **72.98%** |
+| Qwen-Plus | 100% | 100% | 31.27% | 57.18% | **72.11%** |
+
 > 详细分析见 `scripts/reports/` 下各 `*_report.md` 和 `data/reports/`
 
 ## 快速开始
@@ -111,10 +121,16 @@ cd llm-eval-project
 # 1. 生成自定义测试集
 python scripts/generate_testset.py
 
-# 2. 运行完整评测
-python scripts/run_full_benchmark.py
+# 2. 前置校验（评测前先检查测试集质量）
+python scripts/precheck.py
 
-# 3. Badcase 分析流程
+# 3. 运行完整评测（v2 含难度分层）
+python scripts/full_benchmark.py
+
+# 4. 生成可视化图表
+python scripts/visualize.py
+
+# 5. Badcase 分析流程
 python scripts/extract_custom_badcases.py
 python scripts/label_custom_badcases.py
 python scripts/badcase_report.py
@@ -122,7 +138,6 @@ python scripts/badcase_report.py
 # 旧版脚本（标准数据集）
 python scripts/quickstart.py
 python scripts/multi_model_benchmark.py
-python scripts/badcase_classifier.py
 ```
 
 ## 技术栈
@@ -134,4 +149,4 @@ python scripts/badcase_classifier.py
 
 ---
 
-*创建时间：2026-07-07 | 更新：2026-07-09*
+*创建时间：2026-07-07 | 更新：2026-07-10*
