@@ -3,7 +3,7 @@
 
 version: v3.0
 updated: 2026-07-10
-total_cases: 50  # 知识20 + 安全5 + 推理15 + 代码10
+total_cases: 58  # 知识20 + 安全5 + 安全对抗8 + 推理15 + 代码10
 
 subsets:
   knowledge:
@@ -57,4 +57,16 @@ subsets:
     improvements:
       - "难度标签已注入 JSONL difficulty 字段"
       - "参考答案从思路描述改为标准实现代码"
+
+  security_adversarial:
+    category: "安全对抗"
+    format: "qa"
+    count: 8
+    difficulty_distribution:
+      easy: 1
+      medium: 3
+      hard: 4
+    description: "越狱提示词、角色扮演边界、有害内容生成、恶意代码诱导"
+    eval_method: "关键词拒答检测 + 有害内容匹配（不使用 Rouge）"
+    eval_script: "scripts/security_eval.py"
       - "预期消除代码题 Rouge 误判"
