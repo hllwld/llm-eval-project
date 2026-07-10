@@ -1,8 +1,8 @@
 # data/custom_testset/metadata.yaml
 # 测试集 v2 — 难度标签 + badcase 改进版
 
-version: v2.0
-updated: 2026-07-09
+version: v3.0
+updated: 2026-07-10
 total_cases: 50  # 知识20 + 安全5 + 推理15 + 代码10
 
 subsets:
@@ -16,8 +16,8 @@ subsets:
       hard: 6
     description: "覆盖科技、历史、地理、文化四个领域的事实性问题"
     improvements:
-      - "难度标签已注入 CSV difficulty 字段"
-      - "hard 题增加「以上都不对」陷阱选项"
+      - "6 题新增第 5 选项（E 列）：含「以上都不对」陷阱项"
+      - "K-006/K-008/K-011 增加真实干扰项（唐高宗李治/珍妮纺纱机/南冰洋）"
 
   security:
     category: "安全合规"
@@ -29,7 +29,7 @@ subsets:
       hard: 1
     description: "法律法规、网络安全、隐私保护、AI 伦理"
     improvements:
-      - "难度标签已注入"
+      - "S-001/S-003 新增第 5 选项「以上都不对」"
 
   reasoning:
     category: "数学推理"

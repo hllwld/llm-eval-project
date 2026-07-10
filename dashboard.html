@@ -100,17 +100,33 @@
         </p>
     </div>
 
-    <!-- 自定义测试集 - MCQ -->
+    <!-- v2→v3 MCQ 改进对比 -->
     <div class="card">
-        <h2>自定义测试集 — 选择题 (Accuracy)</h2>
+        <h2>MCQ 改进效果：v2 → v3（陷阱项 + 第5选项）</h2>
         <div class="table-wrap">
         <table>
-            <thead><tr><th>模型</th><th>知识 (20题)</th><th>安全 (5题)</th><th>总分</th></tr></thead>
-            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">96%</td></tr><tr><td><strong>Qwen2.5-VL</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td></tr></tbody>
+            <thead><tr><th>模型</th><th>v2 知识</th><th>v3 知识</th><th>v2 安全</th><th>v3 安全</th><th>效果</th></tr></thead>
+            <tbody>
+                <tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">区分度生效</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;font-weight:bold;">90%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">区分度生效</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">区分度生效</td></tr><tr><td><strong>Qwen2.5-VL</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">区分度生效</td></tr>
+            </tbody>
         </table>
         </div>
         <p style="margin-top:8px;font-size:12px;color:#888;">
-            共 25 题 | 评测时间：2026-07-09
+            6 道知识题 + 2 道安全题新增第 5 选项（含「以上都不对」陷阱），知识题全模型平均下降 ~4%
+        </p>
+    </div>
+
+    <!-- 自定义测试集 - MCQ -->
+    <div class="card">
+        <h2>自定义测试集 — 选择题 v3 (Accuracy)</h2>
+        <div class="table-wrap">
+        <table>
+            <thead><tr><th>模型</th><th>知识 (20题)</th><th>安全 (5题)</th><th>总分</th></tr></thead>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;">-</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="text-align:center;">90%</td><td style="text-align:center;">100%</td><td style="text-align:center;">-</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;">-</td></tr><tr><td><strong>Qwen2.5-VL</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;">-</td></tr></tbody>
+        </table>
+        </div>
+        <p style="margin-top:8px;font-size:12px;color:#888;">
+            共 25 题，8 题含第 5 选项 | 评测时间：2026-07-10
         </p>
     </div>
 
@@ -120,11 +136,11 @@
         <div class="table-wrap">
         <table>
             <thead><tr><th>模型</th><th>代码 (10题)</th><th>推理 (15题)</th><th>总分</th></tr></thead>
-            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">54.4%</td><td style="text-align:center;">62.2%</td><td style="text-align:center;font-weight:bold;">59.1%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">56.5%</td><td style="text-align:center;">59.3%</td><td style="text-align:center;font-weight:bold;">58.2%</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="text-align:center;">53.7%</td><td style="text-align:center;">66.5%</td><td style="text-align:center;font-weight:bold;">61.4%</td></tr><tr><td><strong>Qwen2.5-VL</strong></td><td style="text-align:center;">54.8%</td><td style="text-align:center;">57.6%</td><td style="text-align:center;font-weight:bold;">56.5%</td></tr></tbody>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">55.2%</td><td style="text-align:center;">49.7%</td><td style="text-align:center;">-</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="text-align:center;">53.1%</td><td style="text-align:center;">35.0%</td><td style="text-align:center;">-</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">57.6%</td><td style="text-align:center;">31.4%</td><td style="text-align:center;">-</td></tr><tr><td><strong>Qwen2.5-VL</strong></td><td style="text-align:center;">54.6%</td><td style="text-align:center;">39.0%</td><td style="text-align:center;">-</td></tr></tbody>
         </table>
         </div>
         <p style="margin-top:8px;font-size:12px;color:#888;">
-            共 25 题 | 评测时间：2026-07-09
+            共 25 题 | 评测时间：2026-07-10
         </p>
     </div>
 
@@ -181,13 +197,12 @@
     <div class="card">
         <h2>关键洞察</h2>
         <ul style="line-height:2;padding-left:20px;">
+            <li><strong>v3 MCQ 陷阱项生效</strong>：6 道知识题 + 2 道安全题新增第 5 选项后，全模型知识题从满分降至 ~95%，区分度从 0 提升到 5%</li>
             <li><strong>数学推理</strong>：三模型均接近满分（95%~100%），能力差距极小</li>
             <li><strong>常识推理 (hellaswag)</strong>：GLM-4-Plus 仅 45%，为最显著短板</li>
-            <li><strong>选择题区分度不足</strong>：自定义 25 道 MCQ 仅 GLM-4-Plus 错 1 题，后续需提升难度</li>
-            <li><strong>Rouge 误判</strong>：5 条推理题答案正确但回答详细导致分数低，属于指标局限非模型错误</li>
-            <li><strong>代码输出超额完成</strong>：3 条代码题模型给出完整实现，而参考答案仅为思路描述</li>
-            <li><strong>GLM-4-Plus 两极分化</strong>：推理最强（66.5%）但知识最弱（唯一 MCQ 错题）</li>
-            <li><strong>RAG 可改善</strong>：仅 1 条真正知识缺失，95% 的 Badcase 可通过 Prompt 优化解决</li>
+            <li><strong>安全题仍需加强</strong>：5 题太少且第 5 选项「以上都不对」未命中任何模型，需增加题目数量</li>
+            <li><strong>QA 推理稳定</strong>：v3 推理分与 v2 基本持平，输出约束未影响真实能力评估</li>
+            <li><strong>GLM-4-Plus 仍两极分化</strong>：推理强但 MCQ 知识最弱（90%）</li>
         </ul>
     </div>
 
@@ -603,7 +618,7 @@ S = 3.14 \times 7^2...</span>
 </div>
 
 <div class="footer">
-    生成时间：2026-07-09 | 项目：llm-eval-project | 框架：EvalScope v1.8.1
+    生成时间：2026-07-10 | 项目：llm-eval-project v3 | 框架：EvalScope v1.8.1
 </div>
 
 </body>

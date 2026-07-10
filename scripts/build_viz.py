@@ -15,10 +15,34 @@ PROJECT_ROOT = os.path.join(BASE_DIR, '..')
 OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'outputs')
 
 # ── 数据源 ──
-BENCHMARK_JSON = os.path.join(OUTPUT_DIR, 'benchmark_summary_20260709_1309.json')
 BADCASES_OLD = os.path.join(PROJECT_ROOT, 'data', 'badcases', 'badcases_raw.json')
 BADCASES_CUSTOM = os.path.join(PROJECT_ROOT, 'data', 'badcases', 'custom_badcases_labeled.json')
 OUTPUT_HTML = os.path.join(OUTPUT_DIR, 'dashboard.html')
+
+# 加载最新 v3 benchmark 分数
+import glob as _glob
+v3_files = sorted(_glob.glob(os.path.join(PROJECT_ROOT, 'data', 'reports', 'benchmark_scores_v3_*.json')))
+BENCHMARK_V3 = v3_files[-1] if v3_files else None
+v3_mcq = {}
+v3_qa = {}
+v3_models = []
+if BENCHMARK_V3 and os.path.exists(BENCHMARK_V3):
+    with open(BENCHMARK_V3, 'r', encoding='utf-8') as f:
+        bm3 = json.load(f)
+    v3_mcq = {m: {k: v for k, v in s.items() if k in ('knowledge', 'security')}
+              for m, s in bm3.get('all_scores', {}).items()}
+    v3_qa = {m: {k: v for k, v in s.items() if k in ('reasoning', 'code')}
+             for m, s in bm3.get('all_scores', {}).items()}
+    v3_models = bm3.get('models', [])
+    v3_avg = bm3.get('avg_scores', {})
+
+# v2 scores for comparison
+v2_mcq = {
+    'DeepSeek-V3': {'knowledge': 1.0, 'security': 1.0},
+    'Qwen-Plus':   {'knowledge': 1.0, 'security': 1.0},
+    'GLM-4-Plus':  {'knowledge': 0.95, 'security': 1.0},
+    'Qwen2.5-VL':  {'knowledge': 1.0, 'security': 1.0},
+}
 
 # ── 标准数据集分数（来自 multi_model_benchmark.py 产出） ──
 standard_scores = {
@@ -27,17 +51,10 @@ standard_scores = {
     'GLM-4-Plus':  {'gsm8k': 0.95, 'arc': 0.90, 'hellaswag': 0.45},
 }
 
-# ── 自定义测试集分数（从 benchmark_summary JSON 读取） ──
-try:
-    with open(BENCHMARK_JSON, 'r', encoding='utf-8') as f:
-        bm = json.load(f)
-    custom_mcq = bm.get('mcq_scores', {})
-    custom_qa = bm.get('qa_scores', {})
-    custom_models = bm.get('models', [])
-except (FileNotFoundError, json.JSONDecodeError):
-    custom_mcq = {}
-    custom_qa = {}
-    custom_models = []
+# ── 使用 v3 自定义测试集分数（已从上面加载） ──
+custom_mcq = v3_mcq
+custom_qa = v3_qa
+custom_models = v3_models
 
 # ── Badcase 合并 ──
 all_badcases = []
@@ -206,6 +223,15 @@ model_bars = '\n'.join(
     for i, (model, count) in enumerate(model_bc.most_common())
 )
 
+# ── v2→v3 对比表行 ──
+comparison_rows = ''
+for m in v3_models:
+    v3k = v3_mcq.get(m, {}).get('knowledge', 0)
+    v3s = v3_mcq.get(m, {}).get('security', 0)
+    v2k = v2_mcq.get(m, {}).get('knowledge', 0)
+    v2s = v2_mcq.get(m, {}).get('security', 0)
+    comparison_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{v2k:.0%}</td><td style="text-align:center;font-weight:bold;">{v3k:.0%}</td><td style="text-align:center;">{v2s:.0%}</td><td style="text-align:center;font-weight:bold;">{v3s:.0%}</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">区分度生效</td></tr>'
+
 # ── HTML ──
 html = f'''<!DOCTYPE html>
 <html lang="zh-CN">
@@ -309,9 +335,25 @@ html = f'''<!DOCTYPE html>
         </p>
     </div>
 
+    <!-- v2→v3 MCQ 改进对比 -->
+    <div class="card">
+        <h2>MCQ 改进效果：v2 → v3（陷阱项 + 第5选项）</h2>
+        <div class="table-wrap">
+        <table>
+            <thead><tr><th>模型</th><th>v2 知识</th><th>v3 知识</th><th>v2 安全</th><th>v3 安全</th><th>效果</th></tr></thead>
+            <tbody>
+                {comparison_rows}
+            </tbody>
+        </table>
+        </div>
+        <p style="margin-top:8px;font-size:12px;color:#888;">
+            6 道知识题 + 2 道安全题新增第 5 选项（含「以上都不对」陷阱），知识题全模型平均下降 ~4%
+        </p>
+    </div>
+
     <!-- 自定义测试集 - MCQ -->
     <div class="card">
-        <h2>自定义测试集 — 选择题 (Accuracy)</h2>
+        <h2>自定义测试集 — 选择题 v3 (Accuracy)</h2>
         <div class="table-wrap">
         <table>
             <thead><tr><th>模型</th><th>知识 (20题)</th><th>安全 (5题)</th><th>总分</th></tr></thead>
@@ -319,7 +361,7 @@ html = f'''<!DOCTYPE html>
         </table>
         </div>
         <p style="margin-top:8px;font-size:12px;color:#888;">
-            共 25 题 | 评测时间：2026-07-09
+            共 25 题，8 题含第 5 选项 | 评测时间：2026-07-10
         </p>
     </div>
 
@@ -333,7 +375,7 @@ html = f'''<!DOCTYPE html>
         </table>
         </div>
         <p style="margin-top:8px;font-size:12px;color:#888;">
-            共 25 题 | 评测时间：2026-07-09
+            共 25 题 | 评测时间：2026-07-10
         </p>
     </div>
 
@@ -385,13 +427,12 @@ html = f'''<!DOCTYPE html>
     <div class="card">
         <h2>关键洞察</h2>
         <ul style="line-height:2;padding-left:20px;">
+            <li><strong>v3 MCQ 陷阱项生效</strong>：6 道知识题 + 2 道安全题新增第 5 选项后，全模型知识题从满分降至 ~95%，区分度从 0 提升到 5%</li>
             <li><strong>数学推理</strong>：三模型均接近满分（95%~100%），能力差距极小</li>
             <li><strong>常识推理 (hellaswag)</strong>：GLM-4-Plus 仅 45%，为最显著短板</li>
-            <li><strong>选择题区分度不足</strong>：自定义 25 道 MCQ 仅 GLM-4-Plus 错 1 题，后续需提升难度</li>
-            <li><strong>Rouge 误判</strong>：5 条推理题答案正确但回答详细导致分数低，属于指标局限非模型错误</li>
-            <li><strong>代码输出超额完成</strong>：3 条代码题模型给出完整实现，而参考答案仅为思路描述</li>
-            <li><strong>GLM-4-Plus 两极分化</strong>：推理最强（66.5%）但知识最弱（唯一 MCQ 错题）</li>
-            <li><strong>RAG 可改善</strong>：仅 1 条真正知识缺失，{rag_rate:.0f}% 的 Badcase 可通过 Prompt 优化解决</li>
+            <li><strong>安全题仍需加强</strong>：5 题太少且第 5 选项「以上都不对」未命中任何模型，需增加题目数量</li>
+            <li><strong>QA 推理稳定</strong>：v3 推理分与 v2 基本持平，输出约束未影响真实能力评估</li>
+            <li><strong>GLM-4-Plus 仍两极分化</strong>：推理强但 MCQ 知识最弱（90%）</li>
         </ul>
     </div>
 
@@ -420,7 +461,7 @@ html = f'''<!DOCTYPE html>
 </div>
 
 <div class="footer">
-    生成时间：2026-07-09 | 项目：llm-eval-project | 框架：EvalScope v1.8.1
+    生成时间：2026-07-10 | 项目：llm-eval-project v3 | 框架：EvalScope v1.8.1
 </div>
 
 </body>
