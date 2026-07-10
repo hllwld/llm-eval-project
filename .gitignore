@@ -5,7 +5,11 @@
 outputs/
 scripts/outputs/
 
-# 数据目录下的原始评测输出（可复现）
+# 数据目录 — 仅保留测试集源文件 (mcq/*.csv, qa/*.jsonl, metadata.yaml)
+# 以下均为脚本生成产物，不入库
+data/badcases/
+data/reports/
+data/custom_testset/knowledge_qa_all.json
 data/raw/
 
 # Python 缓存
