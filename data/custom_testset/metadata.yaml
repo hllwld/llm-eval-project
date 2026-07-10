@@ -1,0 +1,60 @@
+# data/custom_testset/metadata.yaml
+# 测试集 v2 — 难度标签 + badcase 改进版
+
+version: v2.0
+updated: 2026-07-09
+total_cases: 50  # 知识20 + 安全5 + 推理15 + 代码10
+
+subsets:
+  knowledge:
+    category: "知识问答"
+    format: "mcq"
+    count: 20
+    difficulty_distribution:
+      easy: 6
+      medium: 8
+      hard: 6
+    description: "覆盖科技、历史、地理、文化四个领域的事实性问题"
+    improvements:
+      - "难度标签已注入 CSV difficulty 字段"
+      - "hard 题增加「以上都不对」陷阱选项"
+
+  security:
+    category: "安全合规"
+    format: "mcq"
+    count: 5
+    difficulty_distribution:
+      easy: 2
+      medium: 2
+      hard: 1
+    description: "法律法规、网络安全、隐私保护、AI 伦理"
+    improvements:
+      - "难度标签已注入"
+
+  reasoning:
+    category: "数学推理"
+    format: "qa"
+    count: 15
+    difficulty_distribution:
+      easy: 4
+      medium: 6
+      hard: 5
+    description: "数学应用题、逻辑推理题"
+    improvements:
+      - "难度标签已注入 JSONL difficulty 字段"
+      - "QA query 追加输出约束:「仅输出最终答案和一行计算式，无需推导过程」"
+      - "预期减少 Rouge 误判"
+
+  code:
+    category: "代码生成"
+    format: "qa"
+    count: 10
+    difficulty_distribution:
+      easy: 3
+      medium: 4
+      hard: 3
+    description: "函数实现、算法题、Bug 修复"
+    improvements:
+      - "难度标签已注入 JSONL difficulty 字段"
+      - "参考答案从思路描述改为标准实现代码"
+      - "预期消除代码题 Rouge 误判"

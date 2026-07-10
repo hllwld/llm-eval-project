@@ -11,6 +11,21 @@ import csv
 # ========== 配置 ==========
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'custom_testset')
 
+# ── 难度标签映射 ──
+# knowledge: e6/m8/h6  security: e2/m2/h1  reasoning: e4/m6/h5  code: e3/m4/h3
+DIFFICULTY = {
+    # 知识 (科技 e=0[1-3], m=2[4-8], h=2[9-12])
+    'K-001': 'easy', 'K-002': 'medium', 'K-003': 'medium', 'K-004': 'hard', 'K-005': 'medium',
+    'K-006': 'easy', 'K-007': 'medium', 'K-008': 'easy', 'K-009': 'medium', 'K-010': 'hard',
+    'K-011': 'easy', 'K-012': 'medium', 'K-013': 'hard', 'K-014': 'easy', 'K-015': 'medium',
+    'K-016': 'easy', 'K-017': 'hard', 'K-018': 'hard', 'K-019': 'medium', 'K-020': 'hard',
+    # 安全 (e=0, m=1[1-2], h=1[3-5])
+    'S-001': 'easy', 'S-002': 'medium', 'S-003': 'hard', 'S-004': 'medium', 'S-005': 'easy',
+}
+
+# ── QA 输出约束（v2 改进：减少 Rouge 误判） ──
+QA_CONSTRAINT = '\n\n【输出要求】仅输出最终答案和一行计算式，无需推导过程。'
+
 # ================================================================
 # 1. 知识类选择题（20 条）— 科技 / 历史 / 地理 / 文化
 # ================================================================
@@ -273,21 +288,35 @@ def export_json_with_explanation(data, filename):
         json.dump(output, f, indent=2, ensure_ascii=False)
     return len(output)
 
-def save_mcq_csv(data, filename):
-    """保存选择题为 CSV 格式，供 EvalScope 使用"""
+def save_mcq_csv(data, filename, subset_key='knowledge'):
+    """保存选择题为 CSV 格式，含难度标签"""
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, fieldnames=['id', 'question', 'A', 'B', 'C', 'D', 'answer'])
+        writer = csv.DictWriter(f, fieldnames=['id', 'question', 'A', 'B', 'C', 'D', 'answer', 'difficulty'])
         writer.writeheader()
         for row in data:
-            writer.writerow({k: row.get(k, '') for k in ['id', 'question', 'A', 'B', 'C', 'D', 'answer']})
+            qid = row.get('id', '')
+            writer.writerow({
+                'id': qid, 'question': row.get('question', ''),
+                'A': row.get('A', ''), 'B': row.get('B', ''), 'C': row.get('C', ''), 'D': row.get('D', ''),
+                'answer': row.get('answer', ''),
+                'difficulty': DIFFICULTY.get(qid, 'medium'),
+            })
 
-def save_qa_jsonl(data, filename):
-    """保存问答题为 JSONL 格式"""
+def save_qa_jsonl(data, filename, add_constraint=False):
+    """保存问答题为 JSONL 格式，含难度标签"""
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename, 'w', encoding='utf-8') as f:
-        for row in data:
-            f.write(json.dumps(row, ensure_ascii=False) + '\n')
+        for i, row in enumerate(data):
+            query = row.get('query', '')
+            if add_constraint and '【输出要求】' not in query:
+                query = query + QA_CONSTRAINT
+            item = {
+                'query': query,
+                'response': row.get('response', ''),
+                'difficulty': row.get('difficulty', 'medium'),
+            }
+            f.write(json.dumps(item, ensure_ascii=False) + '\n')
 
 # ================================================================
 # 6. 主流程
@@ -298,13 +327,13 @@ if __name__ == '__main__':
     os.makedirs(mcq_dir, exist_ok=True)
     os.makedirs(qa_dir, exist_ok=True)
 
-    # 保存选择题 → CSV
+    # 保存选择题 → CSV (含难度标签)
     save_mcq_csv(knowledge_qa, os.path.join(mcq_dir, 'knowledge_val.csv'))
     save_mcq_csv(security_qa, os.path.join(mcq_dir, 'security_val.csv'))
 
-    # 保存问答题 → JSONL
-    save_qa_jsonl(reasoning_qa, os.path.join(qa_dir, 'reasoning.jsonl'))
-    save_qa_jsonl(code_qa, os.path.join(qa_dir, 'code.jsonl'))
+    # 保存问答题 → JSONL (含难度标签 + 输出约束)
+    save_qa_jsonl(reasoning_qa, os.path.join(qa_dir, 'reasoning.jsonl'), add_constraint=True)
+    save_qa_jsonl(code_qa, os.path.join(qa_dir, 'code.jsonl'), add_constraint=False)
 
     # 额外导出：带解析的完整 JSON 版本（全部 25 道选择题：20 知识 + 5 安全）
     all_mcq = knowledge_qa + security_qa
