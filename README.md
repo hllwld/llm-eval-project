@@ -20,6 +20,9 @@ llm-eval-project/
 ├── config/
 │   └── model_config.yaml              # 模型参数 + 数据集配置
 │
+├── docs/
+│   └── rag_architecture.md            # RAG 优化方案技术架构（Day 13-17）
+│
 ├── scripts/                           # 核心评测脚本
 │   ├── quickstart.py                  # EvalScope 环境验证
 │   ├── yaml_eval.py                   # YAML 配置驱动评测
