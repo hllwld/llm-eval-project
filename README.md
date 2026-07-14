@@ -62,6 +62,8 @@ llm-eval-project/
 │   │   ├── badcases_raw.json          # 旧数据集 Badcase (14 条)
 │   │   ├── custom_badcases_raw.json   # 自定义数据集 Badcase (9 条)
 │   │   └── custom_badcases_labeled.json  # 标注后的 Badcase
+│   ├── knowledge_base/               # RAG 知识库原始素材
+│   │   └── reasoning_steps.jsonl     # 15 道推理题标准解题步骤（Day 12）
 │   └── reports/
 │       ├── week1_briefing.md          # 第一周综合分析
 │       └── badcase_analysis.md        # 自定义测试集 Badcase 分析报告
@@ -127,13 +129,16 @@ python scripts/generate_testset.py
 # 2. 前置校验（评测前先检查测试集质量）
 python scripts/precheck.py
 
-# 3. 运行完整评测（v2 含难度分层）
+# 3. 运行完整评测（含难度分层）
 python scripts/full_benchmark.py
 
-# 4. 生成可视化图表
+# 4. 安全对抗评测（独立，不使用 Rouge）
+python scripts/security_eval.py
+
+# 5. 生成可视化图表
 python scripts/visualize.py
 
-# 5. Badcase 分析流程
+# 6. Badcase 分析流程
 python scripts/extract_custom_badcases.py
 python scripts/label_custom_badcases.py
 python scripts/badcase_report.py
@@ -152,4 +157,4 @@ python scripts/multi_model_benchmark.py
 
 ---
 
-*创建时间：2026-07-07 | 更新：2026-07-10*
+*创建时间：2026-07-07 | 更新：2026-07-14*
