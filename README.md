@@ -35,9 +35,10 @@
 第四阶段：可视化 + RAG 方案（进行中）
   build_viz.py ──▶ 交互式 HTML 仪表板
   visualize.py ──▶ matplotlib 四维图表 + 雷达图
-  docs/rag_architecture.md ──▶ RAG 技术架构蓝图
-  data/knowledge_base/ ──▶ 推理题标准解题步骤（Day 12）
-  ──▶ Day 13-17: ChromaDB 向量库 + RAG 推理管道 + 对比实验
+  rag_retriever.py ──▶ ChromaDB + BGE 向量化检索（Day 13）
+  rag_prompt_builder.py ──▶ 检索结果重组为 Prompt（Day 14）
+  rag_inference.py ──▶ RAG vs 无RAG 对比推理管道（Day 14）
+  ──▶ Day 15-17: 全量 RAG 评测 + 对比报告
 ```
 
 > 报告文档统一在 `scripts/reports/`，全局总结在 `docs/` 和 `data/reports/`。
@@ -69,7 +70,11 @@ llm-eval-project/
 │   ├── badcase_report.py              # 生成 Badcase 分析报告
 │   ├── full_benchmark.py              # v2 自定义测试集全量评测（读外部配置）
 │   ├── precheck.py                    # 评测前置校验（规则扫描+LLM自检）
+│   ├── security_eval.py               # 安全对抗评测（越狱/诱导/拒答检测）
 │   ├── visualize.py                   # 生成可视化图表+HTML仪表板
+│   ├── rag_retriever.py               # RAG 向量检索器（ChromaDB+BGE）
+│   ├── rag_prompt_builder.py          # RAG Prompt 重组器
+│   ├── rag_inference.py               # RAG 推理管道（检索→重组→模型）
 │   │
 │   └── reports/                       # 脚本对应的评测/分析报告
 │       ├── quickstart_report.md        # ↳ 环境验证报告
@@ -83,7 +88,9 @@ llm-eval-project/
 │       ├── visualize_report.md               # ↳ 可视化图表说明
 │       ├── extract_custom_badcases_report.md # ↳ Badcase 提取说明
 │       ├── label_custom_badcases_report.md   # ↳ 自动标注规则
-│       └── badcase_report_report.md          # ↳ 分析报告说明
+│       ├── badcase_report_report.md          # ↳ 分析报告说明
+│       ├── rag_retriever_report.md           # ↳ RAG 检索器验证
+│       └── rag_inference_report.md           # ↳ RAG vs 无RAG 对比
 │
 ├── data/
 │   ├── custom_testset/                # 自定义测试集
