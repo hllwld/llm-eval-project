@@ -9,6 +9,39 @@
 3. 建立 Badcase 分类体系与分析流程
 4. 积累可复用的评测自动化脚本
 
+## 项目流程
+
+```
+第一阶段：框架验证 + 标准数据集基线（已完成）
+  quickstart.py ──▶ EvalScope 环境跑通
+  yaml_eval.py ──▶ YAML 配置驱动评测
+  multi_model_benchmark.py ──▶ 三模型 × 三数据集对比
+  badcase_classifier.py ──▶ Badcase 三级标签分类
+  └── 产出: gsm8k/arc/hellaswag 基线 + 14 条 Badcase
+
+第二阶段：自建测试集 + 评测流水线（已完成）
+  generate_testset.py ──▶ 50 题自定义测试集（知识/安全/推理/代码）
+  run_full_benchmark.py ──▶ 自定义测试集 × 全模型初次评测
+  full_benchmark.py ──▶ v2→v3→v4 迭代：难度标签 + 输出约束 + 陷阱项
+  └── 产出: 61 题 v4 测试集 + 分难度对比报告 + 公开数据集对比
+
+第三阶段：Badcase 分析 + 前置校验（已完成）
+  extract_custom_badcases.py ──▶ 提取错误样本
+  label_custom_badcases.py ──▶ 自动标注（类型/位置/RAG适配度）
+  badcase_report.py ──▶ 分析报告 + 改进措施
+  precheck.py ──▶ 评测前三级校验（规则+弱模型+LLM自检）
+  security_eval.py ──▶ 安全对抗评测（越狱/诱导/拒答检测）
+
+第四阶段：可视化 + RAG 方案（进行中）
+  build_viz.py ──▶ 交互式 HTML 仪表板
+  visualize.py ──▶ matplotlib 四维图表 + 雷达图
+  docs/rag_architecture.md ──▶ RAG 技术架构蓝图
+  data/knowledge_base/ ──▶ 推理题标准解题步骤（Day 12）
+  ──▶ Day 13-17: ChromaDB 向量库 + RAG 推理管道 + 对比实验
+```
+
+> 报告文档统一在 `scripts/reports/`，全局总结在 `docs/` 和 `data/reports/`。
+
 ## 目录结构
 
 ```
