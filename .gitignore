@@ -31,4 +31,7 @@ env/
 
 # OS 文件
 .DS_Store
-Thumbs.dbchroma_db/
+Thumbs.db
+
+# ChromaDB 向量库（可由 reasoning_steps.jsonl 重建）
+chroma_db/
