@@ -35,10 +35,11 @@
 第四阶段：可视化 + RAG 方案（进行中）
   build_viz.py ──▶ 交互式 HTML 仪表板
   visualize.py ──▶ matplotlib 四维图表 + 雷达图
-  rag_retriever.py ──▶ ChromaDB + BGE 向量化检索（Day 13）
-  rag_prompt_builder.py ──▶ 检索结果重组为 Prompt（Day 14）
-  rag_inference.py ──▶ RAG vs 无RAG 对比推理管道（Day 14）
-  ──▶ Day 15-17: 全量 RAG 评测 + 对比报告
+  rag_retriever.py ──▶ ChromaDB + BGE 向量化检索
+  rag_prompt_builder.py ──▶ 检索结果重组为 Prompt
+  rag_inference.py ──▶ RAG vs 无RAG 对比推理管道
+  └── 产出: baseline_report.md（RAG 优化前基准报告）
+  ──▶ 下一步: 全量 RAG 评测 + 前后对比报告
 ```
 
 > 报告文档统一在 `scripts/reports/`，全局总结在 `docs/` 和 `data/reports/`。
@@ -55,7 +56,7 @@ llm-eval-project/
 │   └── model_config.yaml              # 模型参数 + 数据集配置
 │
 ├── docs/
-│   └── rag_architecture.md            # RAG 优化方案技术架构（Day 13-17）
+│   └── rag_architecture.md            # RAG 优化方案技术架构
 │
 ├── scripts/                           # 核心评测脚本
 │   ├── quickstart.py                  # EvalScope 环境验证
@@ -103,7 +104,7 @@ llm-eval-project/
 │   │   ├── custom_badcases_raw.json   # 自定义数据集 Badcase (9 条)
 │   │   └── custom_badcases_labeled.json  # 标注后的 Badcase
 │   ├── knowledge_base/               # RAG 知识库原始素材
-│   │   └── reasoning_steps.jsonl     # 15 道推理题标准解题步骤（Day 12）
+│   │   └── reasoning_steps.jsonl     # 15 道推理题标准解题步骤
 │   └── reports/
 │       ├── week1_briefing.md          # 第一周综合分析
 │       └── badcase_analysis.md        # 自定义测试集 Badcase 分析报告
