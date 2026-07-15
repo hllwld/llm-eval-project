@@ -59,4 +59,4 @@
 
 ---
 
-*生成时间：2026-07-07 | 详见 `data/reports/week1_briefing.md` 完整版*
+*生成时间：2026-06-22 | 详见 `data/reports/week1_briefing.md` 完整版*

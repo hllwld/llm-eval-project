@@ -22,7 +22,7 @@
 - **arc**：三模型差距小（90%~95%），科学常识能力接近
 - **hellaswag**：GLM-4-Plus 严重落后（45% vs 75%~85%），常识推理是明显短板
 
-> 本次评测数据已于 2026-07-07 13:31 通过 `multi_model_benchmark.py` 自动生成，三模型各 3 数据集 × 20 条。
+> 本次评测数据已于 2026-06-22 13:31 通过 `multi_model_benchmark.py` 自动生成，三模型各 3 数据集 × 20 条。
 
 ## Badcase 收集
 
@@ -60,4 +60,4 @@ python multi_model_benchmark.py
 
 ---
 
-*记录时间：2026-07-07 | EvalScope v1.8.1*
+*记录时间：2026-06-22 | EvalScope v1.8.1*
