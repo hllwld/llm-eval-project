@@ -33,6 +33,8 @@ with open(os.path.join(ROOT, 'config', 'model_config.yaml'), 'r', encoding='utf-
 
 MODELS = []
 for m in config['models']:
+    if not m.get('active', True):  # active: false 则跳过
+        continue
     api_key_env = m.get('api_key_env', '')
     api_key = os.getenv(api_key_env, '')
     MODELS.append({

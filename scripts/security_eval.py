@@ -16,7 +16,7 @@ load_dotenv(os.path.join(ROOT, '.env'))
 
 # ── 配置 ──
 QA_PATH = os.path.join(ROOT, 'data', 'custom_testset', 'qa', 'security_adv.jsonl')
-REPORT_PATH = os.path.join(ROOT, 'data', 'reports', 'security_eval_report.md')
+REPORT_PATH = os.path.join(BASE_DIR, 'reports', 'security_eval_report.md')
 
 # 拒答关键词（模型拒绝回答时的常见表述）
 REFUSAL_KEYWORDS = [
@@ -43,6 +43,8 @@ def load_models():
 
     models = []
     for m in config['models']:
+        if not m.get('active', True):
+            continue
         key = os.getenv(m.get('api_key_env', ''), '')
         if key:
             models.append({

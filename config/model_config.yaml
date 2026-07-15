@@ -6,7 +6,7 @@ models:
   - name: DeepSeek-V3
     model_id: deepseek-chat
     api_url: "https://api.deepseek.com/v1/chat/completions"
-    api_key_env: DEEPSEEK_API_KEY       # 从 .env 读取
+    api_key_env: DEEPSEEK_API_KEY
     description: 国产通用大模型，擅长推理与代码
 
   - name: Qwen-Plus
@@ -25,7 +25,8 @@ models:
     model_id: qwen-vl-plus
     api_url: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
     api_key_env: BAILIAN_API_KEY
-    description: 阿里通义多模态视觉模型，支持图片+视频理解
+    description: 阿里通义多模态视觉模型（纯文本评测不自动调用）
+    active: false
 
 # --- 数据集配置 ---
 datasets:

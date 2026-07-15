@@ -32,14 +32,16 @@
   precheck.py ──▶ 评测前三级校验（规则+弱模型+LLM自检）
   security_eval.py ──▶ 安全对抗评测（越狱/诱导/拒答检测）
 
-第四阶段：可视化 + RAG 方案（进行中）
+第四阶段：可视化 + RAG 方案
   build_viz.py ──▶ 交互式 HTML 仪表板
   visualize.py ──▶ matplotlib 四维图表 + 雷达图
-  rag_retriever.py ──▶ ChromaDB + BGE 向量化检索
+  rag_retriever.py ──▶ ChromaDB + BGE 向量化检索（15/15 Precision@1）
   rag_prompt_builder.py ──▶ 检索结果重组为 Prompt
-  rag_inference.py ──▶ RAG vs 无RAG 对比推理管道
-  └── 产出: baseline_report.md（RAG 优化前基准报告）
-  ──▶ 下一步: 全量 RAG 评测 + 前后对比报告
+  rag_eval.py ──▶ Base vs RAG 单模型对比（格式/步骤/正确性）
+  rag_benchmark.py ──▶ 三模型 RAG 全量评测（推理+代码）
+  rag_compare.py ──▶ Base vs RAG 三模型对比分析
+  rag_analysis.py ──▶ RAG 评测逐条分析
+  └── 产出: baseline_report.md + rag_compare_report.md + security_eval_report.md
 ```
 
 > 报告文档统一在 `scripts/reports/`，全局总结在 `docs/` 和 `data/reports/`。
@@ -76,6 +78,10 @@ llm-eval-project/
 │   ├── rag_retriever.py               # RAG 向量检索器（ChromaDB+BGE）
 │   ├── rag_prompt_builder.py          # RAG Prompt 重组器
 │   ├── rag_inference.py               # RAG 推理管道（检索→重组→模型）
+│   ├── rag_eval.py                    # RAG Base vs RAG 单模型评测
+│   ├── rag_benchmark.py               # RAG 三模型全量评测
+│   ├── rag_compare.py                 # Base vs RAG 三模型对比
+│   ├── rag_analysis.py                # RAG 结果逐条分析
 │   │
 │   └── reports/                       # 脚本对应的评测/分析报告
 │       ├── quickstart_report.md        # ↳ 环境验证报告
@@ -87,11 +93,17 @@ llm-eval-project/
 │       ├── full_benchmark_report.md          # ↳ v2 分难度评测报告
 │       ├── precheck_report.md                # ↳ 前置校验说明
 │       ├── visualize_report.md               # ↳ 可视化图表说明
+│       ├── baseline_report.md                # ↳ RAG 优化前基准报告
+│       ├── security_eval_report.md           # ↳ 安全对抗评测报告
 │       ├── extract_custom_badcases_report.md # ↳ Badcase 提取说明
 │       ├── label_custom_badcases_report.md   # ↳ 自动标注规则
 │       ├── badcase_report_report.md          # ↳ 分析报告说明
 │       ├── rag_retriever_report.md           # ↳ RAG 检索器验证
-│       └── rag_inference_report.md           # ↳ RAG vs 无RAG 对比
+│       ├── rag_inference_report.md           # ↳ RAG vs 无RAG 对比
+│       ├── rag_eval_report.md                # ↳ RAG 单模型评测
+│       ├── rag_benchmark_report.md           # ↳ RAG 三模型评测
+│       ├── rag_compare_report.md             # ↳ Base vs RAG 对比
+│       └── rag_analysis_report.md            # ↳ RAG 逐条分析
 │
 ├── data/
 │   ├── custom_testset/                # 自定义测试集

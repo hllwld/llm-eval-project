@@ -397,6 +397,8 @@ def save_qa_jsonl(data, filename, add_constraint=False):
                 'response': row.get('response', ''),
                 'difficulty': row.get('difficulty', 'medium'),
             }
+            if row.get('category'):
+                item['category'] = row['category']
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
 
 # ================================================================
