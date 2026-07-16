@@ -180,36 +180,52 @@ class RAGRetriever:
 
 # ========== 测试代码 ==========
 if __name__ == "__main__":
-    # 1. 初始化检索器
-    retriever = RAGRetriever()
+    import sys
+
+    # 1. 初始化推理 KB
+    retriever = RAGRetriever('reasoning_kb')
     print(f"KB status: {retriever.get_stats()}")
 
-    # 2. Load reasoning knowledge base
     knowledge_file = os.path.join(PROJECT_ROOT, 'data', 'knowledge_base', 'reasoning_steps.jsonl')
     if os.path.exists(knowledge_file):
         with open(knowledge_file, 'r', encoding='utf-8') as f:
             items = [json.loads(line) for line in f]
-        print(f"Loaded {len(items)} items from knowledge base")
+        print(f"Loaded {len(items)} reasoning items")
         retriever.add_knowledge(items)
     else:
         print(f"[WARN] Knowledge file not found: {knowledge_file}")
-    
+
+    # 2. 初始化代码 KB
+    code_retriever = RAGRetriever('code_kb')
+    print(f"Code KB status: {code_retriever.get_stats()}")
+
+    code_file = os.path.join(PROJECT_ROOT, 'data', 'knowledge_base', 'code_templates.jsonl')
+    if os.path.exists(code_file):
+        with open(code_file, 'r', encoding='utf-8') as f:
+            code_items = [json.loads(line) for line in f]
+        print(f"Loaded {len(code_items)} code templates")
+        code_retriever.add_knowledge(code_items)
+    else:
+        print(f"[WARN] Code knowledge file not found: {code_file}")
+
     # 3. 测试检索
     test_queries = [
-        "一个水箱进水3升出水2升，10分钟后有多少水？",
-        "甲乙相向而行，多久能相遇？",
-        "长方形的长比宽多3厘米，周长34厘米，求长和宽"
+        ("reasoning", "一个水箱进水3升出水2升，10分钟后有多少水？"),
+        ("reasoning", "甲乙相向而行，多久能相遇？"),
+        ("code", "写一个判断质数的函数"),
+        ("code", "实现二分查找算法"),
     ]
-    
+
     print("\n" + "=" * 60)
     print("Test Retrieval")
     print("=" * 60)
 
-    for query in test_queries:
-        print(f"\nQuery: {query}")
-        results = retriever.retrieve(query, top_k=2)
+    for kb_type, query in test_queries:
+        r = retriever if kb_type == "reasoning" else code_retriever
+        print(f"\n[{kb_type}] Query: {query}")
+        results = r.retrieve(query, top_k=2)
         if results:
-            for i, r in enumerate(results):
-                print(f"  [{i+1}] {r['id']}  dist={r['distance']:.4f}  steps={len(r['steps'].split(chr(10)))}")
+            for i, item in enumerate(results):
+                print(f"  [{i+1}] {item['question']}  dist={item['distance']:.4f}")
         else:
             print("  [WARN] No results found")

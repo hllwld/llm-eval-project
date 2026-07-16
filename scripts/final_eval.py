@@ -38,7 +38,8 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 class FinalEval:
     def __init__(self):
         self.models = self._load_models()
-        self.retriever = RAGRetriever()
+        self.reasoning_retriever = RAGRetriever('reasoning_kb')
+        self.code_retriever = RAGRetriever('code_kb')
         self.builder = RAGPromptBuilder(max_docs=2, include_answer=True)
         self.scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=True)
         self.judge = LLMJudge()
@@ -130,7 +131,12 @@ class FinalEval:
 
         for i, q in enumerate(questions):
             if use_rag and subset == 'reasoning':
-                docs = self.retriever.retrieve(q['question'], top_k=2)
+                docs = self.reasoning_retriever.retrieve(q['question'], top_k=2)
+                messages = self.builder.build_messages(q['question'], docs) if docs else [
+                    {'role': 'user', 'content': q['question']}
+                ]
+            elif use_rag and subset == 'code':
+                docs = self.code_retriever.retrieve(q['question'], top_k=2)
                 messages = self.builder.build_messages(q['question'], docs) if docs else [
                     {'role': 'user', 'content': q['question']}
                 ]
@@ -159,7 +165,9 @@ class FinalEval:
 
     def run(self):
         print(f'Models: {list(self.models.keys())}')
-        print(f'Testset: MCQ={len(self.mcq)}  Reasoning={len(self.reasoning)}  Code={len(self.code)}  Total={len(self.mcq)+len(self.reasoning)*2+len(self.code)}')
+        code_inferences = len(self.code)  # base only
+        code_rag_inferences = len(self.code)  # +rag
+        print(f'Testset: MCQ={len(self.mcq)}  Reasoning={len(self.reasoning)}x2  Code={len(self.code)}x2  Total={len(self.mcq)+len(self.reasoning)*2+len(self.code)*2}')
 
         all_results = {}
         for name, mc in self.models.items():
@@ -170,13 +178,15 @@ class FinalEval:
             mcq_result = self._eval_mcq(mc)
             reasoning_base = self._eval_qa(mc, self.reasoning, 'reasoning', use_rag=False)
             reasoning_rag = self._eval_qa(mc, self.reasoning, 'reasoning', use_rag=True)
-            code_result = self._eval_qa(mc, self.code, 'code', use_rag=False)
+            code_base = self._eval_qa(mc, self.code, 'code', use_rag=False)
+            code_rag = self._eval_qa(mc, self.code, 'code', use_rag=True)
 
             all_results[name] = {
                 'mcq': mcq_result,
                 'reasoning_base': reasoning_base,
                 'reasoning_rag': reasoning_rag,
-                'code': code_result,
+                'code_base': code_base,
+                'code_rag': code_rag,
             }
 
         self._save_report(all_results)
@@ -238,24 +248,25 @@ class FinalEval:
             '',
             '## 4. QA Code (ROUGE-L + Judge)',
             '',
-            '| Model | ROUGE-L | Judge Format | Judge Correct | Judge Overall |',
-            '| --- | --- | --- | --- | --- |',
+            '| Model | Base Rouge | RAG Rouge | Delta | Base Judge | RAG Judge |',
+            '| --- | --- | --- | --- | --- | --- |',
         ]
         for name, data in all_results.items():
-            rows = data['code']
-            r = qa_stats(rows, 'rouge_l')
-            f = qa_stats(rows, lambda r: r['judge'].get('format_score', 0))
-            c = qa_stats(rows, lambda r: r['judge'].get('correctness_score', 0))
-            o = qa_stats(rows, lambda r: r['judge'].get('overall_score', 0))
-            lines.append(f'| {name} | {r:.2%} | {f:.2f} | {c:.2f} | {o:.2f} |')
+            base_rows = data['code_base']
+            rag_rows = data['code_rag']
+            br = qa_stats(base_rows, 'rouge_l')
+            rr = qa_stats(rag_rows, 'rouge_l')
+            bj = qa_stats(base_rows, lambda r: r['judge'].get('overall_score', 0))
+            rj = qa_stats(rag_rows, lambda r: r['judge'].get('overall_score', 0))
+            lines.append(f'| {name} | {br:.2%} | {rr:.2%} | {rr-br:+.2%} | {bj:.2f} | {rj:.2f} |')
 
         lines += [
             '',
             '## 5. Conclusion',
             '',
-            '- MCQ: 所有模型基础知识题接近满分，区分度集中在 GLM-4-Plus 的知识短板',
+            '- MCQ: 所有模型基础知识题接近满分，区分度集中在 DeepSeek-V4-Pro 的知识短板',
             '- Reasoning: RAG 改善 LLM Judge 评分（格式+步骤），ROUGE-L 因结构变长而下降（已知误判）',
-            '- Code: 代码生成各模型接近，Qwen-Plus 略有优势',
+            '- Code: 新增代码知识库（10条模板），RAG 对代码格式和规范性提升待验证',
         ]
 
         report = '\n'.join(lines)
@@ -280,10 +291,15 @@ class FinalEval:
                     'step': qa_stats(data['reasoning_rag'], lambda r: r['judge'].get('step_score', 0)),
                     'overall': qa_stats(data['reasoning_rag'], lambda r: r['judge'].get('overall_score', 0)),
                 },
-                'code_rouge': qa_stats(data['code'], 'rouge_l'),
-                'code_judge': {
-                    'format': qa_stats(data['code'], lambda r: r['judge'].get('format_score', 0)),
-                    'overall': qa_stats(data['code'], lambda r: r['judge'].get('overall_score', 0)),
+                'code_base_rouge': qa_stats(data['code_base'], 'rouge_l'),
+                'code_rag_rouge': qa_stats(data['code_rag'], 'rouge_l'),
+                'code_base_judge': {
+                    'format': qa_stats(data['code_base'], lambda r: r['judge'].get('format_score', 0)),
+                    'overall': qa_stats(data['code_base'], lambda r: r['judge'].get('overall_score', 0)),
+                },
+                'code_rag_judge': {
+                    'format': qa_stats(data['code_rag'], lambda r: r['judge'].get('format_score', 0)),
+                    'overall': qa_stats(data['code_rag'], lambda r: r['judge'].get('overall_score', 0)),
                 },
             }
         with open(json_path, 'w', encoding='utf-8') as f:
