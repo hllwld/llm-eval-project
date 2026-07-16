@@ -64,7 +64,15 @@
         .kpi-item { flex: 0 0 calc(50% - 4px); padding: 10px 6px; }
         .kpi-item .num { font-size: 20px; }
     }
+    .chart-wrap { position: relative; width: 100%; max-height: 350px; margin: 12px 0; }
+    .chart-wrap canvas { width: 100% !important; }
+    .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 768px) {
+        .chart-grid { grid-template-columns: 1fr; }
+        .chart-wrap { max-height: 280px; }
+    }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -98,6 +106,7 @@
         <p style="margin-top:12px;font-size:12px;color:#888;">
             样本数：每数据集 20 条 | 评测时间：2026-07-07 | EvalScope v1.8.1
         </p>
+        <div class="chart-wrap"><canvas id="chart_standard"></canvas></div>
     </div>
 
     <!-- Final Eval: MCQ -->
@@ -112,6 +121,7 @@
         <p style="margin-top:8px;font-size:12px;color:#888;">
             全 5 选项 + 陷阱项 | 评测时间：2026-07-16
         </p>
+        <div class="chart-wrap"><canvas id="chart_mcq"></canvas></div>
     </div>
 
     <!-- Final Eval: Reasoning Base vs RAG -->
@@ -124,6 +134,10 @@
         </table>
         </div>
         <p style="margin-top:6px;font-size:12px;color:#888;">Rouge 下降 = RAG 输出结构化变长导致，LLM Judge 反证质量提升</p>
+        <div class="chart-grid">
+            <div class="chart-wrap"><canvas id="chart_reasoning_rouge"></canvas></div>
+            <div class="chart-wrap"><canvas id="chart_reasoning_judge"></canvas></div>
+        </div>
     </div>
 
     <!-- Final Eval: Reasoning LLM Judge -->
@@ -147,6 +161,7 @@
             <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">40.26%</td><td style="text-align:center;">2.40</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">3.70</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">40.31%</td><td style="text-align:center;">2.20</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">3.60</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">24.14%</td><td style="text-align:center;">1.60</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">3.40</td></tr><tr><td><strong>GLM-4-Plus</strong></td><td style="text-align:center;">45.80%</td><td style="text-align:center;">2.80</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">3.80</td></tr></tbody>
         </table>
         </div>
+        <div class="chart-wrap"><canvas id="chart_code"></canvas></div>
     </div>
 
     <!-- 安全对抗 -->
@@ -159,6 +174,7 @@
         </table>
         </div>
         <p style="margin-top:6px;font-size:12px;color:#888;">安全知识 MCQ 全员满分，对抗测试暴露真实差距</p>
+        <div class="chart-wrap"><canvas id="chart_security"></canvas></div>
     </div>
 
     <div class="grid">
@@ -636,8 +652,82 @@ S = 3.14 \times 7^2...</span>
 </div>
 
 <div class="footer">
-    生成时间：2026-07-10 | 项目：llm-eval-project v3 | 框架：EvalScope v1.8.1
+    生成时间：2026-07-16 | 项目：llm-eval-project | 框架：EvalScope v1.8.1 + Chart.js
 </div>
+
+<script>
+const COLORS = ['#1a237e','#1976d2','#f57c00','#388e3c'];
+const CHART_DEFAULTS = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } } },
+};
+
+function makeBar(canvasId, config, yMax) {
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    new Chart(ctx, {
+        type: 'bar',
+        data: config,
+        options: {
+            ...CHART_DEFAULTS,
+            scales: {
+                y: { beginAtZero: true, max: yMax || undefined, grid: { color: '#eee' } },
+            },
+        },
+    });
+}
+
+function makeStackedBar(canvasId, config) {
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    new Chart(ctx, {
+        type: 'bar',
+        data: config,
+        options: {
+            ...CHART_DEFAULTS,
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, max: 8, grid: { color: '#eee' }, title: { display: true, text: '题目数' } },
+            },
+        },
+    });
+}
+
+function makeDualAxis(canvasId, config) {
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    new Chart(ctx, {
+        type: 'bar',
+        data: config,
+        options: {
+            ...CHART_DEFAULTS,
+            scales: {
+                y: { beginAtZero: true, position: 'left', grid: { color: '#eee' }, title: { display: true, text: 'ROUGE-L (%)' } },
+                y1: { beginAtZero: true, position: 'right', max: 5, grid: { display: false }, title: { display: true, text: 'Judge (1-5)' } },
+            },
+        },
+    });
+}
+
+// Chart 1: Standard datasets
+makeBar('chart_standard', {"labels": ["gsm8k", "arc", "hellaswag"], "datasets": [{"label": "DeepSeek-V3", "data": [1.0, 0.95, 0.75], "backgroundColor": "rgba(26,35,126,0.75)", "borderColor": "rgba(26,35,126,0.75)", "borderWidth": 0, "borderRadius": 4}, {"label": "Qwen-Plus", "data": [1.0, 0.95, 0.85], "backgroundColor": "rgba(33,150,243,0.75)", "borderColor": "rgba(33,150,243,0.75)", "borderWidth": 0, "borderRadius": 4}, {"label": "GLM-4-Plus", "data": [0.95, 0.9, 0.45], "backgroundColor": "rgba(255,152,0,0.75)", "borderColor": "rgba(255,152,0,0.75)", "borderWidth": 0, "borderRadius": 4}]}, 1.05);
+
+// Chart 2: MCQ Accuracy
+makeBar('chart_mcq', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-4-Plus"], "datasets": [{"label": "Knowledge", "data": [95.0, 90.0, 100.0, 100.0], "backgroundColor": "rgba(26,35,126,0.7)", "borderRadius": 4}, {"label": "Security", "data": [100.0, 100.0, 100.0, 100.0], "backgroundColor": "rgba(76,175,80,0.7)", "borderRadius": 4}]}, 105);
+
+// Chart 3: Reasoning ROUGE Base vs RAG
+makeBar('chart_reasoning_rouge', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-4-Plus"], "datasets": [{"label": "Base", "data": [54.257333333333335, 53.832, 32.042, 56.03666666666667], "backgroundColor": "rgba(244,67,54,0.7)", "borderRadius": 4}, {"label": "RAG", "data": [39.39666666666667, 39.18533333333333, 34.19266666666667, 41.026666666666664], "backgroundColor": "rgba(76,175,80,0.7)", "borderRadius": 4}]}, 65);
+
+// Chart 4: Reasoning Judge Base vs RAG
+makeBar('chart_reasoning_judge', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-4-Plus"], "datasets": [{"label": "Base Overall", "data": [4.249333333333333, 4.8, 5.0, 4.786666666666666], "backgroundColor": "rgba(244,67,54,0.7)", "borderRadius": 4}, {"label": "RAG Overall", "data": [5.0, 5.0, 5.0, 5.0], "backgroundColor": "rgba(76,175,80,0.7)", "borderRadius": 4}]}, 5.5);
+
+// Chart 5: Code (dual axis: ROUGE + Judge)
+makeDualAxis('chart_code', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-4-Plus"], "datasets": [{"label": "ROUGE-L (%)", "data": [40.26, 40.315, 24.141, 45.80200000000001], "backgroundColor": "rgba(26,35,126,0.7)", "borderRadius": 4, "yAxisID": "y"}, {"label": "Judge Overall", "data": [3.7, 3.6, 3.4, 3.8], "backgroundColor": "rgba(255,152,0,0.7)", "borderRadius": 4, "yAxisID": "y1"}]});
+
+// Chart 6: Security stacked bar
+makeStackedBar('chart_security', {"labels": ["DeepSeek-V3", "Qwen-Plus", "GLM-4-Plus"], "datasets": [{"label": "PASS", "data": [4, 4, 2], "backgroundColor": "rgba(76,175,80,0.8)"}, {"label": "WARN", "data": [3, 3, 1], "backgroundColor": "rgba(255,152,0,0.8)"}, {"label": "FAIL", "data": [1, 1, 5], "backgroundColor": "rgba(244,67,54,0.8)"}]});
+</script>
 
 </body>
 </html>
