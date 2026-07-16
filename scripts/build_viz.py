@@ -272,6 +272,81 @@ _sec_models = {'DeepSeek-V3': (4,3,1,'50%'), 'Qwen-Plus': (4,3,1,'50%'), 'GLM-4-
 for m, (p,w,f,r) in _sec_models.items():
     final_security_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{p}</td><td style="text-align:center;">{w}</td><td style="text-align:center;color:#F44336;font-weight:bold;">{f}</td><td style="text-align:center;font-weight:bold;">{r}</td></tr>'
 
+# ── Chart Data JSON ──
+import json as _json
+
+def _js(obj):
+    """Serialize Python object to JSON for embedding in JS"""
+    return _json.dumps(obj, ensure_ascii=False)
+
+# Chart 1: Standard datasets grouped bar
+_std_labels = ['gsm8k', 'arc', 'hellaswag']
+_chart_std = {
+    'labels': _std_labels,
+    'datasets': [
+        {'label': m, 'data': [standard_scores[m][d] for d in _std_labels],
+         'backgroundColor': c, 'borderColor': c, 'borderWidth': 0, 'borderRadius': 4}
+        for m, c in zip(['DeepSeek-V3', 'Qwen-Plus', 'GLM-4-Plus'],
+                        ['rgba(26,35,126,0.75)', 'rgba(33,150,243,0.75)', 'rgba(255,152,0,0.75)'])
+    ]
+}
+
+# Chart 2: MCQ grouped bar
+_mcq_models = FEV.get('models', []) if FEV else []
+_chart_mcq = {
+    'labels': _mcq_models,
+    'datasets': [
+        {'label': 'Knowledge', 'data': [FEV[m]['mcq']['knowledge_acc']*100 for m in _mcq_models] if FEV else [],
+         'backgroundColor': 'rgba(26,35,126,0.7)', 'borderRadius': 4},
+        {'label': 'Security', 'data': [FEV[m]['mcq']['security_acc']*100 for m in _mcq_models] if FEV else [],
+         'backgroundColor': 'rgba(76,175,80,0.7)', 'borderRadius': 4},
+    ]
+}
+
+# Chart 3: Reasoning ROUGE Base vs RAG
+_chart_reasoning_rouge = {
+    'labels': _mcq_models,
+    'datasets': [
+        {'label': 'Base', 'data': [FEV[m]['reasoning_base_rouge']*100 for m in _mcq_models] if FEV else [],
+         'backgroundColor': 'rgba(244,67,54,0.7)', 'borderRadius': 4},
+        {'label': 'RAG', 'data': [FEV[m]['reasoning_rag_rouge']*100 for m in _mcq_models] if FEV else [],
+         'backgroundColor': 'rgba(76,175,80,0.7)', 'borderRadius': 4},
+    ]
+}
+
+# Chart 4: Reasoning Judge Base vs RAG (Overall)
+_chart_reasoning_judge = {
+    'labels': _mcq_models,
+    'datasets': [
+        {'label': 'Base Overall', 'data': [FEV[m]['reasoning_base_judge']['overall'] for m in _mcq_models] if FEV else [],
+         'backgroundColor': 'rgba(244,67,54,0.7)', 'borderRadius': 4},
+        {'label': 'RAG Overall', 'data': [FEV[m]['reasoning_rag_judge']['overall'] for m in _mcq_models] if FEV else [],
+         'backgroundColor': 'rgba(76,175,80,0.7)', 'borderRadius': 4},
+    ]
+}
+
+# Chart 5: Code ROUGE + Judge
+_chart_code = {
+    'labels': _mcq_models,
+    'datasets': [
+        {'label': 'ROUGE-L (%)', 'data': [FEV[m]['code_rouge']*100 for m in _mcq_models] if FEV else [],
+         'backgroundColor': 'rgba(26,35,126,0.7)', 'borderRadius': 4, 'yAxisID': 'y'},
+        {'label': 'Judge Overall', 'data': [FEV[m]['code_judge']['overall'] for m in _mcq_models] if FEV else [],
+         'backgroundColor': 'rgba(255,152,0,0.7)', 'borderRadius': 4, 'yAxisID': 'y1'},
+    ]
+}
+
+# Chart 6: Security adversarial stacked bar
+_sec_data = [
+    {'label': 'PASS', 'data': [4, 4, 2], 'backgroundColor': 'rgba(76,175,80,0.8)'},
+    {'label': 'WARN', 'data': [3, 3, 1], 'backgroundColor': 'rgba(255,152,0,0.8)'},
+    {'label': 'FAIL', 'data': [1, 1, 5], 'backgroundColor': 'rgba(244,67,54,0.8)'},
+]
+_chart_security = {
+    'labels': ['DeepSeek-V3', 'Qwen-Plus', 'GLM-4-Plus'],
+    'datasets': _sec_data,
+}
+
 # ── HTML ──
 html = f'''<!DOCTYPE html>
 <html lang="zh-CN">
@@ -339,7 +414,15 @@ html = f'''<!DOCTYPE html>
         .kpi-item {{ flex: 0 0 calc(50% - 4px); padding: 10px 6px; }}
         .kpi-item .num {{ font-size: 20px; }}
     }}
+    .chart-wrap {{ position: relative; width: 100%; max-height: 350px; margin: 12px 0; }}
+    .chart-wrap canvas {{ width: 100% !important; }}
+    .chart-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }}
+    @media (max-width: 768px) {{
+        .chart-grid {{ grid-template-columns: 1fr; }}
+        .chart-wrap {{ max-height: 280px; }}
+    }}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -373,6 +456,7 @@ html = f'''<!DOCTYPE html>
         <p style="margin-top:12px;font-size:12px;color:#888;">
             样本数：每数据集 20 条 | 评测时间：2026-07-07 | EvalScope v1.8.1
         </p>
+        <div class="chart-wrap"><canvas id="chart_standard"></canvas></div>
     </div>
 
     <!-- Final Eval: MCQ -->
@@ -387,6 +471,7 @@ html = f'''<!DOCTYPE html>
         <p style="margin-top:8px;font-size:12px;color:#888;">
             全 5 选项 + 陷阱项 | 评测时间：2026-07-16
         </p>
+        <div class="chart-wrap"><canvas id="chart_mcq"></canvas></div>
     </div>
 
     <!-- Final Eval: Reasoning Base vs RAG -->
@@ -399,6 +484,10 @@ html = f'''<!DOCTYPE html>
         </table>
         </div>
         <p style="margin-top:6px;font-size:12px;color:#888;">Rouge 下降 = RAG 输出结构化变长导致，LLM Judge 反证质量提升</p>
+        <div class="chart-grid">
+            <div class="chart-wrap"><canvas id="chart_reasoning_rouge"></canvas></div>
+            <div class="chart-wrap"><canvas id="chart_reasoning_judge"></canvas></div>
+        </div>
     </div>
 
     <!-- Final Eval: Reasoning LLM Judge -->
@@ -422,6 +511,7 @@ html = f'''<!DOCTYPE html>
             <tbody>{final_code_rows}</tbody>
         </table>
         </div>
+        <div class="chart-wrap"><canvas id="chart_code"></canvas></div>
     </div>
 
     <!-- 安全对抗 -->
@@ -434,6 +524,7 @@ html = f'''<!DOCTYPE html>
         </table>
         </div>
         <p style="margin-top:6px;font-size:12px;color:#888;">安全知识 MCQ 全员满分，对抗测试暴露真实差距</p>
+        <div class="chart-wrap"><canvas id="chart_security"></canvas></div>
     </div>
 
     <div class="grid">
@@ -519,8 +610,82 @@ html = f'''<!DOCTYPE html>
 </div>
 
 <div class="footer">
-    生成时间：2026-07-10 | 项目：llm-eval-project v3 | 框架：EvalScope v1.8.1
+    生成时间：2026-07-16 | 项目：llm-eval-project | 框架：EvalScope v1.8.1 + Chart.js
 </div>
+
+<script>
+const COLORS = ['#1a237e','#1976d2','#f57c00','#388e3c'];
+const CHART_DEFAULTS = {{
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {{ legend: {{ position: 'bottom', labels: {{ padding: 20, usePointStyle: true }} }} }},
+}};
+
+function makeBar(canvasId, config, yMax) {{
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    new Chart(ctx, {{
+        type: 'bar',
+        data: config,
+        options: {{
+            ...CHART_DEFAULTS,
+            scales: {{
+                y: {{ beginAtZero: true, max: yMax || undefined, grid: {{ color: '#eee' }} }},
+            }},
+        }},
+    }});
+}}
+
+function makeStackedBar(canvasId, config) {{
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    new Chart(ctx, {{
+        type: 'bar',
+        data: config,
+        options: {{
+            ...CHART_DEFAULTS,
+            scales: {{
+                x: {{ stacked: true }},
+                y: {{ stacked: true, max: 8, grid: {{ color: '#eee' }}, title: {{ display: true, text: '题目数' }} }},
+            }},
+        }},
+    }});
+}}
+
+function makeDualAxis(canvasId, config) {{
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    new Chart(ctx, {{
+        type: 'bar',
+        data: config,
+        options: {{
+            ...CHART_DEFAULTS,
+            scales: {{
+                y: {{ beginAtZero: true, position: 'left', grid: {{ color: '#eee' }}, title: {{ display: true, text: 'ROUGE-L (%)' }} }},
+                y1: {{ beginAtZero: true, position: 'right', max: 5, grid: {{ display: false }}, title: {{ display: true, text: 'Judge (1-5)' }} }},
+            }},
+        }},
+    }});
+}}
+
+// Chart 1: Standard datasets
+makeBar('chart_standard', {_js(_chart_std)}, 1.05);
+
+// Chart 2: MCQ Accuracy
+makeBar('chart_mcq', {_js(_chart_mcq)}, 105);
+
+// Chart 3: Reasoning ROUGE Base vs RAG
+makeBar('chart_reasoning_rouge', {_js(_chart_reasoning_rouge)}, 65);
+
+// Chart 4: Reasoning Judge Base vs RAG
+makeBar('chart_reasoning_judge', {_js(_chart_reasoning_judge)}, 5.5);
+
+// Chart 5: Code (dual axis: ROUGE + Judge)
+makeDualAxis('chart_code', {_js(_chart_code)});
+
+// Chart 6: Security stacked bar
+makeStackedBar('chart_security', {_js(_chart_security)});
+</script>
 
 </body>
 </html>'''
