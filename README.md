@@ -41,7 +41,9 @@
   rag_benchmark.py ──▶ 三模型 RAG 全量评测（推理+代码）
   rag_compare.py ──▶ Base vs RAG 三模型对比分析
   rag_analysis.py ──▶ RAG 评测逐条分析
-  └── 产出: baseline_report.md + rag_compare_report.md + security_eval_report.md
+  llm_as_judge.py ──▶ LLM-as-Judge 独立评分（1-5分制）
+  final_eval.py ──▶ 最终统一评测（全53题，MCQ+QA推理+代码，双指标）
+  └── 产出: final_eval_report.md + baseline_report.md + rag_compare_report.md
 ```
 
 > 报告文档统一在 `scripts/reports/`，全局总结在 `docs/` 和 `data/reports/`。
@@ -82,8 +84,11 @@ llm-eval-project/
 │   ├── rag_benchmark.py               # RAG 三模型全量评测
 │   ├── rag_compare.py                 # Base vs RAG 三模型对比
 │   ├── rag_analysis.py                # RAG 结果逐条分析
+│   ├── llm_as_judge.py                # LLM-as-Judge 独立评分
+│   ├── final_eval.py                  # 最终统一评测（全53题双指标）
 │   │
-│   └── reports/                       # 脚本对应的评测/分析报告
+│   └── reports/
+│       ├── final_eval_report.md         # ↳ 最终评测报告                       # 脚本对应的评测/分析报告
 │       ├── quickstart_report.md        # ↳ 环境验证报告
 │       ├── yaml_eval_report.md         # ↳ YAML 配置评测报告
 │       ├── multi_model_benchmark_report.md   # ↳ 多模型对比报告
@@ -141,32 +146,28 @@ llm-eval-project/
 | Qwen-Plus | 100.00% | 95.00% | 85.00% |
 | GLM-4-Plus | 95.00% | 90.00% | 45.00% |
 
-### 自定义测试集 (MCQ 选择题)
+### 自建测试集 v4 总分（Accuracy + Rouge-L-R）
 
-| 模型 | 知识 (20题) | 安全 (5题) | 总分 |
-| --- | --- | --- | --- |
-| DeepSeek-V3 | 100.00% | 100.00% | **100.00%** |
-| Qwen-Plus | 100.00% | 100.00% | **100.00%** |
-| Qwen2.5-VL | 100.00% | 100.00% | **100.00%** |
-| GLM-4-Plus | 95.00% | 100.00% | **96.00%** |
-
-### 自定义测试集 (QA 问答题, Rouge-L-R)
-
-| 模型 | 代码 (10题) | 推理 (15题) | 总分 |
-| --- | --- | --- | --- |
-| GLM-4-Plus | 53.69% | 66.46% | **61.35%** |
-| DeepSeek-V3 | 54.44% | 62.21% | **59.10%** |
-| Qwen-Plus | 56.53% | 59.27% | **58.17%** |
-| Qwen2.5-VL | 54.76% | 57.62% | **56.48%** |
-
-### v2 测试集（难度标签 + 输出约束）
-
-| 模型 | 知识 | 安全 | 推理 | 代码 | **综合** |
+| 模型 | 知识 (20) | 安全 (8) | 推理 (15) | 代码 (10) | 复杂任务分* |
 | --- | --- | --- | --- | --- | --- |
-| DeepSeek-V3 | 100% | 100% | 53.88% | 58.10% | **77.99%** |
-| Qwen2.5-VL | 100% | 100% | 40.58% | 56.11% | **74.17%** |
-| GLM-4-Plus | 95% | 100% | 43.51% | 53.41% | **72.98%** |
-| Qwen-Plus | 100% | 100% | 31.27% | 57.18% | **72.11%** |
+| DeepSeek-V4-Pro | — | — | **52.91%** | — | — |
+| DeepSeek-V3 (V4-Flash) | 95% | 100% | 49.68% | 55.25% | **52.47%** |
+| Qwen-Plus | 95% | 100% | 31.43% | 57.58% | 44.51% |
+| GLM-4-Plus | 90% | 100% | 35.00% | 53.13% | 44.07% |
+
+> *复杂任务分 = (推理 + 代码) / 2。知识/安全为基础门槛分（≥80%通过），不参与排名。
+> V4-Pro 仅评测推理子集做快速对比，完整评测待后续补全。
+
+### DeepSeek V4-Flash vs V4-Pro 推理对比（RAG 增强）
+
+| 指标 | V4-Flash Base | V4-Flash RAG | V4-Pro Base | V4-Pro RAG |
+| --- | --- | --- | --- | --- |
+| ROUGE-L | 49.68% | 39.05% | 52.91% | 39.93% |
+| LLM Judge Format | 4.60 | 5.00 | 4.73 | 5.00 |
+| LLM Judge Step | 4.60 | 5.00 | 4.67 | 5.00 |
+| LLM Judge Overall | 4.73 | 5.00 | 4.76 | 5.00 |
+
+> V4-Pro Base 模式下 Rouge 略高于 V4-Flash（+3pp），Judge 评分接近。RAG 增强后两版均达满分。
 
 > 详细分析见 `scripts/reports/` 下各 `*_report.md` 和 `data/reports/`
 

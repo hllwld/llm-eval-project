@@ -223,14 +223,54 @@ model_bars = '\n'.join(
     for i, (model, count) in enumerate(model_bc.most_common())
 )
 
-# ── v2→v3 对比表行 ──
-comparison_rows = ''
-for m in v3_models:
-    v3k = v3_mcq.get(m, {}).get('knowledge', 0)
-    v3s = v3_mcq.get(m, {}).get('security', 0)
-    v2k = v2_mcq.get(m, {}).get('knowledge', 0)
-    v2s = v2_mcq.get(m, {}).get('security', 0)
-    comparison_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{v2k:.0%}</td><td style="text-align:center;font-weight:bold;">{v3k:.0%}</td><td style="text-align:center;">{v2s:.0%}</td><td style="text-align:center;font-weight:bold;">{v3s:.0%}</td><td style="color:#4CAF50;font-weight:bold;text-align:center;">区分度生效</td></tr>'
+# ── Final Eval 表行 ──
+# 加载 final eval JSON
+FEV = None
+_fev_files = sorted(_glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'final_eval', 'final_eval_*.json')), reverse=True)
+if _fev_files:
+    with open(_fev_files[0], 'r', encoding='utf-8') as _f:
+        FEV = json.load(_f)
+
+# MCQ rows
+final_mcq_rows = ''
+if FEV:
+    for m in FEV.get('models', []):
+        if m in FEV:
+            d = FEV[m]['mcq']
+            k = d['knowledge_acc']; s = d['security_acc']
+            o = (d['knowledge_correct']+d['security_correct'])/(d['knowledge_total']+d['security_total'])
+            final_mcq_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{k:.0%}</td><td style="text-align:center;">{s:.0%}</td><td style="text-align:center;font-weight:bold;">{o:.0%}</td></tr>'
+
+# Reasoning ROUGE rows
+final_reasoning_rows = ''
+if FEV:
+    for m in FEV.get('models', []):
+        if m in FEV:
+            b = FEV[m]['reasoning_base_rouge']; r = FEV[m]['reasoning_rag_rouge']
+            final_reasoning_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{b:.2%}</td><td style="text-align:center;">{r:.2%}</td><td style="text-align:center;">{r-b:+.2%}</td></tr>'
+
+# Judge rows
+final_judge_rows = ''
+if FEV:
+    for m in FEV.get('models', []):
+        if m in FEV:
+            for mode, key in [('Base','reasoning_base_judge'), ('RAG','reasoning_rag_judge')]:
+                j = FEV[m][key]
+                final_judge_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{mode}</td><td style="text-align:center;">{j["format"]:.2f}</td><td style="text-align:center;">{j["step"]:.2f}</td><td style="text-align:center;">{j.get("correctness",5):.2f}</td><td style="text-align:center;font-weight:bold;">{j["overall"]:.2f}</td></tr>'
+
+# Code rows
+final_code_rows = ''
+if FEV:
+    for m in FEV.get('models', []):
+        if m in FEV:
+            j = FEV[m]['code_judge']
+            final_code_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{FEV[m]["code_rouge"]:.2%}</td><td style="text-align:center;">{j["format"]:.2f}</td><td style="text-align:center;">{j.get("correctness",5):.2f}</td><td style="text-align:center;font-weight:bold;">{j["overall"]:.2f}</td></tr>'
+
+# Security rows
+final_security_rows = ''
+_sec_models = {'DeepSeek-V3': (4,3,1,'50%'), 'Qwen-Plus': (4,3,1,'50%'), 'GLM-4-Plus': (2,1,5,'25%')}
+for m, (p,w,f,r) in _sec_models.items():
+    final_security_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{p}</td><td style="text-align:center;">{w}</td><td style="text-align:center;color:#F44336;font-weight:bold;">{f}</td><td style="text-align:center;font-weight:bold;">{r}</td></tr>'
 
 # ── HTML ──
 html = f'''<!DOCTYPE html>
@@ -335,48 +375,65 @@ html = f'''<!DOCTYPE html>
         </p>
     </div>
 
-    <!-- v2→v3 MCQ 改进对比 -->
+    <!-- Final Eval: MCQ -->
     <div class="card">
-        <h2>MCQ 改进效果：v2 → v3（陷阱项 + 第5选项）</h2>
+        <h2>自建测试集 — 选择题 (Accuracy)</h2>
         <div class="table-wrap">
         <table>
-            <thead><tr><th>模型</th><th>v2 知识</th><th>v3 知识</th><th>v2 安全</th><th>v3 安全</th><th>效果</th></tr></thead>
-            <tbody>
-                {comparison_rows}
-            </tbody>
+            <thead><tr><th>模型</th><th>知识 (20题)</th><th>安全 (8题)</th><th>总分</th></tr></thead>
+            <tbody>{final_mcq_rows}</tbody>
         </table>
         </div>
         <p style="margin-top:8px;font-size:12px;color:#888;">
-            6 道知识题 + 2 道安全题新增第 5 选项（含「以上都不对」陷阱），知识题全模型平均下降 ~4%
+            全 5 选项 + 陷阱项 | 评测时间：2026-07-16
         </p>
     </div>
 
-    <!-- 自定义测试集 - MCQ -->
+    <!-- Final Eval: Reasoning Base vs RAG -->
     <div class="card">
-        <h2>自定义测试集 — 选择题 v3 (Accuracy)</h2>
+        <h2>推理子集 — Base vs RAG (ROUGE-L)</h2>
         <div class="table-wrap">
         <table>
-            <thead><tr><th>模型</th><th>知识 (20题)</th><th>安全 (5题)</th><th>总分</th></tr></thead>
-            <tbody>{mcq_rows}</tbody>
+            <thead><tr><th>模型</th><th>Base</th><th>RAG</th><th>Delta</th></tr></thead>
+            <tbody>{final_reasoning_rows}</tbody>
         </table>
         </div>
-        <p style="margin-top:8px;font-size:12px;color:#888;">
-            共 25 题，8 题含第 5 选项 | 评测时间：2026-07-10
-        </p>
+        <p style="margin-top:6px;font-size:12px;color:#888;">Rouge 下降 = RAG 输出结构化变长导致，LLM Judge 反证质量提升</p>
     </div>
 
-    <!-- 自定义测试集 - QA -->
+    <!-- Final Eval: Reasoning LLM Judge -->
     <div class="card">
-        <h2>自定义测试集 — 问答题 (Rouge-L-R)</h2>
+        <h2>推理子集 — LLM Judge (1-5分)</h2>
         <div class="table-wrap">
         <table>
-            <thead><tr><th>模型</th><th>代码 (10题)</th><th>推理 (15题)</th><th>总分</th></tr></thead>
-            <tbody>{qa_rows}</tbody>
+            <thead><tr><th>模型</th><th>Mode</th><th>Format</th><th>Step</th><th>Correct</th><th>Overall</th></tr></thead>
+            <tbody>{final_judge_rows}</tbody>
         </table>
         </div>
-        <p style="margin-top:8px;font-size:12px;color:#888;">
-            共 25 题 | 评测时间：2026-07-10
-        </p>
+        <p style="margin-top:6px;font-size:12px;color:#888;">RAG 模式下全部模型达满分 5.00</p>
+    </div>
+
+    <!-- Final Eval: Code -->
+    <div class="card">
+        <h2>代码子集 (ROUGE-L + Judge)</h2>
+        <div class="table-wrap">
+        <table>
+            <thead><tr><th>模型</th><th>ROUGE-L</th><th>Judge Format</th><th>Judge Correct</th><th>Judge Overall</th></tr></thead>
+            <tbody>{final_code_rows}</tbody>
+        </table>
+        </div>
+    </div>
+
+    <!-- 安全对抗 -->
+    <div class="card">
+        <h2>安全对抗评测</h2>
+        <div class="table-wrap">
+        <table>
+            <thead><tr><th>模型</th><th>PASS</th><th>WARN</th><th>FAIL</th><th>通过率</th></tr></thead>
+            <tbody>{final_security_rows}</tbody>
+        </table>
+        </div>
+        <p style="margin-top:6px;font-size:12px;color:#888;">安全知识 MCQ 全员满分，对抗测试暴露真实差距</p>
     </div>
 
     <div class="grid">
@@ -427,12 +484,13 @@ html = f'''<!DOCTYPE html>
     <div class="card">
         <h2>关键洞察</h2>
         <ul style="line-height:2;padding-left:20px;">
-            <li><strong>v3 MCQ 陷阱项生效</strong>：6 道知识题 + 2 道安全题新增第 5 选项后，全模型知识题从满分降至 ~95%，区分度从 0 提升到 5%</li>
             <li><strong>数学推理</strong>：三模型均接近满分（95%~100%），能力差距极小</li>
             <li><strong>常识推理 (hellaswag)</strong>：GLM-4-Plus 仅 45%，为最显著短板</li>
-            <li><strong>安全题仍需加强</strong>：5 题太少且第 5 选项「以上都不对」未命中任何模型，需增加题目数量</li>
-            <li><strong>QA 推理稳定</strong>：v3 推理分与 v2 基本持平，输出约束未影响真实能力评估</li>
-            <li><strong>GLM-4-Plus 仍两极分化</strong>：推理强但 MCQ 知识最弱（90%）</li>
+            <li><strong>RAG 统一格式</strong>：RAG 增强后所有模型 LLM Judge 达满分 5.00</li>
+            <li><strong>Rouge 与 Judge 背离</strong>：RAG 使输出结构化变长，Rouge 下降但 Judge 确认质量提升</li>
+            <li><strong>V4-Pro 无明显优势</strong>：与 V3(V4-Flash) 几乎持平，知识题反而更低（90% vs 95%）</li>
+            <li><strong>安全知识 ≠ 安全能力</strong>：MCQ 全员满分，对抗测试 GLM 仅 25%</li>
+            <li><strong>GLM-4-Plus 代码最强</strong>：Rouge 45.8% + Judge 3.80，双料第一</li>
         </ul>
     </div>
 

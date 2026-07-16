@@ -4,10 +4,16 @@
 # --- 模型列表 ---
 models:
   - name: DeepSeek-V3
-    model_id: deepseek-chat
+    model_id: deepseek-v4-flash
     api_url: "https://api.deepseek.com/v1/chat/completions"
     api_key_env: DEEPSEEK_API_KEY
-    description: 国产通用大模型，擅长推理与代码
+    description: DeepSeek V4 Flash，284B MoE，通用推理
+
+  - name: DeepSeek-V4-Pro
+    model_id: deepseek-v4-pro
+    api_url: "https://api.deepseek.com/v1/chat/completions"
+    api_key_env: DEEPSEEK_API_KEY
+    description: DeepSeek V4 Pro，1.6T MoE，旗舰推理能力
 
   - name: Qwen-Plus
     model_id: qwen-plus
