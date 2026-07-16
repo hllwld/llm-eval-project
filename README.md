@@ -197,17 +197,31 @@ python scripts/extract_custom_badcases.py
 python scripts/label_custom_badcases.py
 python scripts/badcase_report.py
 
-# 旧版脚本（标准数据集）
+**旧版脚本（标准数据集）**
 python scripts/quickstart.py
 python scripts/multi_model_benchmark.py
 ```
 
+### 新版评测管线（RAG + LLM Judge）
+
+```bash
+# 0. 初始化 RAG 知识库（首次运行）
+python scripts/rag_retriever.py          # 建 reasoning_kb + code_kb
+
+# 1. 运行最终统一评测（全53题，Base+RAG双模，LLM Judge评分）
+python scripts/final_eval.py             # 输出: scripts/reports/final_eval_report.md
+
+# 2. 生成可视化仪表板
+python scripts/build_viz.py              # 输出: dashboard.html
+```
+
 ## 技术栈
 
-- **评测框架**：EvalScope v1.8.1
+- **评测框架**：EvalScope v1.8.1 + Python final_eval.py
 - **评测后端**：Native (OpenAI API 兼容)
+- **向量数据库**：ChromaDB + BAAI/bge-small-zh-v1.5
 - **模型 API**：DeepSeek / 阿里云百炼 (Qwen) / 智谱 GLM
-- **评估指标**：Accuracy (MCQ) / BLEU + Rouge (QA)
+- **评估指标**：Accuracy (MCQ) / ROUGE-L + LLM Judge 1-5 (QA)
 
 ---
 
