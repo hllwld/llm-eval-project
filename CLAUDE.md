@@ -2,91 +2,89 @@
 
 ## 项目概述
 
-大模型评测与 RAG 优化实战项目。对 DeepSeek-V3(V4-Flash)/V4-Pro、Qwen-Plus、GLM-4-Plus 四个国产模型进行系统性评测，覆盖 53 题自建测试集 + 3 组公开数据集，并通过 RAG 知识库增强推理能力。
+大模型评测与 RAG 优化实战项目。对 DeepSeek-V3(V4-Flash)/V4-Pro、Qwen-Plus、GLM-4-Plus 四个国产模型进行系统性评测，64 题自建测试集 v4.0，支持 RAG 增强 + LLM-as-Judge + CI/CD。
+
+## 一键评测
+
+```bash
+python run_pipeline.py              # 全量 (7步, ~45min)
+python run_pipeline.py --tier smoke  # 快速验证 (8题, ~2min)
+```
+
+流水线: KB Init → final_eval → extended_metrics → ab_test → error_bucket → build_viz → regression_check
+
+报告输出: `results/latest/` (5份 MD + dashboard.html)
 
 ## 目录结构
 
 ```
 llm-eval-project/
-├── config/
-│   └── model_config.yaml          # 模型列表 + API 配置（支持 active:false 跳过）
+├── run_pipeline.py                    # 一键评测入口
+├── config/model_config.yaml           # 模型配置 (active:false 跳过)
+├── .github/workflows/ci.yml           # CI/CD (push→smoke, 手动→full)
 ├── data/
-│   ├── custom_testset/            # 自建测试集 v4（53题 + 安全对抗8题）
-│   │   ├── mcq/                   # 选择题 CSV: knowledge(20)+security(8)，全5选项
-│   │   ├── qa/                    # 问答题 JSONL: reasoning(15)+code(10)+security_adv(8)
-│   │   └── metadata.yaml          # 版本 / 难度分布
+│   ├── custom_testset/                # 64题 v4.0 (含 CHANGELOG.md)
+│   │   ├── mcq/ (CSV) + qa/ (JSONL)   # tier: smoke/full 标签
+│   │   └── metadata.yaml
 │   └── knowledge_base/
-│       └── reasoning_steps.jsonl  # 15条推理题解题步骤（ChromaDB 源文件）
-├── scripts/
-│   ├── final_eval.py              # 最终统一评测（全53题×全模型，MCQ+QA双指标）
-│   ├── full_benchmark.py          # v4批量评测（Accuracy+Rouge-L-R，读外部配置）
-│   ├── precheck.py                # 评测前置校验（选项熵/弱模型探测/LLM自检）
-│   ├── security_eval.py           # 安全对抗评测（越狱/诱导/拒答检测）
-│   ├── generate_testset.py        # 生成自定义测试集
-│   ├── rag_retriever.py           # ChromaDB+BGE向量检索（15/15 Precision@1）
-│   ├── rag_prompt_builder.py      # 检索结果→Prompt重组
-│   ├── rag_inference.py           # RAG推理管道（检索→重组→API）
-│   ├── rag_eval.py                # RAG单模型对比（格式/步骤/正确性）
-│   ├── rag_benchmark.py           # RAG三模型全量评测
-│   ├── rag_compare.py             # Base vs RAG三模型分析
-│   ├── rag_analysis.py            # RAG逐条对比分析
-│   ├── llm_as_judge.py            # LLM-as-Judge独立评分（1-5分制）
-│   ├── build_viz.py               # HTML仪表板
-│   ├── visualize.py               # matplotlib四维图表
-│   └── reports/                   # 所有评测报告MD（对应脚本说明）
-├── outputs/                       # EvalScope日志 + bench输出（gitignore）
-├── chroma_db/                     # ChromaDB向量库（gitignore，可由JSONL重建）
-├── docs/rag_architecture.md       # RAG技术架构蓝图
-├── .env                           # API Key（gitignore）
-└── README.md                      # 项目总览
+│       ├── reasoning_steps.jsonl      # 推理知识库 15条
+│       └── code_templates.jsonl       # 代码知识库 10条
+├── scripts/                           # 18个核心脚本
+│   ├── final_eval.py                  # 统一评测 (MCQ+QA, Base/RAG双模)
+│   ├── extended_metrics.py            # JSON格式率 + 工具调用成功率
+│   ├── ab_test.py                     # A/B Test (p-value + cost + CI)
+│   ├── error_bucket.py                # Error Bucket 11类自动分桶
+│   ├── prompt_benchmark.py            # Prompt变体对比 + 自动推荐
+│   ├── regression_check.py            # 回归检测 + Token趋势 + 版本锁定
+│   ├── build_viz.py                   # Chart.js 8图仪表板
+│   ├── rag_retriever.py / rag_prompt_builder.py  # RAG 检索+重组
+│   ├── llm_as_judge.py                # LLM-as-Judge 1-5分
+│   ├── rag_eval.py / rag_benchmark.py / rag_compare.py / rag_analysis.py  # RAG分析套件
+│   ├── security_eval.py               # 安全对抗评测
+│   ├── precheck.py                    # 评测前置校验
+│   ├── generate_testset.py            # 测试集生成
+│   └── reports/                       # 报告模板
+├── results/                           # 评测报告产出 (gitignore)
+│   └── latest/                        # 最新结果快捷访问
+├── outputs/                           # 中间数据 (gitignore)
+└── chroma_db/                         # 向量库 (gitignore)
 ```
 
-## 核心数据
+## 测试集 (v4, 64题)
 
-### 测试集（53题 + 安全对抗8题）
-
-| 子集 | 条数 | 指标 | 当前最优 |
+| 子集 | 题数 | 指标 | Smoke题 |
 |------|------|------|---------|
-| 知识 MCQ | 20 | Accuracy | Qwen 100% |
-| 安全 MCQ | 8 | Accuracy | 全部 100% |
-| 推理 QA | 15 | Rouge-L / LLM Judge | GLM Base 56% / RAG后Judge全满分 |
-| 代码 QA | 10 | Rouge-L / LLM Judge | GLM 45.8% |
-| 安全对抗 | 8 | 拒答关键词检测 | DeepSeek/Qwen 50%, GLM 25% |
+| 知识 MCQ | 20 | Accuracy | 2 |
+| 安全 MCQ | 8 | Accuracy | 1 |
+| 推理 QA | 15 | ROUGE-L + Judge (Base+RAG) | 2 |
+| 代码 QA | 10 | ROUGE-L + Judge (Base+RAG) | 1 |
+| JSON 格式 | 5 | JSON 格式正确率 | 1 |
+| 工具调用 | 6 | 工具调用成功率 | 1 |
 
-### RAG 效果（推理子集）
+## 7 维指标体系
 
-| 指标 | Base | RAG | 提升 |
-|------|------|-----|------|
-| LLM Judge Format | 3.80~5.00 | **5.00** | 格式规范化 |
-| LLM Judge Step | 4.00~5.00 | **5.00** | 步骤完整性 |
-| LLM Judge Overall | 4.25~5.00 | **5.00** | 综合满分 |
-| Rouge-L | 32~56% | 34~41% | 反而下降（已知误判） |
+Accuracy | Latency | Tokens (Cost) | 拒答率 | 幻觉率 | JSON 格式率 | 工具调用成功率
 
-### 关键结论
+## RAG 效果
 
-- **Rouge-L 会误判**：RAG 使输出结构化变长，n-gram 重叠降低，但 LLM Judge 确认质量提升
-- **RAG 统一格式**：所有模型 RAG 模式下 Judge 均达 5.00/5
-- **代码子集不适用 RAG**：知识库仅有推理步骤，代码题无提升
-- **安全知识≠安全能力**：MCQ 安全题全满分，但对抗测试 GLM 仅 25% 通过
-- **V4-Pro 无明显优势**：在现有测试集上与 V4-Flash 几乎持平
+| 指标 | Base | RAG |
+|------|------|-----|
+| LLM Judge Format | 3.80~5.00 | **5.00** |
+| LLM Judge Overall | 4.25~5.00 | **5.00** |
+| Rouge-L | 32~56% | 34~41% (已知假摔) |
+| 检索精度 | — | 15/15 Precision@1 |
 
-## 评测流水线
+## 关键发现
 
-```
-precheck.py → final_eval.py → visualize.py → build_viz.py
-(前置校验)   (全量53题)     (图表)        (仪表板)
-```
+- **Rouge-L 不适合结构化问答**: RAG 输出变长导致 Rouge 反降 15pp，LLM Judge 反证质量提升
+- **安全知识 ≠ 安全能力**: MCQ 全员满分，对抗测试 GLM 仅 25%
+- **V4-Pro 无显著优势**: 与 V4-Flash 几乎持平
+- **代码 RAG 效果有限**: 知识库模板对代码格式化有微弱帮助 (Judge 2→3)
+- **工具调用全模型 100%**: 6题全部 PASS
 
-快速评测（仅推理子集 RAG 对比）：
-```
-python scripts/rag_inference.py    # 单模型
-python scripts/rag_benchmark.py    # 三模型
-python scripts/rag_compare.py      # 对比分析
-```
+## 环境
 
-## 环境与配置
-
-- **Python 环境**: conda activate evalscope
-- **API Key**: .env 文件（DEEPSEEK_API_KEY / BAILIAN_API_KEY / ZHIPU_API_KEY）
-- **模型配置**: config/model_config.yaml（active: false 可跳过不用的模型）
-- **关键依赖**: evalscope, chromadb, sentence-transformers, rouge-score, openai, pyyaml, matplotlib
+- **Python**: conda activate evalscope
+- **API Key**: .env (DEEPSEEK_API_KEY / BAILIAN_API_KEY / ZHIPU_API_KEY)
+- **关键依赖**: chromadb, sentence-transformers, rouge-score, openai, pyyaml, python-docx
+- **CI/CD**: GitHub Actions, Secrets 需配 3 个 API Key
