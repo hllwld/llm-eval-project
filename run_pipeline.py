@@ -58,30 +58,33 @@ if __name__ == '__main__':
     print(f'Flags: skip_kb={skip_kb}  skip_eval={skip_eval}  skip_metrics={skip_metrics}  skip_ab={skip_ab}  skip_bucket={skip_bucket}  skip_viz={skip_viz}')
 
     if not skip_kb:
-        run_step('1/7  Init RAG Knowledge Base',
+        run_step('1/8  Init RAG Knowledge Base',
                  'python rag_retriever.py')
 
     if not skip_eval:
-        run_step(f'2/7  Run Final Eval (tier={tier})',
+        run_step(f'2/8  Run Final Eval (tier={tier})',
                  f'python final_eval.py --tier {tier}')
 
     if not skip_metrics:
-        run_step('3/7  Run Extended Metrics (JSON + Tool Call)',
+        run_step('3/8  Run Extended Metrics (JSON + Tool Call)',
                  'python extended_metrics.py')
 
     if not skip_ab:
-        run_step('4/7  A/B Test Analysis (p-value + cost + CI)',
+        run_step('4/8  A/B Test Analysis (p-value + cost + CI)',
                  'python ab_test.py')
 
     if not skip_bucket:
-        run_step('5/7  Error Bucket Classification',
+        run_step('5/8  Error Bucket Classification',
                  'python error_bucket.py')
 
+    run_step('6/8  AI Insight Generator (LLM analysis)',
+             'python insight_generator.py')
+
     if not skip_viz:
-        run_step('6/7  Generate Dashboard (HTML)',
+        run_step('7/8  Generate Dashboard (HTML)',
                  'python build_viz.py')
 
-    run_step('7/7  Regression Check (alert + cost trend)',
+    run_step('8/8  Regression Check (alert + cost trend)',
              'python regression_check.py')
 
     ended = datetime.now().strftime('%Y-%m-%d %H:%M:%S')

@@ -269,32 +269,21 @@
 
     <!-- 关键洞察 -->
     <div class="card">
-        <h2>关键洞察</h2>
+        <h2>关键洞察 (AI 生成)</h2>
         <ul style="line-height:2;padding-left:20px;">
-            <li><strong>数学推理</strong>：三模型均接近满分（95%~100%），能力差距极小</li>
-            <li><strong>常识推理 (hellaswag)</strong>：GLM-4-Plus 仅 45%，为最显著短板</li>
-            <li><strong>RAG 统一格式</strong>：RAG 增强后所有模型 LLM Judge 达满分 5.00</li>
-            <li><strong>Rouge 与 Judge 背离</strong>：RAG 使输出结构化变长，Rouge 下降但 Judge 确认质量提升</li>
-            <li><strong>V4-Pro 无明显优势</strong>：与 V3(V4-Flash) 几乎持平，知识题反而更低（90% vs 95%）</li>
-            <li><strong>安全知识 ≠ 安全能力</strong>：MCQ 全员满分，对抗测试 GLM 仅 25%</li>
-            <li><strong>GLM-4-Plus 代码最强</strong>：Rouge 45.8% + Judge 3.80，双料第一</li>
+            <p style="color:#888;">Run insight_generator.py after pipeline to generate AI analysis</p>
         </ul>
     </div>
 
     <!-- 改进措施 -->
     <div class="card">
-        <h2>改进措施</h2>
+        <h2>改进措施 (AI 生成)</h2>
         <table>
             <thead><tr><th style="width:50px;">#</th><th>措施</th><th style="width:60px;">优先级</th><th>预期效果</th></tr></thead>
             <tbody>
-                <tr><td>1</td><td>QA Prompt 加输出约束："仅输出答案"</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">消除 8/9 Rouge 误判</td></tr>
-                <tr><td>2</td><td>代码题参考答案规范化：写标准实现而非思路</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">代码评测可解释</td></tr>
-                <tr><td>3</td><td>MCQ 增加选项和陷阱项，部分改多选题</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">打破满分天花板</td></tr>
-                <tr><td>4</td><td>引入 LLM Judge 评估 QA 正确性</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">弥补 n-gram 指标局限</td></tr>
-                <tr><td>5</td><td>知识题 RAG 验证：文档补充后重测</td><td style="text-align:center;color:#2196F3;font-weight:bold;">低</td><td class="nowrap">量化 RAG 真实收益</td></tr>
+                <tr><td colspan="4" style="color:#888;text-align:center;">Run insight_generator.py after pipeline to generate AI analysis</td></tr>
             </tbody>
         </table>
-        <p style="margin-top:8px;font-size:12px;color:#888;">详细分析见: data/reports/badcase_analysis.md</p>
     </div>
 
     <!-- 逐条 Badcase -->
