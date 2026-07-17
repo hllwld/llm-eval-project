@@ -11,7 +11,8 @@ from collections import Counter
 
 from paths import (
     PROJECT_ROOT, DATA_DIR,
-    get_latest_rag_benchmark, get_latest_rag_eval, get_latest_error_bucket,
+    get_latest_final_eval_raw, get_latest_rag_benchmark,
+    get_latest_rag_eval, get_latest_error_bucket,
 )
 
 BADCASES_DIR = os.path.join(DATA_DIR, 'badcases')
@@ -26,8 +27,31 @@ ROUGE_THRESHOLD = 0.3
 
 
 def load_final_eval():
-    """Load latest eval results from rag_benchmark (has per-model raw data)"""
-    # Try rag_benchmark first (multi-model, per-question)
+    """加载最新评测原始数据，优先级: final_eval_raw > rag_benchmark > rag_eval"""
+    # 1. 流水线产物（模型名来自 config，最新最准）
+    raw_file = get_latest_final_eval_raw()
+    if raw_file:
+        with open(raw_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        items = []
+        models = data.get('models', [])
+        for model_name in models:
+            model_data = data.get(model_name, {})
+            for subset_name in ('reasoning_base', 'reasoning_rag', 'code_base', 'code_rag'):
+                for q in (model_data.get(subset_name) or []):
+                    items.append({
+                        '_model': model_name,
+                        '_subset': 'code' if 'code' in subset_name else 'reasoning',
+                        'question': q.get('question', '')[:100],
+                        'expected': q.get('expected', ''),
+                        'response': q.get('response', ''),
+                        'rouge_l': q.get('rouge_l', 0),
+                        'judge': q.get('judge') or {},
+                    })
+        if items:
+            return items
+
+    # 2. Fallback: rag_benchmark（独立脚本产物）
     bench_file = get_latest_rag_benchmark()
     if bench_file:
         with open(bench_file, 'r', encoding='utf-8') as f:
@@ -42,7 +66,7 @@ def load_final_eval():
         if items:
             return items
 
-    # Fallback: rag_eval (single model)
+    # 3. Last resort: rag_eval
     rag_file = get_latest_rag_eval()
     if rag_file:
         with open(rag_file, 'r', encoding='utf-8') as f:

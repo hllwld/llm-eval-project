@@ -245,8 +245,9 @@ level1_bars = '\n'.join(
 )
 
 # 模型分布柱状图
+_MODEL_COLORS = ['#4CAF50','#2196F3','#FF9800','#9C27B0','#E91E63','#00BCD4','#FF5722','#795548']
 model_bars = '\n'.join(
-    bar_row(model, count / max(model_bc.values()) * 100, ['#4CAF50','#2196F3','#FF9800','#9C27B0'][i],
+    bar_row(model, count / max(model_bc.values()) * 100, _MODEL_COLORS[i % len(_MODEL_COLORS)],
             str(count))
     for i, (model, count) in enumerate(model_bc.most_common())
 )
