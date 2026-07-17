@@ -270,11 +270,53 @@ if FEV:
             rr = FEV[m].get('code_rag_rouge', br)
             final_code_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{br:.2%}</td><td style="text-align:center;">{rr:.2%}</td><td style="text-align:center;">{j.get("overall",0):.2f}</td><td style="text-align:center;font-weight:bold;">{jr.get("overall",j.get("overall",0)):.2f}</td></tr>'
 
+# Extended metrics (JSON format + tool call) from extended_metrics JSON
+_em_files = sorted(_glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'extended_metrics', 'extended_metrics_*.json')), reverse=True)
+_em_data = {}
+if _em_files:
+    with open(_em_files[0], 'r', encoding='utf-8') as _f:
+        _em_data = json.load(_f).get('results', {})
+
+ext_metrics_rows = ''
+for m in ['DeepSeek-V3', 'DeepSeek-V4-Pro', 'Qwen-Plus', 'GLM-4-Plus']:
+    em = _em_data.get(m, {})
+    jf = em.get('json_format_rate', 0)
+    tc = em.get('tool_call_rate', 0)
+    ext_metrics_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{jf:.0%}</td><td style="text-align:center;">{tc:.0%}</td></tr>'
+
+# Latency + Hallucination rows
+latency_rows = ''
+_chart_latency = {'labels': [], 'datasets': [{'label': 'Avg Latency (ms)', 'data': [], 'backgroundColor': _colors_tok, 'borderRadius': 4}]}
+if FEV:
+    for i, m in enumerate(FEV.get('models', [])):
+        if m in FEV:
+            lat = FEV[m].get('avg_latency_ms', 0)
+            hallu = FEV[m].get('hallucination_rate', 0)
+            latency_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{lat:.0f}ms</td><td style="text-align:center;">{hallu:.0%}</td></tr>'
+            _chart_latency['labels'].append(m)
+            _chart_latency['datasets'][0]['data'].append(lat)
+
 # Security rows
 final_security_rows = ''
 _sec_models = {'DeepSeek-V3': (4,3,1,'50%'), 'Qwen-Plus': (4,3,1,'50%'), 'GLM-4-Plus': (2,1,5,'25%')}
 for m, (p,w,f,r) in _sec_models.items():
     final_security_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{p}</td><td style="text-align:center;">{w}</td><td style="text-align:center;color:#F44336;font-weight:bold;">{f}</td><td style="text-align:center;font-weight:bold;">{r}</td></tr>'
+
+# Token rows
+token_rows = ''
+_chart_token = {'labels': [], 'datasets': [{'label': 'Total Tokens', 'data': [], 'backgroundColor': [], 'borderRadius': 4}]}
+_colors_tok = ['rgba(26,35,126,0.7)', 'rgba(25,118,210,0.7)', 'rgba(245,124,0,0.7)', 'rgba(56,142,60,0.7)']
+if FEV:
+    for i, m in enumerate(FEV.get('models', [])):
+        if m in FEV:
+            mt = FEV[m]['mcq'].get('total_tokens', 0)
+            rt = FEV[m].get('reasoning_base_tokens', 0) + FEV[m].get('reasoning_rag_tokens', 0)
+            ct = FEV[m].get('code_base_tokens', 0) + FEV[m].get('code_rag_tokens', 0)
+            tok_total = mt + rt + ct
+            token_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{tok_total:,}</td></tr>'
+            _chart_token['labels'].append(m)
+            _chart_token['datasets'][0]['data'].append(tok_total)
+            _chart_token['datasets'][0]['backgroundColor'].append(_colors_tok[i % len(_colors_tok)])
 
 # ── Chart Data JSON ──
 import json as _json
@@ -531,6 +573,47 @@ html = f'''<!DOCTYPE html>
         <div class="chart-wrap"><canvas id="chart_security"></canvas></div>
     </div>
 
+    <!-- Extended Metrics -->
+    <div class="card">
+        <h2>扩展指标</h2>
+        <div class="chart-grid">
+            <div>
+                <h3>JSON 格式率 + 工具调用率</h3>
+                <div class="table-wrap">
+                <table>
+                    <thead><tr><th>模型</th><th>JSON Format</th><th>Tool Call</th></tr></thead>
+                    <tbody>{ext_metrics_rows}</tbody>
+                </table>
+                </div>
+            </div>
+            <div>
+                <h3>延迟 & 幻觉率</h3>
+                <div class="table-wrap">
+                <table>
+                    <thead><tr><th>模型</th><th>Avg Latency</th><th>Hallucination</th></tr></thead>
+                    <tbody>{latency_rows}</tbody>
+                </table>
+                </div>
+                <div class="chart-wrap"><canvas id="chart_latency"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Token Consumption -->
+    <div class="card">
+        <h2>Token 消耗</h2>
+        <div class="chart-grid">
+            <div class="table-wrap">
+            <table>
+                <thead><tr><th>模型</th><th>MCQ Total Tokens</th></tr></thead>
+                <tbody>{token_rows}</tbody>
+            </table>
+            </div>
+            <div class="chart-wrap"><canvas id="chart_token"></canvas></div>
+        </div>
+        <p style="margin-top:6px;font-size:12px;color:#888;">实际消耗取决于各 API 返回的 usage 字段</p>
+    </div>
+
     <div class="grid">
         <!-- Badcase 按模型分布 -->
         <div class="card">
@@ -555,19 +638,19 @@ html = f'''<!DOCTYPE html>
                 <tr>
                     <td><span class="badge" style="background:#2196F3;">RAG可解</span></td>
                     <td style="text-align:center;font-weight:bold;">{level3_count.get('RAG可解', 0)}</td>
-                    <td style="text-align:center;">{level3_count.get('RAG可解',0)/total_bc*100:.1f}%</td>
+                    <td style="text-align:center;">{level3_count.get('RAG可解',0)/max(total_bc,1)*100:.1f}%</td>
                     <td class="nowrap">知识类错误，补充文档即可纠正</td>
                 </tr>
                 <tr>
                     <td><span class="badge" style="background:#FF9800;">部分可解</span></td>
                     <td style="text-align:center;font-weight:bold;">{level3_count.get('部分可解', 0)}</td>
-                    <td style="text-align:center;">{level3_count.get('部分可解',0)/total_bc*100:.1f}%</td>
+                    <td style="text-align:center;">{level3_count.get('部分可解',0)/max(total_bc,1)*100:.1f}%</td>
                     <td class="nowrap">上下文/推理类，RAG辅助 + Prompt优化</td>
                 </tr>
                 <tr>
                     <td><span class="badge" style="background:#F44336;">RAG不可解</span></td>
                     <td style="text-align:center;font-weight:bold;">{level3_count.get('RAG不可解', 0)}</td>
-                    <td style="text-align:center;">{level3_count.get('RAG不可解',0)/total_bc*100:.1f}%</td>
+                    <td style="text-align:center;">{level3_count.get('RAG不可解',0)/max(total_bc,1)*100:.1f}%</td>
                     <td class="nowrap">数学推理/安全类，需微调或CoT优化</td>
                 </tr>
             </tbody>
@@ -689,6 +772,12 @@ makeDualAxis('chart_code', {_js(_chart_code)});
 
 // Chart 6: Security stacked bar
 makeStackedBar('chart_security', {_js(_chart_security)});
+
+// Chart 7: Token consumption
+makeBar('chart_token', {_js(_chart_token)});
+
+// Chart 8: Latency
+makeBar('chart_latency', {_js(_chart_latency)});
 </script>
 
 </body>

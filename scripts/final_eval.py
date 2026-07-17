@@ -99,25 +99,32 @@ class FinalEval:
                         })
         return items
 
-    def _call(self, mc: Dict, messages: List[Dict]) -> str:
+    def _call(self, mc: Dict, messages: List[Dict]) -> tuple:
+        """Returns (response_text, token_usage_dict, latency_ms)"""
         base_url = mc['api_url'].rstrip('/').replace('/chat/completions', '')
         client = OpenAI(api_key=mc['api_key'], base_url=base_url)
+        t0 = time.time()
         resp = client.chat.completions.create(
             model=mc['model'], messages=messages, temperature=0.3, max_tokens=1024, timeout=60
         )
-        return resp.choices[0].message.content
+        latency = (time.time() - t0) * 1000
+        tokens = {'prompt': 0, 'completion': 0, 'total': 0}
+        if resp.usage:
+            tokens = {'prompt': resp.usage.prompt_tokens, 'completion': resp.usage.completion_tokens, 'total': resp.usage.total_tokens}
+        return resp.choices[0].message.content, tokens, latency
 
     def _eval_mcq(self, mc: Dict) -> Dict:
-        """Run all 28 MCQ questions, return accuracy per subset"""
+        """Run all 28 MCQ questions, return accuracy per subset + token stats"""
         correct = {'knowledge': 0, 'security': 0}
         total = {'knowledge': 0, 'security': 0}
+        all_tokens = []
         print(f'\n  [MCQ] {len(self.mcq)} questions...')
 
         for i, q in enumerate(self.mcq):
             opts_text = '\n'.join(f'{chr(65+j)}) {o}' for j, o in enumerate(q['options']))
             prompt = f"单选题，选出正确答案，只输出字母。\n\n{q['question']}\n{opts_text}"
-            resp = self._call(mc, [{'role': 'user', 'content': prompt}])
-            # Extract answer letter
+            resp, tokens, lat = self._call(mc, [{'role': 'user', 'content': prompt}])
+            all_tokens.append(tokens)
             ans = ''.join(c for c in resp.strip().upper()[:5] if c in 'ABCDE') or '?'
             ans = ans[0] if ans else '?'
             if ans == q['answer']:
@@ -126,11 +133,14 @@ class FinalEval:
             if (i + 1) % 10 == 0:
                 print(f'    {i+1}/{len(self.mcq)}...')
 
+        sum_tokens = sum(t['total'] for t in all_tokens) if all_tokens else 0
+        n = len(all_tokens) if all_tokens else 1
         return {
             'knowledge_acc': correct['knowledge'] / total['knowledge'] if total['knowledge'] else 0,
             'security_acc': correct['security'] / total['security'] if total['security'] else 0,
             'knowledge_correct': correct['knowledge'], 'knowledge_total': total['knowledge'],
             'security_correct': correct['security'], 'security_total': total['security'],
+            'total_tokens': sum_tokens, 'avg_tokens': round(sum_tokens / n, 1),
         }
 
     def _eval_qa(self, mc: Dict, questions: List[Dict], subset: str, use_rag: bool = False) -> List[Dict]:
@@ -155,11 +165,12 @@ class FinalEval:
                     {'role': 'user', 'content': q['question']}
                 ]
 
-            response = self._call(mc, messages)
+            response, tokens, lat = self._call(mc, messages)
             rouge = self.scorer.score(q['expected'], response)['rougeL'].fmeasure
             results.append({
                 'question': q['question'], 'expected': q['expected'],
                 'response': response, 'rouge_l': round(rouge, 4),
+                'tokens': tokens, 'latency_ms': round(lat, 1),
             })
             if (i + 1) % 5 == 0:
                 print(f'    {i+1}/{len(questions)}...')
@@ -271,7 +282,23 @@ class FinalEval:
 
         lines += [
             '',
-            '## 5. Conclusion',
+            '## 5. Token 消耗统计',
+            '',
+            '| Model | MCQ Tokens | Reasoning Base | Reasoning RAG | Code Base | Code RAG | Total |',
+            '| --- | --- | --- | --- | --- | --- | --- |',
+        ]
+        for name, data in all_results.items():
+            mt = data['mcq'].get('total_tokens', 0)
+            rb = sum(r['tokens']['total'] for r in data['reasoning_base']) if 'tokens' in data['reasoning_base'][0] else 0
+            rr = sum(r['tokens']['total'] for r in data['reasoning_rag'])
+            cb = sum(r['tokens']['total'] for r in data['code_base'])
+            cr = sum(r['tokens']['total'] for r in data['code_rag'])
+            total = mt + rb + rr + cb + cr
+            lines.append(f'| {name} | {mt} | {rb} | {rr} | {cb} | {cr} | **{total}** |')
+
+        lines += [
+            '',
+            '## 6. Conclusion',
             '',
             '- MCQ: 所有模型基础知识题接近满分，区分度集中在 DeepSeek-V4-Pro 的知识短板',
             '- Reasoning: RAG 改善 LLM Judge 评分（格式+步骤），ROUGE-L 因结构变长而下降（已知误判）',
@@ -288,6 +315,19 @@ class FinalEval:
         for name, data in all_results.items():
             json_data[name] = {
                 'mcq': data['mcq'],
+                'reasoning_base_tokens': sum(r['tokens']['total'] for r in data['reasoning_base']) if data['reasoning_base'] and 'tokens' in data['reasoning_base'][0] else 0,
+                'reasoning_rag_tokens': sum(r['tokens']['total'] for r in data['reasoning_rag']) if data['reasoning_rag'] and 'tokens' in data['reasoning_rag'][0] else 0,
+                'code_base_tokens': sum(r['tokens']['total'] for r in data['code_base']) if data['code_base'] and 'tokens' in data['code_base'][0] else 0,
+                'code_rag_tokens': sum(r['tokens']['total'] for r in data['code_rag']) if data['code_rag'] and 'tokens' in data['code_rag'][0] else 0,
+                'avg_latency_ms': round(
+                    sum(r.get('latency_ms', 0) for r in (data['reasoning_base'] + data['reasoning_rag'] + data['code_base'] + data['code_rag']))
+                    / max(len(data['reasoning_base'] + data['reasoning_rag'] + data['code_base'] + data['code_rag']), 1), 1
+                ),
+                'hallucination_rate': round(
+                    sum(1 for r in (data['reasoning_base'] + data['reasoning_rag'] + data['code_base'] + data['code_rag'])
+                        if r.get('judge', {}).get('correctness_score', 5) < 2)
+                    / max(len(data['reasoning_base'] + data['reasoning_rag'] + data['code_base'] + data['code_rag']), 1), 4
+                ),
                 'reasoning_base_rouge': qa_stats(data['reasoning_base'], 'rouge_l'),
                 'reasoning_rag_rouge': qa_stats(data['reasoning_rag'], 'rouge_l'),
                 'reasoning_base_judge': {

@@ -13,11 +13,15 @@ run_pipeline.py — 一键评测流水线
 
 import sys
 import os
+import shutil
 import subprocess
 import time
 from datetime import datetime
 
 SCRIPTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts')
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+RESULTS_DIR = os.path.join(PROJECT_ROOT, 'results')
+REPORTS_SRC = os.path.join(SCRIPTS, 'reports')
 
 def run_step(name, cmd):
     print(f'\n{"="*60}')
@@ -78,14 +82,35 @@ if __name__ == '__main__':
                  'python build_viz.py')
 
     ended = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # Collect all outputs into results/
+    run_id = datetime.now().strftime('%Y%m%d_%H%M')
+    out_dir = os.path.join(RESULTS_DIR, run_id)
+    os.makedirs(out_dir, exist_ok=True)
+
+    # Copy reports
+    for f in ['final_eval_report.md', 'extended_metrics_report.md', 'ab_test_report.md', 'error_bucket_report.md']:
+        src = os.path.join(REPORTS_SRC, f)
+        if os.path.exists(src):
+            shutil.copy2(src, os.path.join(out_dir, f))
+
+    # Copy dashboard
+    dash_src = os.path.join(PROJECT_ROOT, 'dashboard.html')
+    if os.path.exists(dash_src):
+        shutil.copy2(dash_src, os.path.join(out_dir, 'dashboard.html'))
+
+    # Copy latest to results/latest/
+    latest_dir = os.path.join(RESULTS_DIR, 'latest')
+    if os.path.exists(latest_dir):
+        shutil.rmtree(latest_dir)
+    shutil.copytree(out_dir, latest_dir)
+
     print(f'\n{"="*60}')
     print(f'  Pipeline Complete!')
     print(f'  Started: {started}')
     print(f'  Ended:   {ended}')
     print(f'{"="*60}')
-    print(f'  Reports:')
-    print(f'    scripts/reports/final_eval_report.md')
-    print(f'    scripts/reports/extended_metrics_report.md')
-    print(f'    scripts/reports/ab_test_report.md')
-    print(f'    scripts/reports/error_bucket_report.md')
-    print(f'  Dashboard: dashboard.html')
+    print(f'  All outputs: {out_dir}')
+    print(f'  Quick access: results/latest/')
+    for f in os.listdir(out_dir):
+        print(f'    {f}')
