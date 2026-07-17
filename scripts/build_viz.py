@@ -665,7 +665,7 @@ html = f'''<!DOCTYPE html>
 
     <!-- 关键洞察 -->
     <div class="card">
-        <h2>关键洞察 (AI 生成)</h2>
+        <h2>关键洞察（LLM 自动分析）</h2>
         <ul style="line-height:2;padding-left:20px;">
                         <li><strong>Qwen-Plus 知识满分但代码Judge最低</strong> — MCQ知识100%、安全100%，推理Judge Base最高4.93，但代码Judge Base仅3.20（最低），RAG 2.80（最低）。</li>
             <li><strong>所有模型推理RAG满分，但代码RAG Judge普遍下降</strong> — 推理RAG Judge均为5.00；代码RAG Judge中DeepSeek-V3从3.40降至3.10，DeepSeek-V4-Pro从3.80降至3.00，GLM-5.2从3.50降至2.30。</li>
@@ -679,7 +679,7 @@ html = f'''<!DOCTYPE html>
 
     <!-- 改进措施 -->
     <div class="card">
-        <h2>改进措施 (AI 生成)</h2>
+        <h2>改进措施（数据驱动）</h2>
         <table>
             <thead><tr><th style="width:50px;">#</th><th>措施</th><th style="width:60px;">优先级</th><th>预期效果</th></tr></thead>
             <tbody>

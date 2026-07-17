@@ -309,7 +309,7 @@ class FinalEval:
 
         # Load AI-generated insights if available
         _insights_path = os.path.join(PROJECT_ROOT, 'outputs', 'insights', 'latest.json')
-        lines += ['', '## 6. Conclusion (AI 生成)', '']
+        lines += ['', '## 6. Conclusion（LLM 自动分析）', '']
         if os.path.exists(_insights_path):
             with open(_insights_path, 'r', encoding='utf-8') as _f:
                 _ins = json.load(_f)
