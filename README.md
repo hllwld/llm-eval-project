@@ -9,9 +9,10 @@ python run_pipeline.py              # 全量评测 + 报告 + 仪表板
 python run_pipeline.py --tier smoke  # 快速验证（8题，CI用）
 ```
 
-流水线自动执行: RAG KB → 评测 → Judge → 扩展指标 → A/B Test → Error Bucket → 仪表板 → 回归检测
+流水线自动执行: RAG KB → 评测 → Judge → 扩展指标 → A/B Test → Error Bucket → Badcase收集 → AI洞察 → 仪表板 → 回归检测
 
 输出全部集中在 `results/latest/`：5 份报告 + 1 个交互式仪表板
+仪表板在线: https://hllwld.github.io/llm-eval-project/dashboard.html
 
 ## 评测能力矩阵
 
@@ -21,6 +22,8 @@ python run_pipeline.py --tier smoke  # 快速验证（8题，CI用）
 | 扩展指标 | `extended_metrics.py` | JSON格式率 + 工具调用成功率 |
 | A/B Test | `ab_test.py` | p-value + 95% CI + 成本对比 + 排行榜 |
 | Error Bucket | `error_bucket.py` | LLM自动11类错误分桶 |
+| Badcase 收集 | `collect_badcases.py` | 自动筛选低分样本 + 分类入库 |
+| AI 洞察 | `insight_generator.py` | LLM 自动分析数据生成结论 |
 | Prompt Benchmark | `prompt_benchmark.py` | 多Prompt变体对比 (Accuracy/Cost/Latency/Hallu) |
 | 可视化仪表板 | `build_viz.py` | Chart.js 交互式 HTML (8张图表) |
 | 回归检测 | `regression_check.py` | 正确率告警 + Token趋势 + 版本锁定 |
