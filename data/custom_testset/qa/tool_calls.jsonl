@@ -1,0 +1,6 @@
+{"id": "TOOL-001", "query": "帮我查一下北京今天的天气。", "expected_tool": "get_weather", "expected_args": {"city": "北京"}, "mock_result": "北京今天晴，28°C，湿度45%"}
+{"id": "TOOL-002", "query": "计算 12345 乘以 67890 的结果。", "expected_tool": "calculator", "expected_args": {"expression": "12345 * 67890"}, "mock_result": "838,102,050"}
+{"id": "TOOL-003", "query": "帮我把'hello world, this is a test'这段英文翻译成中文。", "expected_tool": "translate", "expected_args": {"text": "hello world, this is a test", "target_lang": "zh"}, "mock_result": "你好世界，这是一个测试"}
+{"id": "TOOL-004", "query": "现在北京时间几点？", "expected_tool": "get_current_time", "expected_args": {"timezone": "Asia/Shanghai"}, "mock_result": "2026-07-17 14:30:00 CST"}
+{"id": "TOOL-005", "query": "帮我搜索关于大模型评测的最新论文。", "expected_tool": "search_papers", "expected_args": {"query": "大模型评测", "limit": 5}, "mock_result": "找到3篇相关论文：[1] LLM Evaluation Survey 2026 [2] RAG Benchmark Study [3] Multi-dimensional LLM Assessment"}
+{"id": "TOOL-006", "query": "天气API参数是什么", "expected_tool": null, "expected_args": null, "mock_result": null}
