@@ -1,9 +1,9 @@
 # data/custom_testset/metadata.yaml
 # 测试集 v2 — 难度标签 + badcase 改进版
 
-version: v3.0
-updated: 2026-07-10
-total_cases: 61  # 知识20 + 安全8 + 安全对抗8 + 推理15 + 代码10
+version: v4.0
+updated: 2026-07-17
+total_cases: 64  # +json_format 5 +tool_calls 6, tier: smoke 8/full 56
 
 subsets:
   knowledge:

@@ -1,0 +1,66 @@
+name: LLM Eval CI/CD
+
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+      - '**.md'
+      - 'outputs/**'
+      - 'chroma_db/**'
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: 'Test tier'
+        required: true
+        type: choice
+        default: 'smoke'
+        options:
+          - smoke
+          - full
+
+jobs:
+  smoke-test:
+    name: Smoke Test (${{ github.event.inputs.tier || 'smoke' }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install python-docx chromadb sentence-transformers rouge-score
+
+      - name: Run Smoke Test
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          BAILIAN_API_KEY: ${{ secrets.BAILIAN_API_KEY }}
+          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+        run: |
+          python scripts/final_eval.py --tier ${{ github.event.inputs.tier || 'smoke' }}
+
+      - name: Generate Dashboard
+        if: success()
+        run: python scripts/build_viz.py
+
+      - name: Upload Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report-${{ github.run_id }}
+          path: |
+            scripts/reports/final_eval_report.md
+            dashboard.html
+          retention-days: 7

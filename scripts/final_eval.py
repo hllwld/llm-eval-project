@@ -36,7 +36,8 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 class FinalEval:
-    def __init__(self):
+    def __init__(self, tier: str = 'full'):
+        self.tier = tier
         self.models = self._load_models()
         self.reasoning_retriever = RAGRetriever('reasoning_kb')
         self.code_retriever = RAGRetriever('code_kb')
@@ -46,6 +47,8 @@ class FinalEval:
         self.mcq = self._load_mcq()
         self.reasoning = self._load_qa('reasoning.jsonl')
         self.code = self._load_qa('code.jsonl')
+        if tier != 'full':
+            print(f'[TIER] Filtering: {tier} (MCQ={len(self.mcq)}, Reasoning={len(self.reasoning)}, Code={len(self.code)})')
 
     def _load_models(self) -> Dict:
         with open(os.path.join(PROJECT_ROOT, 'config', 'model_config.yaml'), 'r', encoding='utf-8') as f:
@@ -66,6 +69,9 @@ class FinalEval:
             if os.path.isfile(path):
                 with open(path, 'r', encoding='utf-8') as f:
                     for row in csv.DictReader(f):
+                        tier = row.get('tier', 'full')
+                        if self.tier == 'smoke' and tier != 'smoke':
+                            continue
                         opts = [row.get(k, '') for k in ['A', 'B', 'C', 'D', 'E'] if row.get(k, '').strip()]
                         items.append({
                             'id': row.get('id', ''),
@@ -84,6 +90,9 @@ class FinalEval:
                 for line in f:
                     if line.strip():
                         item = json.loads(line)
+                        tier = item.get('tier', 'full')
+                        if self.tier == 'smoke' and tier != 'smoke':
+                            continue
                         items.append({
                             'question': item['query'].split('\n\n')[0].strip(),
                             'expected': item['response']
@@ -310,4 +319,8 @@ class FinalEval:
 
 
 if __name__ == '__main__':
-    FinalEval().run()
+    import argparse
+    p = argparse.ArgumentParser()
+    p.add_argument('--tier', default='full', choices=['smoke', 'full'], help='Test tier (default: full)')
+    args = p.parse_args()
+    FinalEval(tier=args.tier).run()

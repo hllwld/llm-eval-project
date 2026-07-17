@@ -1,6 +1,6 @@
 """
 run_pipeline.py — 一键评测流水线
-用法: python run_pipeline.py [--skip-kb] [--skip-eval] [--skip-metrics] [--skip-ab] [--skip-bucket] [--skip-viz]
+用法: python run_pipeline.py [--tier smoke|full] [--skip-kb] [--skip-eval] [--skip-metrics] [--skip-ab] [--skip-bucket] [--skip-viz]
 
 步骤:
   1. 初始化 RAG 知识库 (reasoning_kb + code_kb)
@@ -42,8 +42,15 @@ if __name__ == '__main__':
     skip_bucket = '--skip-bucket' in sys.argv
     skip_viz = '--skip-viz' in sys.argv
 
+    # Tier: smoke or full
+    tier = 'full'
+    for i, arg in enumerate(sys.argv):
+        if arg == '--tier' and i + 1 < len(sys.argv):
+            tier = sys.argv[i + 1]
+
     started = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print(f'Pipeline start: {started}')
+    print(f'Tier: {tier}')
     print(f'Flags: skip_kb={skip_kb}  skip_eval={skip_eval}  skip_metrics={skip_metrics}  skip_ab={skip_ab}  skip_bucket={skip_bucket}  skip_viz={skip_viz}')
 
     if not skip_kb:
@@ -51,8 +58,8 @@ if __name__ == '__main__':
                  'python rag_retriever.py')
 
     if not skip_eval:
-        run_step('2/6  Run Final Eval (MCQ + QA + Judge)',
-                 'python final_eval.py')
+        run_step(f'2/6  Run Final Eval (tier={tier})',
+                 f'python final_eval.py --tier {tier}')
 
     if not skip_metrics:
         run_step('3/6  Run Extended Metrics (JSON + Tool Call)',
