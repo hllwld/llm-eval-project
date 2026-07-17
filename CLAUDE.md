@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+> ⚠️ **重要规则**: 任何代码改动前，先向用户说明改动方案并征得同意，不要直接修改代码。
+
 ## 项目概述
 
 大模型评测与 RAG 优化实战项目。对 DeepSeek-V3(V4-Flash)/V4-Pro、Qwen-Plus、GLM-4-Plus 四个国产模型进行系统性评测，64 题自建测试集 v4.0，支持 RAG 增强 + LLM-as-Judge + CI/CD。
