@@ -188,7 +188,7 @@ def run():
             resp = client.chat.completions.create(
                 model=mc['model'],
                 messages=[
-                    {'role': 'system', 'content': '你是AI助手。请严格按要求的JSON格式输出，不要在JSON外包裹任何文字说明。'},
+                    {'role': 'system', 'content': '你是AI助手。你的回复必须且只能是纯JSON，不要用```json```代码块包裹，不要加任何解释文字。确保所有必填字段都存在，字段名和类型完全匹配要求。'},
                     {'role': 'user', 'content': test['query']},
                 ],
                 temperature=0.1, max_tokens=512, timeout=30,

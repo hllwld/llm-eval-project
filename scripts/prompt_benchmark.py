@@ -181,8 +181,8 @@ class PromptBenchmark:
         judged = self.judge.batch_judge(samples, subset=subset)
         for r, j in zip(results, judged):
             r['judge'] = j['judge_scores']
-            # Hallucination heuristic: if correctness_score < 2, likely hallucinated
-            r['hallucination'] = j['judge_scores'].get('correctness_score', 5) < 2
+            # Hallucination heuristic: if correctness_score < 3, likely hallucinated
+            r['hallucination'] = j['judge_scores'].get('correctness_score', 5) < 3
         return results
 
     def run(self):

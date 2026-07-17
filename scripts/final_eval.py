@@ -325,7 +325,7 @@ class FinalEval:
                 ),
                 'hallucination_rate': round(
                     sum(1 for r in (data['reasoning_base'] + data['reasoning_rag'] + data['code_base'] + data['code_rag'])
-                        if r.get('judge', {}).get('correctness_score', 5) < 2)
+                        if r.get('judge', {}).get('correctness_score', 5) < 3)
                     / max(len(data['reasoning_base'] + data['reasoning_rag'] + data['code_base'] + data['code_rag']), 1), 4
                 ),
                 'reasoning_base_rouge': qa_stats(data['reasoning_base'], 'rouge_l'),
