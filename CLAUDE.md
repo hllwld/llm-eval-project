@@ -12,7 +12,7 @@
 
 ```bash
 python run_pipeline.py              # 全量 (7步, ~45min)
-python run_pipeline.py --tier smoke  # 快速验证 (8题, ~2min)
+python run_pipeline.py --tier smoke  # 快速验证 (7题, ~2min)
 ```
 
 流水线 (10步): KB Init → final_eval → extended_metrics → security_eval → ab_test → error_bucket → collect_badcases → insight_generator → build_viz → regression_check

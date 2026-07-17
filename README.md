@@ -6,7 +6,7 @@
 
 ```bash
 python run_pipeline.py              # 全量评测 + 报告 + 仪表板
-python run_pipeline.py --tier smoke  # 快速验证（8题，CI用）
+python run_pipeline.py --tier smoke  # 快速验证（7题，CI用）
 ```
 
 流水线自动执行: RAG KB → 评测 → Judge → 扩展指标 → A/B Test → Error Bucket → Badcase收集 → AI洞察 → 仪表板 → 回归检测
@@ -89,7 +89,7 @@ llm-eval-project/
 ```bash
 pip install -r requirements.txt
 
-# 快速验证 (8题, ~2分钟)
+# 快速验证 (7题, ~2分钟)
 python run_pipeline.py --tier smoke
 
 # 全量评测 (64题, 含所有报告)
