@@ -98,3 +98,4 @@ python run_pipeline.py
 ---
 
 *创建时间: 2026-06-22 | 更新: 2026-07-17*
+# test CI trigger
