@@ -21,10 +21,12 @@
     .kpi-item .label { font-size: 12px; color: #666; margin-top: 4px; }
     .table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 420px; }
-    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; white-space: nowrap; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; }
+	    th { background: #fafafa; font-weight: 600; color: #555; white-space: nowrap; }
     th { background: #fafafa; font-weight: 600; color: #555; }
     tr:hover { background: #f8f9ff; }
-    td.nowrap { white-space: normal; }
+    td { white-space: normal; word-break: break-word; }
+	    td.nowrap { white-space: nowrap; }
     .bar-row { display: flex; align-items: center; margin: 6px 0; }
     .bar-label { font-size: 12px; margin-right: 8px; flex-shrink: 0; text-align: right; }
     .badge { color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
@@ -40,7 +42,7 @@
         .header h1 { font-size: 18px; }
         .header p { font-size: 12px; }
         .container { margin: 12px auto; padding: 0 10px; }
-        .card { padding: 14px 12px; margin-bottom: 12px; border-radius: 6px; }
+        .card { padding: 10px 8px; margin-bottom: 12px; border-radius: 6px; }
         .card h2 { font-size: 15px; margin-bottom: 10px; padding-left: 8px; border-left-width: 3px; }
         .card h3 { font-size: 13px; }
         .grid { grid-template-columns: 1fr; gap: 12px; }
@@ -48,8 +50,8 @@
         .kpi-item { flex: 0 0 calc(50% - 4px); min-width: 0; padding: 12px 8px; }
         .kpi-item .num { font-size: 22px; }
         .kpi-item .label { font-size: 11px; }
-        table { font-size: 12px; min-width: 380px; }
-        th, td { padding: 8px 6px; }
+        table { font-size: 12px; min-width: 300px; }
+        th, td { padding: 8px 6px; white-space: normal; word-break: break-word; }
         .bar-label { font-size: 11px; }
         .badcase { padding: 10px 12px; }
         .badcase-header strong { font-size: 11px; }
