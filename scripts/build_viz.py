@@ -331,19 +331,18 @@ if os.path.exists(INSIGHTS_JSON):
     with open(INSIGHTS_JSON, 'r', encoding='utf-8') as _f:
         _insights_data = json.load(_f)
 
-# Security rows
+# Security rows — 表格 + 图表数据均从 JSON 动态读取
 final_security_rows = ''
-# Load security eval data
-_sec_data = []
+_sec_models = []  # [{name, pass, warn, fail, total}, ...]
 if os.path.exists(SECURITY_EVAL_JSON):
     with open(SECURITY_EVAL_JSON, 'r', encoding='utf-8') as _f:
-        _sec_data = json.load(_f).get('models', [])
-for s in _sec_data:
+        _sec_models = json.load(_f).get('models', [])
+for s in _sec_models:
     m = s['name']; p = s['pass']; w = s['warn']; f = s['fail']
     r = f'{p}/{s["total"]} ({p/s["total"]*100:.0f}%)' if s['total'] else 'N/A'
     final_security_rows += f'<tr><td><strong>{m}</strong></td><td style=\"text-align:center;\">{p}</td><td style=\"text-align:center;\">{w}</td><td style=\"text-align:center;color:#F44336;font-weight:bold;\">{f}</td><td style=\"text-align:center;font-weight:bold;\">{r}</td></tr>'
 # Fallback if no JSON
-if not _sec_data:
+if not _sec_models:
     for m, (p,w,f,r) in {'DeepSeek-V3': (4,3,1,'50%'), 'Qwen-Plus': (4,3,1,'50%'), 'GLM-5.2': (2,1,5,'25%')}.items():
         final_security_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{p}</td><td style="text-align:center;">{w}</td><td style="text-align:center;color:#F44336;font-weight:bold;">{f}</td><td style="text-align:center;font-weight:bold;">{r}</td></tr>'
 
@@ -426,15 +425,18 @@ _chart_code = {
     ]
 }
 
-# Chart 6: Security adversarial stacked bar
-_sec_data = [
-    {'label': 'PASS', 'data': [4, 4, 2], 'backgroundColor': 'rgba(76,175,80,0.8)'},
-    {'label': 'WARN', 'data': [3, 3, 1], 'backgroundColor': 'rgba(255,152,0,0.8)'},
-    {'label': 'FAIL', 'data': [1, 1, 5], 'backgroundColor': 'rgba(244,67,54,0.8)'},
-]
+# Chart 6: Security adversarial stacked bar — 从 JSON 动态构建
+_sec_chart_labels = [s['name'] for s in _sec_models] if _sec_models else ['DeepSeek-V3', 'Qwen-Plus', 'GLM-5.2']
+_sec_chart_pass  = [s['pass'] for s in _sec_models] if _sec_models else [4, 4, 2]
+_sec_chart_warn  = [s['warn'] for s in _sec_models] if _sec_models else [3, 3, 1]
+_sec_chart_fail  = [s['fail'] for s in _sec_models] if _sec_models else [1, 1, 5]
 _chart_security = {
-    'labels': _V2_MCQ_MODELS,
-    'datasets': _sec_data,
+    'labels': _sec_chart_labels,
+    'datasets': [
+        {'label': 'PASS', 'data': _sec_chart_pass, 'backgroundColor': 'rgba(76,175,80,0.8)'},
+        {'label': 'WARN', 'data': _sec_chart_warn, 'backgroundColor': 'rgba(255,152,0,0.8)'},
+        {'label': 'FAIL', 'data': _sec_chart_fail, 'backgroundColor': 'rgba(244,67,54,0.8)'},
+    ],
 }
 
 # ── HTML ──

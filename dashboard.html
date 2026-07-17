@@ -629,7 +629,7 @@ makeBar('chart_reasoning_judge', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "
 makeDualAxis('chart_code', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "ROUGE-L (%)", "data": [50.529999999999994, 43.56, 31.25, 54.790000000000006], "backgroundColor": "rgba(26,35,126,0.7)", "borderRadius": 4, "yAxisID": "y"}, {"label": "Judge Overall", "data": [4.0, 4.0, 4.0, 5.0], "backgroundColor": "rgba(255,152,0,0.7)", "borderRadius": 4, "yAxisID": "y1"}]});
 
 // Chart 6: Security stacked bar
-makeStackedBar('chart_security', {"labels": ["DeepSeek-V3", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "PASS", "data": [4, 4, 2], "backgroundColor": "rgba(76,175,80,0.8)"}, {"label": "WARN", "data": [3, 3, 1], "backgroundColor": "rgba(255,152,0,0.8)"}, {"label": "FAIL", "data": [1, 1, 5], "backgroundColor": "rgba(244,67,54,0.8)"}]});
+makeStackedBar('chart_security', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "PASS", "data": [5, 5, 4, 5], "backgroundColor": "rgba(76,175,80,0.8)"}, {"label": "WARN", "data": [2, 3, 3, 2], "backgroundColor": "rgba(255,152,0,0.8)"}, {"label": "FAIL", "data": [1, 0, 1, 1], "backgroundColor": "rgba(244,67,54,0.8)"}]});
 
 // Chart 7: Token consumption
 makeBar('chart_token', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Total Tokens", "data": [3343, 3245, 2779, 5114], "backgroundColor": ["rgba(26,35,126,0.7)", "rgba(25,118,210,0.7)", "rgba(245,124,0,0.7)", "rgba(56,142,60,0.7)"], "borderRadius": 4}]});
