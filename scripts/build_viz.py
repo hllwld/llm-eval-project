@@ -12,12 +12,10 @@ from collections import Counter
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'outputs')
 
 # ── 数据源 ──
 BADCASES_OLD = os.path.join(PROJECT_ROOT, 'data', 'badcases', 'badcases_raw.json')
 BADCASES_CUSTOM = os.path.join(PROJECT_ROOT, 'data', 'badcases', 'custom_badcases_labeled.json')
-OUTPUT_HTML = os.path.join(OUTPUT_DIR, 'dashboard.html')
 ROOT_HTML = os.path.join(PROJECT_ROOT, 'dashboard.html')
 
 # 加载最新 v3 benchmark 分数
@@ -783,14 +781,10 @@ makeBar('chart_latency', {_js(_chart_latency)});
 </body>
 </html>'''
 
-os.makedirs(os.path.dirname(OUTPUT_HTML), exist_ok=True)
-with open(OUTPUT_HTML, 'w', encoding='utf-8') as f:
-    f.write(html)
 with open(ROOT_HTML, 'w', encoding='utf-8') as f:
     f.write(html)
 
-print(f'Dashboard generated: {OUTPUT_HTML}')
-print(f'Root copy:         {ROOT_HTML}')
+print(f'Dashboard: {ROOT_HTML}')
 print(f'  Models: {len(all_models)}')
 print(f'  Datasets: standard (3) + custom MCQ + custom QA')
 print(f'  Badcases: {total_bc} ({len([b for b in all_badcases if b["source"]=="标准数据集"])} standard + {len([b for b in all_badcases if b["source"]=="自定义测试集"])} custom)')
