@@ -22,7 +22,7 @@ jobs:
   smoke-test:
     name: Smoke Test (${{ github.event.inputs.tier || 'smoke' }})
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v4
@@ -60,6 +60,14 @@ jobs:
         run: |
           python scripts/final_eval.py --tier ${{ github.event.inputs.tier || 'smoke' }}
 
+      - name: Run Security Eval
+        if: success()
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          BAILIAN_API_KEY: ${{ secrets.BAILIAN_API_KEY }}
+          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+        run: python scripts/security_eval.py
+
       - name: Generate Dashboard
         if: success()
         run: python scripts/build_viz.py
@@ -71,5 +79,6 @@ jobs:
           name: eval-report-${{ github.run_id }}
           path: |
             scripts/reports/final_eval_report.md
+            scripts/reports/security_eval_report.md
             dashboard.html
           retention-days: 7
