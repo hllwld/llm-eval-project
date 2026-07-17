@@ -285,6 +285,7 @@ for m in ['DeepSeek-V3', 'DeepSeek-V4-Pro', 'Qwen-Plus', 'GLM-4-Plus']:
     ext_metrics_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{jf:.0%}</td><td style="text-align:center;">{tc:.0%}</td></tr>'
 
 # Latency + Hallucination rows
+_colors_tok = ['rgba(26,35,126,0.7)', 'rgba(25,118,210,0.7)', 'rgba(245,124,0,0.7)', 'rgba(56,142,60,0.7)']
 latency_rows = ''
 _chart_latency = {'labels': [], 'datasets': [{'label': 'Avg Latency (ms)', 'data': [], 'backgroundColor': _colors_tok, 'borderRadius': 4}]}
 if FEV:
@@ -305,7 +306,6 @@ for m, (p,w,f,r) in _sec_models.items():
 # Token rows
 token_rows = ''
 _chart_token = {'labels': [], 'datasets': [{'label': 'Total Tokens', 'data': [], 'backgroundColor': [], 'borderRadius': 4}]}
-_colors_tok = ['rgba(26,35,126,0.7)', 'rgba(25,118,210,0.7)', 'rgba(245,124,0,0.7)', 'rgba(56,142,60,0.7)']
 if FEV:
     for i, m in enumerate(FEV.get('models', [])):
         if m in FEV:
