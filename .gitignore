@@ -4,6 +4,7 @@
 # EvalScope 运行输出（日志/报告/预测结果，数据量大且可复现）
 outputs/
 scripts/outputs/
+scripts/reports/
 
 # 数据目录 — 仅保留测试集源文件 (mcq/*.csv, qa/*.jsonl, metadata.yaml)
 # 以下均为脚本生成产物，不入库
