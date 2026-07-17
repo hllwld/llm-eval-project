@@ -117,3 +117,7 @@ if __name__ == '__main__':
     print(f'  Quick access: results/latest/')
     for f in os.listdir(out_dir):
         print(f'    {f}')
+
+    # GitHub Pages 更新提示
+    print(f'\n  GitHub Pages: https://hllwld.github.io/llm-eval-project/dashboard.html')
+    print(f'  To update:    git add dashboard.html && git commit -m "update dashboard" && git push')
