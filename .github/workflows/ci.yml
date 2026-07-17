@@ -43,6 +43,9 @@ jobs:
           pip install -r requirements.txt
           pip install python-docx chromadb sentence-transformers rouge-score
 
+      - name: Init RAG Knowledge Base
+        run: python scripts/rag_retriever.py
+
       - name: Run Smoke Test
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
