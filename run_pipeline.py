@@ -6,9 +6,13 @@ run_pipeline.py — 一键评测流水线
   1. 初始化 RAG 知识库 (reasoning_kb + code_kb)
   2. 运行 final_eval (全64题, Base+RAG, LLM Judge)
   3. 运行 extended_metrics (JSON格式率 + 工具调用成功率)
-  4. A/B Test 统计分析 (p-value + cost + CI)
-  5. Error Bucket 错误分类 (LLM自动分桶)
-  6. 生成可视化仪表板 (HTML)
+  4. 安全对抗评测 (越狱/诱导/拒答检测)
+  5. A/B Test 统计分析 (p-value + cost + CI)
+  6. Error Bucket 错误分类 (LLM自动分桶)
+  7. 自动收集 Badcase
+  8. AI 洞察生成
+  9. 生成可视化仪表板 (HTML)
+ 10. 回归检测 (告警 + Token趋势)
 """
 
 import sys
@@ -58,36 +62,39 @@ if __name__ == '__main__':
     print(f'Flags: skip_kb={skip_kb}  skip_eval={skip_eval}  skip_metrics={skip_metrics}  skip_ab={skip_ab}  skip_bucket={skip_bucket}  skip_viz={skip_viz}')
 
     if not skip_kb:
-        run_step('1/9  Init RAG Knowledge Base',
+        run_step('1/10  Init RAG Knowledge Base',
                  'python rag_retriever.py')
 
     if not skip_eval:
-        run_step(f'2/9  Run Final Eval (tier={tier})',
+        run_step(f'2/10  Run Final Eval (tier={tier})',
                  f'python final_eval.py --tier {tier}')
 
     if not skip_metrics:
-        run_step('3/9  Run Extended Metrics (JSON + Tool Call)',
+        run_step('3/10  Run Extended Metrics (JSON + Tool Call)',
                  'python extended_metrics.py')
 
+    run_step('4/10  Security Adversarial Eval',
+             'python security_eval.py')
+
     if not skip_ab:
-        run_step('4/9  A/B Test Analysis (p-value + cost + CI)',
+        run_step('5/10  A/B Test Analysis (p-value + cost + CI)',
                  'python ab_test.py')
 
     if not skip_bucket:
-        run_step('5/9  Error Bucket Classification',
+        run_step('6/10  Error Bucket Classification',
                  'python error_bucket.py')
 
-    run_step('6/9  Collect Badcases',
+    run_step('7/10  Collect Badcases',
              'python collect_badcases.py')
 
-    run_step('7/9  AI Insight Generator (LLM analysis)',
+    run_step('8/10  AI Insight Generator (LLM analysis)',
              'python insight_generator.py')
 
     if not skip_viz:
-        run_step('8/9  Generate Dashboard (HTML)',
+        run_step('9/10  Generate Dashboard (HTML)',
                  'python build_viz.py')
 
-    run_step('9/9  Regression Check (alert + cost trend)',
+    run_step('10/10  Regression Check (alert + cost trend)',
              'python regression_check.py')
 
     ended = datetime.now().strftime('%Y-%m-%d %H:%M:%S')

@@ -196,7 +196,25 @@ def main():
     with open(REPORT_PATH, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))
 
+    # Save JSON for dashboard
+    json_data = {'timestamp': now, 'models': []}
+    for mc in models:
+        name = mc['name']
+        r = all_results[name]
+        json_data['models'].append({
+            'name': name,
+            'pass': sum(1 for x in r if x['verdict'] == 'PASS'),
+            'warn': sum(1 for x in r if x['verdict'] == 'WARN'),
+            'fail': sum(1 for x in r if x['verdict'] == 'FAIL'),
+            'total': len(r),
+        })
+    json_path = os.path.join(ROOT, 'outputs', 'security_eval', 'latest.json')
+    os.makedirs(os.path.dirname(json_path), exist_ok=True)
+    with open(json_path, 'w', encoding='utf-8') as f:
+        json.dump(json_data, f, indent=2, ensure_ascii=False)
+
     print(f'\nReport: {REPORT_PATH}')
+    print(f'JSON:   {json_path}')
 
 
 if __name__ == '__main__':

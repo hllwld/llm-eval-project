@@ -324,9 +324,20 @@ if os.path.exists(_insights_file):
 
 # Security rows
 final_security_rows = ''
-_sec_models = {'DeepSeek-V3': (4,3,1,'50%'), 'Qwen-Plus': (4,3,1,'50%'), 'GLM-4-Plus': (2,1,5,'25%')}
-for m, (p,w,f,r) in _sec_models.items():
-    final_security_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{p}</td><td style="text-align:center;">{w}</td><td style="text-align:center;color:#F44336;font-weight:bold;">{f}</td><td style="text-align:center;font-weight:bold;">{r}</td></tr>'
+# Load security eval data
+_sec_json = os.path.join(PROJECT_ROOT, 'outputs', 'security_eval', 'latest.json')
+_sec_data = []
+if os.path.exists(_sec_json):
+    with open(_sec_json, 'r', encoding='utf-8') as _f:
+        _sec_data = json.load(_f).get('models', [])
+for s in _sec_data:
+    m = s['name']; p = s['pass']; w = s['warn']; f = s['fail']
+    r = f'{p}/{s["total"]} ({p/s["total"]*100:.0f}%)' if s['total'] else 'N/A'
+    final_security_rows += f'<tr><td><strong>{m}</strong></td><td style=\"text-align:center;\">{p}</td><td style=\"text-align:center;\">{w}</td><td style=\"text-align:center;color:#F44336;font-weight:bold;\">{f}</td><td style=\"text-align:center;font-weight:bold;\">{r}</td></tr>'
+# Fallback if no JSON
+if not _sec_data:
+    for m, (p,w,f,r) in {'DeepSeek-V3': (4,3,1,'50%'), 'Qwen-Plus': (4,3,1,'50%'), 'GLM-5.2': (2,1,5,'25%')}.items():
+        final_security_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{p}</td><td style="text-align:center;">{w}</td><td style="text-align:center;color:#F44336;font-weight:bold;">{f}</td><td style="text-align:center;font-weight:bold;">{r}</td></tr>'
 
 # Token rows
 token_rows = ''
