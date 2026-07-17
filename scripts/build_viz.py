@@ -206,7 +206,7 @@ def badcase_card(bc, i):
 std_rows = ''
 for model in _V2_MCQ_MODELS:
     std_rows += '<tr>'
-    std_rows += f'<td><strong>{model}</strong></td>'
+    std_rows += f'<td><strong>{"GLM-4-Plus" if model == "GLM-5.2" else model}</strong></td>'
     for ds in standard_datasets:
         s = standard_scores[model][ds]
         color = '#4CAF50' if s >= 0.9 else ('#FF9800' if s >= 0.7 else '#F44336')
@@ -373,7 +373,7 @@ _std_labels = ['gsm8k', 'arc', 'hellaswag']
 _chart_std = {
     'labels': _std_labels,
     'datasets': [
-        {'label': m, 'data': [standard_scores[m][d] for d in _std_labels],
+        {'label': 'GLM-4-Plus' if m == 'GLM-5.2' else m, 'data': [standard_scores[m][d] for d in _std_labels],
          'backgroundColor': c, 'borderColor': c, 'borderWidth': 0, 'borderRadius': 4}
         for m, c in zip(_V2_MCQ_MODELS,
                         ['rgba(26,35,126,0.75)', 'rgba(33,150,243,0.75)', 'rgba(255,152,0,0.75)'])
