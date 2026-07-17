@@ -4,7 +4,7 @@ run_pipeline.py — 一键评测流水线
 
 步骤:
   1. 初始化 RAG 知识库 (reasoning_kb + code_kb)
-  2. 运行 final_eval (全53题, Base+RAG, LLM Judge)
+  2. 运行 final_eval (全64题, Base+RAG, LLM Judge)
   3. 运行 extended_metrics (JSON格式率 + 工具调用成功率)
   4. A/B Test 统计分析 (p-value + cost + CI)
   5. Error Bucket 错误分类 (LLM自动分桶)

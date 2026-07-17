@@ -343,8 +343,8 @@ def run(from_json: Optional[str] = None):
     print(f'\nTop Error Buckets:')
     for bid, count in sorted_buckets[:5]:
         pct = count / total * 100
-        b = ERROR_BUCKETS.get(bid, {'name': bid})
-        print(f'  {b["name"]:<12} {count:>3} ({pct:5.1f}%)  → {b["fix"]}')
+        b = ERROR_BUCKETS.get(bid, {'name': bid, 'fix': '-'})
+        print(f'  {b["name"]:<12} {count:>3} ({pct:5.1f}%)')
 
 
 if __name__ == '__main__':
