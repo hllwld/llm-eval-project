@@ -324,4 +324,3 @@ if __name__ == '__main__':
     p.add_argument('--tier', default='full', choices=['smoke', 'full'], help='Test tier (default: full)')
     args = p.parse_args()
     FinalEval(tier=args.tier).run()
-# CI test
