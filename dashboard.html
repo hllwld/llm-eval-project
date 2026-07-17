@@ -230,7 +230,6 @@
 <div class="bar-row"><span class="bar-label">GLM-5.2</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:76.19047619047619%;height:100%;background:#2196F3;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">16</span></div></div></div>
 <div class="bar-row"><span class="bar-label">DeepSeek-V3</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:71.42857142857143%;height:100%;background:#FF9800;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">15</span></div></div></div>
 <div class="bar-row"><span class="bar-label">DeepSeek-V4-Pro</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:61.904761904761905%;height:100%;background:#9C27B0;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">13</span></div></div></div>
-<div class="bar-row"><span class="bar-label">Qwen2.5-VL</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:4.761904761904762%;height:100%;background:#E91E63;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">1</span></div></div></div>
         </div>
 
         <!-- 错误类型分布 -->
@@ -303,7 +302,7 @@
 
     <!-- 逐条 Badcase -->
     <div class="card">
-        <h2>逐条 Badcase 分析（共 66 条 | 65 条 Rouge 误判）</h2>
+        <h2>逐条 Badcase 分析（共 65 条 | 64 条 Rouge 误判）</h2>
         
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -1599,28 +1598,6 @@ $$
 
 $$
 S = 3.14 \times 7^2...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">⚠ Rouge 误判：答案内容正确，因输出详细导致分数低</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#66 Qwen2.5-VL — QA-reasoning</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>一个圆形花坛半径 7 米，面积约多少平方米？（π≈3.14）</div>
-        <div class="badcase-answer">
-            <span>答案：约 153.86 m²（π×7² = 3.14×49 = 153.86）</span>
-            <span>输出：要计算一个圆形花坛的面积，我们可以使用圆的面积公式：
-
-\[ A = \pi r^2 \]
-
-其中：
-- \( A \) 是圆的面积，
-- \( \pi \) 约等于 3.14，
-- \( r \) ...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → 逻辑链条断裂 → 部分可解 | 推理链不完整或有误（Rouge-L-R=0.38）
