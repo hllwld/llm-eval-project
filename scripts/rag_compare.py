@@ -92,6 +92,7 @@ def compare():
         print(f'{model:<18} {base:>9.2%} {rag:>9.2%} {delta:>+9.2%} {verdict:>12}')
 
     # ── Save report ──
+    os.makedirs(os.path.dirname(REPORT_PATH), exist_ok=True)
     with open(REPORT_PATH, 'w', encoding='utf-8') as f:
         f.write('# Base vs RAG 三模型对比报告\n\n')
         f.write(f'> 数据: v3 benchmark + rag_benchmark\n\n')

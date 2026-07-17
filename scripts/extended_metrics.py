@@ -262,6 +262,7 @@ def run():
         lines.append(f'| {name} | {r["json_format_rate"]:.0%} | {r["tool_call_rate"]:.0%} | {avg:.0%} |')
 
     report_path = os.path.join(REPORT_DIR, 'extended_metrics_report.md')
+    os.makedirs(os.path.dirname(report_path), exist_ok=True)
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))
 

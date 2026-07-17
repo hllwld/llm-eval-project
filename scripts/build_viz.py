@@ -245,7 +245,7 @@ model_bars = '\n'.join(
 # ── Final Eval 表行 ──
 # 加载 final eval JSON
 FEV = None
-_fev_files = sorted(_glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'final_eval', 'final_eval_*.json')), reverse=True)
+_fev_files = sorted(_glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'final_eval', 'final_eval_[0-9]*.json')), reverse=True)
 if _fev_files:
     with open(_fev_files[0], 'r', encoding='utf-8') as _f:
         FEV = json.load(_f)

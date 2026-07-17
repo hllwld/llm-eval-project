@@ -324,6 +324,7 @@ class FinalEval:
             lines += ['- Run insight_generator.py to generate AI analysis', '']
 
         report = '\n'.join(lines)
+        os.makedirs(os.path.dirname(REPORT_PATH), exist_ok=True)
         with open(REPORT_PATH, 'w', encoding='utf-8') as f:
             f.write(report)
 

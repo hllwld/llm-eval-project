@@ -343,6 +343,7 @@ def run(from_json: Optional[str] = None):
         lines.append(f'| {i} | {bname} | {r["confidence"]:.0%} | {r.get("severity","?")} | {r["reason"]} | {r.get("question","")[:60]} |')
 
     report_path = os.path.join(REPORT_DIR, 'error_bucket_report.md')
+    os.makedirs(os.path.dirname(report_path), exist_ok=True)
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))
 

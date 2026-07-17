@@ -95,6 +95,7 @@ def analyze():
     print(f'\nStep improved: {improved}/{len(base_r)}  Step degraded: {degraded}/{len(base_r)}')
 
     # ── 保存报告 ──
+    os.makedirs(os.path.dirname(REPORT_PATH), exist_ok=True)
     with open(REPORT_PATH, 'w', encoding='utf-8') as f:
         f.write('# RAG 评测分析报告\n\n')
         f.write(f'> 数据来源: {os.path.basename(files[0])}\n\n')
