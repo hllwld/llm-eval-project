@@ -9,7 +9,9 @@ python run_pipeline.py              # 全量评测 + 报告 + 仪表板
 python run_pipeline.py --tier smoke  # 快速验证（8题，CI用）
 ```
 
-流水线自动执行: RAG KB 初始化 → 评测 → Judge → 扩展指标 → A/B Test → Error Bucket → HTML 仪表板
+流水线自动执行: RAG KB → 评测 → Judge → 扩展指标 → A/B Test → Error Bucket → 仪表板 → 回归检测
+
+输出全部集中在 `results/latest/`：5 份报告 + 1 个交互式仪表板
 
 ## 评测能力矩阵
 
@@ -20,7 +22,8 @@ python run_pipeline.py --tier smoke  # 快速验证（8题，CI用）
 | A/B Test | `ab_test.py` | p-value + 95% CI + 成本对比 + 排行榜 |
 | Error Bucket | `error_bucket.py` | LLM自动11类错误分桶 |
 | Prompt Benchmark | `prompt_benchmark.py` | 多Prompt变体对比 (Accuracy/Cost/Latency/Hallu) |
-| 可视化仪表板 | `build_viz.py` | Chart.js 交互式 HTML |
+| 可视化仪表板 | `build_viz.py` | Chart.js 交互式 HTML (8张图表) |
+| 回归检测 | `regression_check.py` | 正确率告警 + Token趋势 + 版本锁定 |
 | 安全对抗 | `security_eval.py` | 越狱/诱导/拒答检测 |
 | 前置校验 | `precheck.py` | 测试集三级质量校验 |
 
@@ -44,6 +47,7 @@ llm-eval-project/
 │   ├── llm_as_judge.py                # LLM-as-Judge (1-5分)
 │   ├── rag_eval.py / rag_benchmark.py / rag_compare.py / rag_analysis.py  # RAG分析套件
 │   ├── rag_inference.py               # RAG 推理管道
+│   ├── regression_check.py            # 回归检测 (告警+趋势)
 │   ├── security_eval.py               # 安全对抗评测
 │   ├── precheck.py                    # 前置校验
 │   ├── generate_testset.py            # 测试集生成
@@ -60,7 +64,9 @@ llm-eval-project/
 │   ├── badcases/                      # Badcase 数据
 │   └── reports/                       # 分析报告
 │
-├── outputs/                           # 运行输出 (gitignore)
+├── results/                           # 报告输出 (每次运行归档，gitignore)
+│   └── latest/                        # 最新结果快捷访问
+├── outputs/                           # 中间数据 (gitignore)
 └── chroma_db/                         # 向量库 (gitignore)
 ```
 
@@ -92,8 +98,8 @@ python run_pipeline.py
 - **评测框架**: Python final_eval.py + LLM-as-Judge
 - **向量数据库**: ChromaDB + BAAI/bge-small-zh-v1.5
 - **模型 API**: DeepSeek / Qwen / GLM
-- **指标**: Accuracy / ROUGE-L / LLM Judge / Cost / Latency / JSON Rate / Tool Call Success
-- **CI/CD**: GitHub Actions (.github/workflows/ci.yml)
+- **指标**: Accuracy / ROUGE-L / LLM Judge / Latency / Tokens (Cost) / 拒答率 / 幻觉率 / JSON 格式率 / 工具调用成功率
+- **CI/CD**: GitHub Actions — push 自动 smoke，手动触发 full
 
 ---
 
