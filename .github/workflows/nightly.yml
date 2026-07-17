@@ -1,0 +1,56 @@
+name: Nightly Full Eval
+
+on:
+  schedule:
+    - cron: '0 18 * * *'   # UTC 18:00 = 北京时间凌晨 2:00
+  workflow_dispatch:         # 也支持手动触发
+
+jobs:
+  full-eval:
+    name: Full Pipeline (64题 x 4模型)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    permissions:
+      contents: write          # 允许推送 commit
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Cache HuggingFace
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-${{ runner.os }}-bge-small
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install python-docx chromadb sentence-transformers rouge-score
+
+      - name: Run Full Pipeline
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          BAILIAN_API_KEY: ${{ secrets.BAILIAN_API_KEY }}
+          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+        run: python run_pipeline.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f dashboard.html data/badcases/auto_badcases.json
+          git add scripts/reports/ results/nightly/
+          git diff --staged --quiet || git commit -m "nightly: auto full eval $(date +%Y-%m-%d)"
+          git push
