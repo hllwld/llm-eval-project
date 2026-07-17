@@ -58,28 +58,31 @@ if __name__ == '__main__':
     print(f'Flags: skip_kb={skip_kb}  skip_eval={skip_eval}  skip_metrics={skip_metrics}  skip_ab={skip_ab}  skip_bucket={skip_bucket}  skip_viz={skip_viz}')
 
     if not skip_kb:
-        run_step('1/6  Init RAG Knowledge Base',
+        run_step('1/7  Init RAG Knowledge Base',
                  'python rag_retriever.py')
 
     if not skip_eval:
-        run_step(f'2/6  Run Final Eval (tier={tier})',
+        run_step(f'2/7  Run Final Eval (tier={tier})',
                  f'python final_eval.py --tier {tier}')
 
     if not skip_metrics:
-        run_step('3/6  Run Extended Metrics (JSON + Tool Call)',
+        run_step('3/7  Run Extended Metrics (JSON + Tool Call)',
                  'python extended_metrics.py')
 
     if not skip_ab:
-        run_step('4/6  A/B Test Analysis (p-value + cost + CI)',
+        run_step('4/7  A/B Test Analysis (p-value + cost + CI)',
                  'python ab_test.py')
 
     if not skip_bucket:
-        run_step('5/6  Error Bucket Classification',
+        run_step('5/7  Error Bucket Classification',
                  'python error_bucket.py')
 
     if not skip_viz:
-        run_step('6/6  Generate Dashboard (HTML)',
+        run_step('6/7  Generate Dashboard (HTML)',
                  'python build_viz.py')
+
+    run_step('7/7  Regression Check (alert + cost trend)',
+             'python regression_check.py')
 
     ended = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -89,7 +92,7 @@ if __name__ == '__main__':
     os.makedirs(out_dir, exist_ok=True)
 
     # Copy reports
-    for f in ['final_eval_report.md', 'extended_metrics_report.md', 'ab_test_report.md', 'error_bucket_report.md']:
+    for f in ['final_eval_report.md', 'extended_metrics_report.md', 'ab_test_report.md', 'error_bucket_report.md', 'regression_report.md']:
         src = os.path.join(REPORTS_SRC, f)
         if os.path.exists(src):
             shutil.copy2(src, os.path.join(out_dir, f))
