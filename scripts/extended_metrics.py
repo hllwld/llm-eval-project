@@ -173,16 +173,13 @@ def run():
     print(f'Tool Call Tests:   {len(tool_tests)}')
     print(f'Models:            {list(models.keys())}')
 
-    results = {}
-
-    for name, mc in models.items():
+    def eval_one_model(name, mc, json_tests, tool_tests):
+        """Run JSON + Tool tests for one model"""
         base_url = mc['api_url'].rstrip('/').replace('/chat/completions', '')
         client = OpenAI(api_key=mc['api_key'], base_url=base_url)
         print(f'\n{"="*60}\n>> {name}\n{"="*60}')
 
-        # ── JSON Format ──
-        jf_correct = 0
-        jf_details = []
+        jf_correct = 0; jf_details = []
         print(f'\n  [JSON Format] {len(json_tests)} tests...')
         for test in json_tests:
             resp = client.chat.completions.create(
@@ -196,19 +193,14 @@ def run():
             content = resp.choices[0].message.content
             schema = test.get('expected_schema')
             v = validate_json_format(content, schema)
-            if v['valid']:
-                jf_correct += 1
-                print(f'    [{test["id"]}] OK')
-            else:
-                print(f'    [{test["id"]}] FAIL: {v["error"]}')
+            if v['valid']: jf_correct += 1; print(f'    [{test["id"]}] OK')
+            else: print(f'    [{test["id"]}] FAIL: {v["error"]}')
             jf_details.append({'id': test['id'], **v, 'response': content[:200]})
             time.sleep(0.2)
 
         jf_rate = jf_correct / len(json_tests) if json_tests else 0
 
-        # ── Tool Call ──
-        tc_correct = 0
-        tc_details = []
+        tc_correct = 0; tc_details = []
         print(f'\n  [Tool Call] {len(tool_tests)} tests...')
         for test in tool_tests:
             resp = client.chat.completions.create(
@@ -221,23 +213,26 @@ def run():
             v = validate_tool_call(msg.tool_calls, test.get('expected_tool'), test.get('expected_args'))
             if v['valid']:
                 tc_correct += 1
-                print(f'    [{test["id"]}] OK {v.get("detail", "")}')
+                print(f'    [{test["id"]}] OK')
             else:
                 print(f'    [{test["id"]}] FAIL: {v["error"]}')
             tc_details.append({'id': test['id'], **v})
             time.sleep(0.2)
 
         tc_rate = tc_correct / len(tool_tests) if tool_tests else 0
-        results[name] = {
-            'json_format_rate': round(jf_rate, 4),
-            'json_correct': jf_correct,
-            'json_total': len(json_tests),
-            'json_details': jf_details,
-            'tool_call_rate': round(tc_rate, 4),
-            'tool_correct': tc_correct,
-            'tool_total': len(tool_tests),
-            'tool_details': tc_details,
+        return name, {
+            'json_format_rate': round(jf_rate, 4), 'json_correct': jf_correct, 'json_total': len(json_tests),
+            'json_details': jf_details, 'tool_call_rate': round(tc_rate, 4), 'tool_correct': tc_correct,
+            'tool_total': len(tool_tests), 'tool_details': tc_details,
         }
+
+    results = {}
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    with ThreadPoolExecutor(max_workers=len(models)) as executor:
+        futures = [executor.submit(eval_one_model, name, mc, json_tests, tool_tests) for name, mc in models.items()]
+        for future in as_completed(futures):
+            name, data = future.result()
+            results[name] = data
 
     # ── Report ──
     now = datetime.now().strftime('%Y-%m-%d %H:%M')

@@ -183,31 +183,42 @@ class FinalEval:
             r['judge'] = j['judge_scores']
         return results
 
+    def _eval_one_model(self, name: str, mc: Dict) -> Dict:
+        """Run all 5 eval steps for one model"""
+        print(f'\n{"="*60}')
+        print(f'>> {name} ({mc["model"]})')
+        print(f'{"="*60}')
+
+        mcq_result = self._eval_mcq(mc)
+        reasoning_base = self._eval_qa(mc, self.reasoning, 'reasoning', use_rag=False)
+        reasoning_rag = self._eval_qa(mc, self.reasoning, 'reasoning', use_rag=True)
+        code_base = self._eval_qa(mc, self.code, 'code', use_rag=False)
+        code_rag = self._eval_qa(mc, self.code, 'code', use_rag=True)
+
+        return {
+            'mcq': mcq_result,
+            'reasoning_base': reasoning_base,
+            'reasoning_rag': reasoning_rag,
+            'code_base': code_base,
+            'code_rag': code_rag,
+        }
+
     def run(self):
         print(f'Models: {list(self.models.keys())}')
-        code_inferences = len(self.code)  # base only
-        code_rag_inferences = len(self.code)  # +rag
         print(f'Testset: MCQ={len(self.mcq)}  Reasoning={len(self.reasoning)}x2  Code={len(self.code)}x2  Total={len(self.mcq)+len(self.reasoning)*2+len(self.code)*2}')
 
+        # Parallel execution: all models run simultaneously
+        from concurrent.futures import ThreadPoolExecutor, as_completed
         all_results = {}
-        for name, mc in self.models.items():
-            print(f'\n{"="*60}')
-            print(f'>> {name} ({mc["model"]})')
-            print(f'{"="*60}')
-
-            mcq_result = self._eval_mcq(mc)
-            reasoning_base = self._eval_qa(mc, self.reasoning, 'reasoning', use_rag=False)
-            reasoning_rag = self._eval_qa(mc, self.reasoning, 'reasoning', use_rag=True)
-            code_base = self._eval_qa(mc, self.code, 'code', use_rag=False)
-            code_rag = self._eval_qa(mc, self.code, 'code', use_rag=True)
-
-            all_results[name] = {
-                'mcq': mcq_result,
-                'reasoning_base': reasoning_base,
-                'reasoning_rag': reasoning_rag,
-                'code_base': code_base,
-                'code_rag': code_rag,
-            }
+        with ThreadPoolExecutor(max_workers=len(self.models)) as executor:
+            futures = {executor.submit(self._eval_one_model, name, mc): name for name, mc in self.models.items()}
+            for future in as_completed(futures):
+                name = futures[future]
+                try:
+                    all_results[name] = future.result()
+                except Exception as e:
+                    print(f'[FATAL] Model {name} failed: {e}')
+                    raise
 
         self._save_report(all_results)
 
