@@ -259,13 +259,16 @@ if FEV:
                 j = FEV[m][key]
                 final_judge_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{mode}</td><td style="text-align:center;">{j["format"]:.2f}</td><td style="text-align:center;">{j["step"]:.2f}</td><td style="text-align:center;">{j.get("correctness",5):.2f}</td><td style="text-align:center;font-weight:bold;">{j["overall"]:.2f}</td></tr>'
 
-# Code rows
+# Code rows (Base vs RAG)
 final_code_rows = ''
 if FEV:
     for m in FEV.get('models', []):
         if m in FEV:
-            j = FEV[m]['code_judge']
-            final_code_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{FEV[m]["code_rouge"]:.2%}</td><td style="text-align:center;">{j["format"]:.2f}</td><td style="text-align:center;">{j.get("correctness",5):.2f}</td><td style="text-align:center;font-weight:bold;">{j["overall"]:.2f}</td></tr>'
+            j = FEV[m].get('code_base_judge', {})
+            jr = FEV[m].get('code_rag_judge', {})
+            br = FEV[m].get('code_base_rouge', 0)
+            rr = FEV[m].get('code_rag_rouge', br)
+            final_code_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{br:.2%}</td><td style="text-align:center;">{rr:.2%}</td><td style="text-align:center;">{j.get("overall",0):.2f}</td><td style="text-align:center;font-weight:bold;">{jr.get("overall",j.get("overall",0)):.2f}</td></tr>'
 
 # Security rows
 final_security_rows = ''
@@ -505,10 +508,10 @@ html = f'''<!DOCTYPE html>
 
     <!-- Final Eval: Code -->
     <div class="card">
-        <h2>代码子集 (ROUGE-L + Judge)</h2>
+        <h2>代码子集 — Base vs RAG (ROUGE-L + Judge)</h2>
         <div class="table-wrap">
         <table>
-            <thead><tr><th>模型</th><th>ROUGE-L</th><th>Judge Format</th><th>Judge Correct</th><th>Judge Overall</th></tr></thead>
+            <thead><tr><th>模型</th><th>Base Rouge</th><th>RAG Rouge</th><th>Base Judge</th><th>RAG Judge</th></tr></thead>
             <tbody>{final_code_rows}</tbody>
         </table>
         </div>
