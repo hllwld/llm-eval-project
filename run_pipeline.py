@@ -105,6 +105,12 @@ if __name__ == '__main__':
     os.makedirs(out_dir, exist_ok=True)
 
     # Copy reports
+        # Copy raw data too
+    import glob as _glob
+    raw_files = sorted(_glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'final_eval', 'final_eval_raw_*.json')), reverse=True)
+    if raw_files:
+        shutil.copy2(raw_files[0], os.path.join(out_dir, 'raw_responses.json'))
+
     for f in ['final_eval_report.md', 'extended_metrics_report.md', 'ab_test_report.md', 'error_bucket_report.md', 'regression_report.md']:
         src = os.path.join(REPORTS_SRC, f)
         if os.path.exists(src):

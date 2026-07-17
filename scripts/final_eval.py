@@ -327,9 +327,13 @@ class FinalEval:
         with open(REPORT_PATH, 'w', encoding='utf-8') as f:
             f.write(report)
 
+        # Aggregated stats (for dashboard)
         json_path = os.path.join(OUTPUT_DIR, f'final_eval_{now[:10].replace("-","")}.json')
-        # Simplify for JSON (remove full responses, keep stats only)
         json_data = {'timestamp': now, 'models': list(self.models.keys())}
+
+        # Raw responses (for audit)
+        raw_path = os.path.join(OUTPUT_DIR, f'final_eval_raw_{now[:10].replace("-","")}.json')
+        raw_data = {'timestamp': now, 'models': list(self.models.keys())}
         for name, data in all_results.items():
             json_data[name] = {
                 'mcq': data['mcq'],
@@ -369,11 +373,45 @@ class FinalEval:
                     'overall': qa_stats(data['code_rag'], lambda r: r['judge'].get('overall_score', 0)),
                 },
             }
+            # Raw responses for audit
+            raw_data[name] = {
+                'mcq_responses': [{
+                    'question': q['question'], 'answer': q['answer'],
+                    'subset': q['subset'], 'options': q['options'],
+                } for q in self.mcq],
+                'reasoning_base': [{
+                    'question': r['question'], 'expected': r['expected'],
+                    'response': r['response'], 'rouge_l': r['rouge_l'],
+                    'tokens': r['tokens'], 'latency_ms': r.get('latency_ms', 0),
+                    'judge': r['judge'],
+                } for r in data['reasoning_base']],
+                'reasoning_rag': [{
+                    'question': r['question'], 'expected': r['expected'],
+                    'response': r['response'], 'rouge_l': r['rouge_l'],
+                    'tokens': r['tokens'], 'latency_ms': r.get('latency_ms', 0),
+                    'judge': r['judge'],
+                } for r in data['reasoning_rag']],
+                'code_base': [{
+                    'question': r['question'], 'expected': r['expected'],
+                    'response': r['response'], 'rouge_l': r['rouge_l'],
+                    'tokens': r['tokens'], 'latency_ms': r.get('latency_ms', 0),
+                    'judge': r['judge'],
+                } for r in data['code_base']],
+                'code_rag': [{
+                    'question': r['question'], 'expected': r['expected'],
+                    'response': r['response'], 'rouge_l': r['rouge_l'],
+                    'tokens': r['tokens'], 'latency_ms': r.get('latency_ms', 0),
+                    'judge': r['judge'],
+                } for r in data['code_rag']],
+            }
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(json_data, f, indent=2, ensure_ascii=False)
+        with open(raw_path, 'w', encoding='utf-8') as f:
+            json.dump(raw_data, f, indent=2, ensure_ascii=False)
 
         print(f'\nReport: {REPORT_PATH}')
-        print(f'JSON:   {json_path}')
+        print(f'Stats:  {json_path}')
+        print(f'Raw:    {raw_path}')
 
 
 if __name__ == '__main__':
