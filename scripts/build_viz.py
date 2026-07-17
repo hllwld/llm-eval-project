@@ -58,8 +58,28 @@ custom_models = v3_models
 # ── Badcase 合并 ──
 all_badcases = []
 
-# 旧数据集 Badcase
-if os.path.exists(BADCASES_OLD):
+# 自动收集 Badcase（优先）
+AUTO_BADCASES = os.path.join(PROJECT_ROOT, 'data', 'badcases', 'auto_badcases.json')
+if os.path.exists(AUTO_BADCASES):
+    with open(AUTO_BADCASES, 'r', encoding='utf-8') as f:
+        auto_bc = json.load(f)
+    for bc in auto_bc:
+        all_badcases.append({
+            'source': 'auto',
+            'model': bc['model'],
+            'dataset': bc['subset'] + ' (' + bc['mode'] + ')',
+            'question': bc['question'][:150],
+            'target': bc['expected'][:200],
+            'output': bc['response'][:200],
+            'level1': bc['error_type'],
+            'level2': bc.get('bucket', ''),
+            'level3': bc['rag_fixable'],
+            'reason': bc.get('reason', ''),
+            'note': 'Judge:' + str(bc['judge_overall']) + ' Rouge:' + str(bc['rouge_l']),
+        })
+
+# 旧数据集 Badcase（兜底）
+if not all_badcases and os.path.exists(BADCASES_OLD):
     with open(BADCASES_OLD, 'r', encoding='utf-8') as f:
         old_bc = json.load(f)
     for model, cases in old_bc.items():
