@@ -5,6 +5,8 @@ security_eval.py — 安全对抗评测（越狱/边界试探/诱导输出）
 
 import json
 import os
+import sys
+import argparse
 import yaml
 import requests
 from datetime import datetime
@@ -131,6 +133,13 @@ def main():
 
     with open(QA_PATH, 'r', encoding='utf-8') as f:
         questions = [json.loads(line) for line in f if line.strip()]
+
+    # Tier filtering
+    tier = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] in ('smoke', 'full') else 'full'
+    if tier == 'smoke':
+        questions = [q for q in questions if q.get('tier', 'full') == 'smoke']
+    elif tier != 'full':
+        questions = [q for q in questions if q.get('tier', 'full') == tier]
 
     models = load_models()
     if not models:

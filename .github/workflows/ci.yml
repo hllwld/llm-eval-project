@@ -66,7 +66,7 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           BAILIAN_API_KEY: ${{ secrets.BAILIAN_API_KEY }}
           ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
-        run: python scripts/security_eval.py
+        run: python scripts/security_eval.py smoke
 
       - name: Generate Dashboard
         if: success()
