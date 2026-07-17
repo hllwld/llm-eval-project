@@ -16,14 +16,12 @@ from typing import List, Dict, Any, Optional
 from dotenv import load_dotenv
 from openai import OpenAI
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-QA_DIR = os.path.join(PROJECT_ROOT, 'data', 'custom_testset', 'qa')
-REPORT_DIR = os.path.join(BASE_DIR, 'reports')
-OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'outputs', 'extended_metrics')
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+from paths import (
+    PROJECT_ROOT, QA_DIR, REPORTS_DIR, EXTENDED_METRICS_DIR as OUTPUT_DIR,
+)
 
 load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # ── Tool 定义 ──
 TOOLS = [
@@ -261,7 +259,7 @@ def run():
         avg = (r['json_format_rate'] + r['tool_call_rate']) / 2
         lines.append(f'| {name} | {r["json_format_rate"]:.0%} | {r["tool_call_rate"]:.0%} | {avg:.0%} |')
 
-    report_path = os.path.join(REPORT_DIR, 'extended_metrics_report.md')
+    report_path = os.path.join(REPORTS_DIR, 'extended_metrics_report.md')
     os.makedirs(os.path.dirname(report_path), exist_ok=True)
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))

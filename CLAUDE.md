@@ -6,7 +6,7 @@
 
 ## 项目概述
 
-大模型评测与 RAG 优化实战项目。对 DeepSeek-V3(V4-Flash)/V4-Pro、Qwen-Plus、GLM-4-Plus 四个国产模型进行系统性评测，64 题自建测试集 v4.0，支持 RAG 增强 + LLM-as-Judge + CI/CD。
+大模型评测与 RAG 优化实战项目。对 DeepSeek-V3(V4-Flash)/V4-Pro、Qwen-Plus、GLM-5.2 四个国产模型进行系统性评测，64 题自建测试集 v4.0，支持 RAG 增强 + LLM-as-Judge + CI/CD。
 
 ## 一键评测
 
@@ -15,9 +15,9 @@ python run_pipeline.py              # 全量 (7步, ~45min)
 python run_pipeline.py --tier smoke  # 快速验证 (8题, ~2min)
 ```
 
-流水线: KB Init → final_eval → extended_metrics → ab_test → error_bucket → build_viz → regression_check
+流水线 (10步): KB Init → final_eval → extended_metrics → security_eval → ab_test → error_bucket → collect_badcases → insight_generator → build_viz → regression_check
 
-报告输出: `results/latest/` (5份 MD + dashboard.html)
+报告输出: `results/latest/` (5份 MD + dashboard.html + raw_responses.json)
 
 ## 目录结构
 
@@ -33,18 +33,21 @@ llm-eval-project/
 │   └── knowledge_base/
 │       ├── reasoning_steps.jsonl      # 推理知识库 15条
 │       └── code_templates.jsonl       # 代码知识库 10条
-├── scripts/                           # 18个核心脚本
+├── scripts/                           # 20个核心脚本
 │   ├── final_eval.py                  # 统一评测 (MCQ+QA, Base/RAG双模)
 │   ├── extended_metrics.py            # JSON格式率 + 工具调用成功率
+│   ├── security_eval.py               # 安全对抗评测
 │   ├── ab_test.py                     # A/B Test (p-value + cost + CI)
-│   ├── error_bucket.py                # Error Bucket 11类自动分桶
+│   ├── error_bucket.py                # Error Bucket 12类自动分桶
+│   ├── collect_badcases.py            # 自动收集 Badcase
+│   ├── insight_generator.py           # AI 洞察生成 (LLM分析)
 │   ├── prompt_benchmark.py            # Prompt变体对比 + 自动推荐
 │   ├── regression_check.py            # 回归检测 + Token趋势 + 版本锁定
 │   ├── build_viz.py                   # Chart.js 8图仪表板
 │   ├── rag_retriever.py / rag_prompt_builder.py  # RAG 检索+重组
+│   ├── rag_inference.py               # RAG 推理
 │   ├── llm_as_judge.py                # LLM-as-Judge 1-5分
 │   ├── rag_eval.py / rag_benchmark.py / rag_compare.py / rag_analysis.py  # RAG分析套件
-│   ├── security_eval.py               # 安全对抗评测
 │   ├── precheck.py                    # 评测前置校验
 │   ├── generate_testset.py            # 测试集生成
 │   └── reports/                       # 报告模板

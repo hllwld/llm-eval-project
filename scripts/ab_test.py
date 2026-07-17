@@ -19,19 +19,20 @@ from datetime import datetime
 from typing import List, Dict, Tuple
 from collections import defaultdict
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'outputs', 'ab_test')
-REPORT_DIR = os.path.join(BASE_DIR, 'reports')
+from paths import (
+    PROJECT_ROOT, AB_TEST_DIR as OUTPUT_DIR, REPORTS_DIR,
+    get_latest_final_eval, get_latest_rag_eval, MODEL_CONFIG,
+)
+
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# ── 模型定价 ($/1M tokens) ──
-PRICING = {
-    'DeepSeek-V3': {'input': 0.27, 'output': 1.10},
-    'DeepSeek-V4-Pro': {'input': 0.27, 'output': 1.10},
-    'Qwen-Plus': {'input': 0.55, 'output': 2.20},
-    'GLM-4-Plus': {'input': 1.00, 'output': 4.00},
-}
+# ── 模型定价 ($/1M tokens) ── 从配置文件动态加载
+with open(MODEL_CONFIG, 'r', encoding='utf-8') as _f:
+    _cfg = yaml.safe_load(_f)
+PRICING = {}
+for _m in _cfg['models']:
+    if 'pricing' in _m:
+        PRICING[_m['name']] = _m['pricing']
 
 # Try scipy
 try:
@@ -117,11 +118,10 @@ def _normal_cdf(x: float) -> float:
 
 def load_final_eval_json() -> Dict:
     """Find and load most recent final_eval JSON"""
-    import glob
-    files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'final_eval', 'final_eval_*.json')), reverse=True)
-    if not files:
+    fev_file = get_latest_final_eval()
+    if not fev_file:
         return None
-    with open(files[0], 'r', encoding='utf-8') as f:
+    with open(fev_file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -147,11 +147,10 @@ def run():
     # - Code: average rouge/judge only
 
     # For proper p-value, we need raw responses. Let's check if rag_eval JSON has it.
-    import glob
-    rag_files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'rag_eval', 'rag_eval_*.json')), reverse=True)
+    rag_file = get_latest_rag_eval()
     raw_data = None
-    if rag_files:
-        with open(rag_files[0], 'r', encoding='utf-8') as f:
+    if rag_file:
+        with open(rag_file, 'r', encoding='utf-8') as f:
             raw_data = json.load(f)
 
     # ── Build comparison matrices ──
@@ -308,7 +307,7 @@ def run():
         f'*注：当前基于汇总统计量计算，如需精确 p-value 请使用逐题原始数据。*',
     ]
 
-    report_path = os.path.join(REPORT_DIR, 'ab_test_report.md')
+    report_path = os.path.join(REPORTS_DIR, 'ab_test_report.md')
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))
 

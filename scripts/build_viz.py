@@ -8,20 +8,29 @@ build_viz.py — 根据最新评测数据生成可视化仪表板 HTML
 
 import json
 import os
+import yaml
 from collections import Counter
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
+from paths import (
+    PROJECT_ROOT, DATA_DIR, DASHBOARD_HTML as ROOT_HTML,
+    get_latest_final_eval, get_latest_extended_metrics,
+    INSIGHTS_JSON, SECURITY_EVAL_JSON, MODEL_CONFIG,
+    BENCHMARK_V3_FILES,
+)
+
+# ── 从配置加载活跃模型列表 ──
+with open(MODEL_CONFIG, 'r', encoding='utf-8') as _f:
+    _config = yaml.safe_load(_f)
+ACTIVE_MODELS = [m['name'] for m in _config['models'] if m.get('active', True)]
+# v2 对比用子集（仅含 v2 测试过的模型，用 GLM-5.2 替代历史 GLM-4-Plus）
+_V2_MCQ_MODELS = [m for m in ACTIVE_MODELS if m != 'DeepSeek-V4-Pro']
 
 # ── 数据源 ──
-BADCASES_OLD = os.path.join(PROJECT_ROOT, 'data', 'badcases', 'badcases_raw.json')
-BADCASES_CUSTOM = os.path.join(PROJECT_ROOT, 'data', 'badcases', 'custom_badcases_labeled.json')
-ROOT_HTML = os.path.join(PROJECT_ROOT, 'dashboard.html')
+BADCASES_OLD = os.path.join(DATA_DIR, 'badcases', 'badcases_raw.json')
+BADCASES_CUSTOM = os.path.join(DATA_DIR, 'badcases', 'custom_badcases_labeled.json')
 
 # 加载最新 v3 benchmark 分数
-import glob as _glob
-v3_files = sorted(_glob.glob(os.path.join(PROJECT_ROOT, 'data', 'reports', 'benchmark_scores_v3_*.json')))
-BENCHMARK_V3 = v3_files[-1] if v3_files else None
+BENCHMARK_V3 = BENCHMARK_V3_FILES[-1] if BENCHMARK_V3_FILES else None
 v3_mcq = {}
 v3_qa = {}
 v3_models = []
@@ -35,19 +44,19 @@ if BENCHMARK_V3 and os.path.exists(BENCHMARK_V3):
     v3_models = bm3.get('models', [])
     v3_avg = bm3.get('avg_scores', {})
 
-# v2 scores for comparison
+# v2 历史对比数据（key 需匹配当前模型名）
 v2_mcq = {
     'DeepSeek-V3': {'knowledge': 1.0, 'security': 1.0},
     'Qwen-Plus':   {'knowledge': 1.0, 'security': 1.0},
-    'GLM-4-Plus':  {'knowledge': 0.95, 'security': 1.0},
+    'GLM-5.2':     {'knowledge': 0.95, 'security': 1.0},
     'Qwen2.5-VL':  {'knowledge': 1.0, 'security': 1.0},
 }
 
-# ── 标准数据集分数（来自 multi_model_benchmark.py 产出） ──
+# ── 标准数据集历史分数（来自 multi_model_benchmark.py 产出） ──
 standard_scores = {
     'DeepSeek-V3': {'gsm8k': 1.00, 'arc': 0.95, 'hellaswag': 0.75},
     'Qwen-Plus':   {'gsm8k': 1.00, 'arc': 0.95, 'hellaswag': 0.85},
-    'GLM-4-Plus':  {'gsm8k': 0.95, 'arc': 0.90, 'hellaswag': 0.45},
+    'GLM-5.2':     {'gsm8k': 0.95, 'arc': 0.90, 'hellaswag': 0.45},
 }
 
 # ── 使用 v3 自定义测试集分数（已从上面加载） ──
@@ -59,7 +68,7 @@ custom_models = v3_models
 all_badcases = []
 
 # 自动收集 Badcase（优先）
-AUTO_BADCASES = os.path.join(PROJECT_ROOT, 'data', 'badcases', 'auto_badcases.json')
+AUTO_BADCASES = os.path.join(DATA_DIR, 'badcases', 'auto_badcases.json')
 if os.path.exists(AUTO_BADCASES):
     with open(AUTO_BADCASES, 'r', encoding='utf-8') as f:
         auto_bc = json.load(f)
@@ -195,7 +204,7 @@ def badcase_card(bc, i):
 
 # ── 表格行 ──
 std_rows = ''
-for model in ['DeepSeek-V3', 'Qwen-Plus', 'GLM-4-Plus']:
+for model in _V2_MCQ_MODELS:
     std_rows += '<tr>'
     std_rows += f'<td><strong>{model}</strong></td>'
     for ds in standard_datasets:
@@ -245,9 +254,9 @@ model_bars = '\n'.join(
 # ── Final Eval 表行 ──
 # 加载 final eval JSON
 FEV = None
-_fev_files = sorted(_glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'final_eval', 'final_eval_[0-9]*.json')), reverse=True)
-if _fev_files:
-    with open(_fev_files[0], 'r', encoding='utf-8') as _f:
+FEV_FILE = get_latest_final_eval()
+if FEV_FILE:
+    with open(FEV_FILE, 'r', encoding='utf-8') as _f:
         FEV = json.load(_f)
 
 # MCQ rows
@@ -289,14 +298,14 @@ if FEV:
             final_code_rows += f'<tr><td><strong>{m}</strong></td><td style="text-align:center;">{br:.2%}</td><td style="text-align:center;">{rr:.2%}</td><td style="text-align:center;">{j.get("overall",0):.2f}</td><td style="text-align:center;font-weight:bold;">{jr.get("overall",j.get("overall",0)):.2f}</td></tr>'
 
 # Extended metrics (JSON format + tool call) from extended_metrics JSON
-_em_files = sorted(_glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'extended_metrics', 'extended_metrics_*.json')), reverse=True)
+_em_file = get_latest_extended_metrics()
 _em_data = {}
-if _em_files:
-    with open(_em_files[0], 'r', encoding='utf-8') as _f:
+if _em_file:
+    with open(_em_file, 'r', encoding='utf-8') as _f:
         _em_data = json.load(_f).get('results', {})
 
 ext_metrics_rows = ''
-for m in ['DeepSeek-V3', 'DeepSeek-V4-Pro', 'Qwen-Plus', 'GLM-4-Plus']:
+for m in ACTIVE_MODELS:
     em = _em_data.get(m, {})
     jf = em.get('json_format_rate', 0)
     tc = em.get('tool_call_rate', 0)
@@ -316,19 +325,17 @@ if FEV:
             _chart_latency['datasets'][0]['data'].append(lat)
 
 # LLM-generated insights
-_insights_file = os.path.join(PROJECT_ROOT, 'outputs', 'insights', 'latest.json')
 _insights_data = {}
-if os.path.exists(_insights_file):
-    with open(_insights_file, 'r', encoding='utf-8') as _f:
+if os.path.exists(INSIGHTS_JSON):
+    with open(INSIGHTS_JSON, 'r', encoding='utf-8') as _f:
         _insights_data = json.load(_f)
 
 # Security rows
 final_security_rows = ''
 # Load security eval data
-_sec_json = os.path.join(PROJECT_ROOT, 'outputs', 'security_eval', 'latest.json')
 _sec_data = []
-if os.path.exists(_sec_json):
-    with open(_sec_json, 'r', encoding='utf-8') as _f:
+if os.path.exists(SECURITY_EVAL_JSON):
+    with open(SECURITY_EVAL_JSON, 'r', encoding='utf-8') as _f:
         _sec_data = json.load(_f).get('models', [])
 for s in _sec_data:
     m = s['name']; p = s['pass']; w = s['warn']; f = s['fail']
@@ -368,7 +375,7 @@ _chart_std = {
     'datasets': [
         {'label': m, 'data': [standard_scores[m][d] for d in _std_labels],
          'backgroundColor': c, 'borderColor': c, 'borderWidth': 0, 'borderRadius': 4}
-        for m, c in zip(['DeepSeek-V3', 'Qwen-Plus', 'GLM-4-Plus'],
+        for m, c in zip(_V2_MCQ_MODELS,
                         ['rgba(26,35,126,0.75)', 'rgba(33,150,243,0.75)', 'rgba(255,152,0,0.75)'])
     ]
 }
@@ -425,7 +432,7 @@ _sec_data = [
     {'label': 'FAIL', 'data': [1, 1, 5], 'backgroundColor': 'rgba(244,67,54,0.8)'},
 ]
 _chart_security = {
-    'labels': ['DeepSeek-V3', 'Qwen-Plus', 'GLM-4-Plus'],
+    'labels': _V2_MCQ_MODELS,
     'datasets': _sec_data,
 }
 

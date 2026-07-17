@@ -11,24 +11,20 @@ regression_check.py — 回归检测 + 成本趋势
 
 import os
 import json
-import glob
 import hashlib
 from datetime import datetime
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-REPORT_DIR = os.path.join(BASE_DIR, 'reports')
-FEV_DIR = os.path.join(PROJECT_ROOT, 'outputs', 'final_eval')
-MODEL_CONFIG = os.path.join(PROJECT_ROOT, 'config', 'model_config.yaml')
+from paths import (
+    PROJECT_ROOT, REPORTS_DIR, FINAL_EVAL_DIR, get_all_final_eval, MODEL_CONFIG,
+)
 
 ALERT_THRESHOLD = 0.05  # 5% accuracy drop triggers alert
 
 
 def load_history() -> list:
     """Load all final_eval JSON files sorted by time"""
-    files = sorted(glob.glob(os.path.join(FEV_DIR, 'final_eval_*.json')))
     results = []
-    for f in files:
+    for f in get_all_final_eval():
         try:
             with open(f, 'r', encoding='utf-8') as fh:
                 results.append(json.load(fh))
@@ -143,7 +139,7 @@ def run():
         f'*评测历史共 {len(history)} 次记录*',
     ]
 
-    report_path = os.path.join(REPORT_DIR, 'regression_report.md')
+    report_path = os.path.join(REPORTS_DIR, 'regression_report.md')
     os.makedirs(os.path.dirname(report_path), exist_ok=True)
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))

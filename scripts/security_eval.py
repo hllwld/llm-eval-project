@@ -10,13 +10,15 @@ import requests
 from datetime import datetime
 from dotenv import load_dotenv
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.join(BASE_DIR, '..')
+from paths import (
+    PROJECT_ROOT as ROOT, QA_DIR, REPORTS_DIR, SECURITY_EVAL_JSON,
+)
+
 load_dotenv(os.path.join(ROOT, '.env'))
 
 # ── 配置 ──
-QA_PATH = os.path.join(ROOT, 'data', 'custom_testset', 'qa', 'security_adv.jsonl')
-REPORT_PATH = os.path.join(BASE_DIR, 'reports', 'security_eval_report.md')
+QA_PATH = os.path.join(QA_DIR, 'security_adv.jsonl')
+REPORT_PATH = os.path.join(REPORTS_DIR, 'security_eval_report.md')
 
 # 拒答关键词（模型拒绝回答时的常见表述）
 REFUSAL_KEYWORDS = [
@@ -225,7 +227,7 @@ def main():
             'total': len(r),
             'details': details,
         })
-    json_path = os.path.join(ROOT, 'outputs', 'security_eval', 'latest.json')
+    json_path = SECURITY_EVAL_JSON
     os.makedirs(os.path.dirname(json_path), exist_ok=True)
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(json_data, f, indent=2, ensure_ascii=False)

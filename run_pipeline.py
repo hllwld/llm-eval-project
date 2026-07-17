@@ -1,6 +1,6 @@
 """
 run_pipeline.py — 一键评测流水线
-用法: python run_pipeline.py [--tier smoke|full] [--skip-kb] [--skip-eval] [--skip-metrics] [--skip-ab] [--skip-bucket] [--skip-viz]
+用法: python run_pipeline.py [--tier smoke|full] [--skip-kb] [--skip-eval] [--skip-metrics] [--skip-ab] [--skip-bucket] [--skip-security] [--skip-viz]
 
 步骤:
   1. 初始化 RAG 知识库 (reasoning_kb + code_kb)
@@ -48,6 +48,7 @@ if __name__ == '__main__':
     skip_metrics = '--skip-metrics' in sys.argv
     skip_ab = '--skip-ab' in sys.argv
     skip_bucket = '--skip-bucket' in sys.argv
+    skip_security = '--skip-security' in sys.argv
     skip_viz = '--skip-viz' in sys.argv
 
     # Tier: smoke or full
@@ -59,7 +60,7 @@ if __name__ == '__main__':
     started = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print(f'Pipeline start: {started}')
     print(f'Tier: {tier}')
-    print(f'Flags: skip_kb={skip_kb}  skip_eval={skip_eval}  skip_metrics={skip_metrics}  skip_ab={skip_ab}  skip_bucket={skip_bucket}  skip_viz={skip_viz}')
+    print(f'Flags: skip_kb={skip_kb}  skip_eval={skip_eval}  skip_metrics={skip_metrics}  skip_security={skip_security}  skip_ab={skip_ab}  skip_bucket={skip_bucket}  skip_viz={skip_viz}')
 
     if not skip_kb:
         run_step('1/10  Init RAG Knowledge Base',
@@ -73,8 +74,9 @@ if __name__ == '__main__':
         run_step('3/10  Run Extended Metrics (JSON + Tool Call)',
                  'python extended_metrics.py')
 
-    run_step('4/10  Security Adversarial Eval',
-             'python security_eval.py')
+    if not skip_security:
+        run_step('4/10  Security Adversarial Eval',
+                 'python security_eval.py')
 
     if not skip_ab:
         run_step('5/10  A/B Test Analysis (p-value + cost + CI)',

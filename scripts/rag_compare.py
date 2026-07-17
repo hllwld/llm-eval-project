@@ -7,30 +7,33 @@ RAG: rag_benchmark.py 产出
 import os
 import sys
 import json
-import glob
+import yaml
 from collections import defaultdict
 from rouge_score import rouge_scorer
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-REPORT_PATH = os.path.join(BASE_DIR, 'reports', 'rag_compare_report.md')
+from paths import (
+    PROJECT_ROOT, RAG_COMPARE_REPORT as REPORT_PATH,
+    get_latest_rag_benchmark, MODEL_CONFIG,
+)
 
-# Base scores from v3 benchmark (full_benchmark.py)
-BASE_SCORES = {
-    'DeepSeek-V3': {'reasoning': 0.4968, 'code': 0.5525},
-    'Qwen-Plus':   {'reasoning': 0.3143, 'code': 0.5758},
-    'GLM-4-Plus':  {'reasoning': 0.3500, 'code': 0.5313},
-}
+# Base scores 从 model_config.yaml 动态加载
+with open(MODEL_CONFIG, 'r', encoding='utf-8') as _f:
+    _cfg = yaml.safe_load(_f)
+BASE_SCORES = {}
+COMPARE_MODELS = []  # 仅含配置了 benchmark_v3_score 的模型（v3 时代测试过的）
+for _m in _cfg['models']:
+    if _m.get('benchmark_v3_score') and _m.get('active', True):
+        BASE_SCORES[_m['name']] = _m['benchmark_v3_score']
+        COMPARE_MODELS.append(_m['name'])
 
 
 def load_rag_results():
     """Load latest RAG benchmark results"""
-    pattern = os.path.join(PROJECT_ROOT, 'outputs', 'rag_benchmark', 'rag_benchmark_*.json')
-    files = sorted(glob.glob(pattern), reverse=True)
-    if not files:
+    latest = get_latest_rag_benchmark()
+    if not latest:
         print('[ERROR] No RAG benchmark results found. Run rag_benchmark.py first.')
         return None
-    with open(files[0], 'r', encoding='utf-8') as f:
+    with open(latest, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -63,7 +66,7 @@ def compare():
     print(f'\n{"Reasoning (15 questions)":-^70}')
     print(f'{"Model":<18} {"Base":>10} {"RAG":>10} {"Delta":>10} {"Verdict":>12}')
     print(f'{"-"*60}')
-    for model in ['DeepSeek-V3', 'Qwen-Plus', 'GLM-4-Plus']:
+    for model in COMPARE_MODELS:
         base = BASE_SCORES[model]['reasoning']
         rag = rag_scores.get(model, {}).get('reasoning', 0)
         delta = rag - base
@@ -79,7 +82,7 @@ def compare():
     print(f'\n{"Code (10 questions)":-^70}')
     print(f'{"Model":<18} {"Base":>10} {"RAG":>10} {"Delta":>10} {"Verdict":>12}')
     print(f'{"-"*60}')
-    for model in ['DeepSeek-V3', 'Qwen-Plus', 'GLM-4-Plus']:
+    for model in COMPARE_MODELS:
         base = BASE_SCORES[model]['code']
         rag = rag_scores.get(model, {}).get('code', 0)
         delta = rag - base
@@ -100,7 +103,7 @@ def compare():
         f.write('## Reasoning (15 questions)\n\n')
         f.write('| Model | Base | RAG | Delta | Verdict |\n')
         f.write('| --- | --- | --- | --- | --- |\n')
-        for model in ['DeepSeek-V3', 'Qwen-Plus', 'GLM-4-Plus']:
+        for model in COMPARE_MODELS:
             base = BASE_SCORES[model]['reasoning']
             rag = rag_scores.get(model, {}).get('reasoning', 0)
             d = rag - base
@@ -110,7 +113,7 @@ def compare():
         f.write('\n## Code (10 questions)\n\n')
         f.write('| Model | Base | RAG | Delta | Verdict |\n')
         f.write('| --- | --- | --- | --- | --- |\n')
-        for model in ['DeepSeek-V3', 'Qwen-Plus', 'GLM-4-Plus']:
+        for model in COMPARE_MODELS:
             base = BASE_SCORES[model]['code']
             rag = rag_scores.get(model, {}).get('code', 0)
             d = rag - base

@@ -5,13 +5,16 @@ collect_badcases.py — 自动收集 Badcase
 输出: data/badcases/auto_badcases.json
 """
 
-import os, sys, json, glob
+import os, sys, json
 from datetime import datetime
 from collections import Counter
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-BADCASES_DIR = os.path.join(PROJECT_ROOT, 'data', 'badcases')
+from paths import (
+    PROJECT_ROOT, DATA_DIR,
+    get_latest_rag_benchmark, get_latest_rag_eval, get_latest_error_bucket,
+)
+
+BADCASES_DIR = os.path.join(DATA_DIR, 'badcases')
 OUTPUT_FILE = os.path.join(BADCASES_DIR, 'auto_badcases.json')
 
 os.makedirs(BADCASES_DIR, exist_ok=True)
@@ -25,9 +28,9 @@ ROUGE_THRESHOLD = 0.3
 def load_final_eval():
     """Load latest eval results from rag_benchmark (has per-model raw data)"""
     # Try rag_benchmark first (multi-model, per-question)
-    bench_files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'rag_benchmark', 'rag_benchmark_*.json')), reverse=True)
-    if bench_files:
-        with open(bench_files[0], 'r', encoding='utf-8') as f:
+    bench_file = get_latest_rag_benchmark()
+    if bench_file:
+        with open(bench_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
         items = []
         for model, subsets in data.get('results', {}).items():
@@ -40,9 +43,9 @@ def load_final_eval():
             return items
 
     # Fallback: rag_eval (single model)
-    rag_files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'rag_eval', 'rag_eval_*.json')), reverse=True)
-    if rag_files:
-        with open(rag_files[0], 'r', encoding='utf-8') as f:
+    rag_file = get_latest_rag_eval()
+    if rag_file:
+        with open(rag_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
         if 'details' in data:
             return data['details']
@@ -51,9 +54,9 @@ def load_final_eval():
 
 def load_error_bucket():
     """Load latest error_bucket JSON for classification labels"""
-    eb_files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'error_bucket', 'error_bucket_*.json')), reverse=True)
-    if eb_files:
-        with open(eb_files[0], 'r', encoding='utf-8') as f:
+    eb_file = get_latest_error_bucket()
+    if eb_file:
+        with open(eb_file, 'r', encoding='utf-8') as f:
             return json.load(f)
     return {}
 

@@ -9,17 +9,17 @@ error_bucket.py — Error Bucket 错误分类分析
 import os
 import sys
 import json
-import glob
 from datetime import datetime
 from typing import List, Dict, Optional
 from collections import Counter, defaultdict
 from dotenv import load_dotenv
 from openai import OpenAI
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'outputs', 'error_bucket')
-REPORT_DIR = os.path.join(BASE_DIR, 'reports')
+from paths import (
+    PROJECT_ROOT, ERROR_BUCKET_DIR as OUTPUT_DIR, REPORTS_DIR,
+    get_latest_rag_eval, get_latest_rag_benchmark,
+)
+
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
@@ -61,7 +61,7 @@ CLASSIFY_PROMPT += """
 ## 要求:
 严格只输出一行合法 JSON，不要```json```代码块，不要任何解释文字，不要换行。
 JSON 格式必须为:
-{"bucket":"<错误桶ID>","confidence":<0-1>,"reason":"<一句话中文原因>","severity":"<low|medium|high>"}"""
+{{"bucket":"<错误桶ID>","confidence":<0-1>,"reason":"<一句话中文原因>","severity":"<low|medium|high>"}}"""
 
 
 def load_raw_data(json_path: Optional[str] = None) -> List[Dict]:
@@ -84,17 +84,17 @@ def load_raw_data(json_path: Optional[str] = None) -> List[Dict]:
         return samples
 
     # Auto-discover: rag_eval JSON first (has per-question data)
-    rag_files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'rag_eval', 'rag_eval_*.json')), reverse=True)
-    if rag_files:
-        with open(rag_files[0], 'r', encoding='utf-8') as f:
+    rag_file = get_latest_rag_eval()
+    if rag_file:
+        with open(rag_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
         if 'details' in data:
             return data['details']
 
     # Fallback: rag_benchmark
-    bench_files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'rag_benchmark', 'rag_benchmark_*.json')), reverse=True)
-    if bench_files:
-        with open(bench_files[0], 'r', encoding='utf-8') as f:
+    bench_file = get_latest_rag_benchmark()
+    if bench_file:
+        with open(bench_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
         all_samples = []
         for model, subsets in data.get('results', {}).items():
@@ -342,7 +342,7 @@ def run(from_json: Optional[str] = None):
         bname = ERROR_BUCKETS.get(bid, {}).get('name', bid)
         lines.append(f'| {i} | {bname} | {r["confidence"]:.0%} | {r.get("severity","?")} | {r["reason"]} | {r.get("question","")[:60]} |')
 
-    report_path = os.path.join(REPORT_DIR, 'error_bucket_report.md')
+    report_path = os.path.join(REPORTS_DIR, 'error_bucket_report.md')
     os.makedirs(os.path.dirname(report_path), exist_ok=True)
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))

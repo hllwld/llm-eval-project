@@ -5,23 +5,22 @@ rag_analysis.py — 分析 RAG 评测结果，生成逐条对比 + 汇总报告
 """
 
 import json
-import glob
 import os
 from collections import defaultdict
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'outputs', 'rag_eval')
-REPORT_PATH = os.path.join(BASE_DIR, 'reports', 'rag_analysis_report.md')
+from paths import (
+    PROJECT_ROOT, REPORTS_DIR, RAG_ANALYSIS_REPORT as REPORT_PATH,
+    get_latest_rag_eval,
+)
 
 
 def analyze():
-    files = sorted(glob.glob(os.path.join(OUTPUT_DIR, 'rag_eval_*.json')), reverse=True)
-    if not files:
+    latest = get_latest_rag_eval()
+    if not latest:
         print("[ERROR] No results found. Run rag_eval.py first.")
         return
 
-    with open(files[0], 'r', encoding='utf-8') as f:
+    with open(latest, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
     details = data['details']
@@ -98,7 +97,7 @@ def analyze():
     os.makedirs(os.path.dirname(REPORT_PATH), exist_ok=True)
     with open(REPORT_PATH, 'w', encoding='utf-8') as f:
         f.write('# RAG 评测分析报告\n\n')
-        f.write(f'> 数据来源: {os.path.basename(files[0])}\n\n')
+        f.write(f'> 数据来源: {os.path.basename(latest)}\n\n')
         f.write('## Overall\n\n')
         f.write('| Metric | Base | RAG | Delta |\n')
         f.write('| --- | --- | --- | --- |\n')

@@ -1,14 +1,13 @@
 import os
 import sys
 import json
-import glob
 import time
 from typing import List, Dict, Any, Optional
 from openai import OpenAI
 from dotenv import load_dotenv
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
+from paths import PROJECT_ROOT, RAG_EVAL_DIR, get_latest_rag_eval
+
 load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
 
 class LLMJudge:
@@ -201,13 +200,12 @@ class LLMJudge:
 # ========== 主程序 ==========
 if __name__ == '__main__':
     # 1. Load RAG eval results (Base + RAG mode)
-    eval_dir = os.path.join(PROJECT_ROOT, 'outputs', 'rag_eval')
-    eval_files = sorted(glob.glob(os.path.join(eval_dir, 'rag_eval_*.json')), reverse=True)
-    if not eval_files:
+    latest_rag = get_latest_rag_eval()
+    if not latest_rag:
         print('[ERROR] No RAG eval results found. Run rag_eval.py first.')
         sys.exit(1)
 
-    with open(eval_files[0], 'r', encoding='utf-8') as f:
+    with open(latest_rag, 'r', encoding='utf-8') as f:
         eval_data = json.load(f)
 
     details = eval_data['details']
@@ -252,7 +250,7 @@ if __name__ == '__main__':
         print(f'{label:<22} {b:>7.2f} {r:>7.2f} {r-b:>+7.2f}')
 
     # 4. Save
-    output_path = os.path.join(PROJECT_ROOT, 'outputs', 'rag_eval', 'llm_judge_results.json')
+    output_path = os.path.join(RAG_EVAL_DIR, 'llm_judge_results.json')
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump({
             'timestamp': eval_data.get('timestamp', ''),

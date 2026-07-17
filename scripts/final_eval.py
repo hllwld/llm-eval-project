@@ -19,19 +19,18 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from rouge_score import rouge_scorer
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-sys.path.insert(0, BASE_DIR)
+from paths import (
+    PROJECT_ROOT, MCQ_DIR, QA_DIR, FINAL_EVAL_REPORT as REPORT_PATH,
+    FINAL_EVAL_DIR as OUTPUT_DIR, INSIGHTS_JSON,
+)
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rag_retriever import RAGRetriever
 from rag_prompt_builder import RAGPromptBuilder
 from llm_as_judge import LLMJudge
 
 load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
 
-MCQ_DIR = os.path.join(PROJECT_ROOT, 'data', 'custom_testset', 'mcq')
-QA_DIR = os.path.join(PROJECT_ROOT, 'data', 'custom_testset', 'qa')
-REPORT_PATH = os.path.join(BASE_DIR, 'reports', 'final_eval_report.md')
-OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'outputs', 'final_eval')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
@@ -308,10 +307,9 @@ class FinalEval:
             lines.append(f'| {name} | {mt} | {rb} | {rr} | {cb} | {cr} | **{total}** |')
 
         # Load AI-generated insights if available
-        _insights_path = os.path.join(PROJECT_ROOT, 'outputs', 'insights', 'latest.json')
         lines += ['', '## 6. Conclusion（LLM 自动分析）', '']
-        if os.path.exists(_insights_path):
-            with open(_insights_path, 'r', encoding='utf-8') as _f:
+        if os.path.exists(INSIGHTS_JSON):
+            with open(INSIGHTS_JSON, 'r', encoding='utf-8') as _f:
                 _ins = json.load(_f)
             for ins in _ins.get('insights', []):
                 emoji = '[+]' if ins.get('sentiment') == 'positive' else ('[-]' if ins.get('sentiment') == 'negative' else '[*]')

@@ -1,6 +1,6 @@
 """
-rag_benchmark.py — 三模型 RAG 增强评测
-模型: DeepSeek-V3 / Qwen-Plus / GLM-4-Plus
+rag_benchmark.py — 多模型 RAG 增强评测
+模型: 由 config/model_config.yaml active 模型决定
 测试集: 推理15题 + 代码10题
 模式: RAG 检索 + 解题模板注入
 """

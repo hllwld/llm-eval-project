@@ -9,9 +9,11 @@ from datetime import datetime
 from dotenv import load_dotenv
 from openai import OpenAI
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.join(BASE_DIR, '..')
-OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'outputs', 'insights')
+from paths import (
+    PROJECT_ROOT, INSIGHTS_DIR as OUTPUT_DIR,
+    get_latest_final_eval, get_latest_extended_metrics, get_latest_error_bucket,
+)
+
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
@@ -61,9 +63,9 @@ def load_data():
     summary = []
 
     # final_eval
-    fev_files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'final_eval', 'final_eval_*.json')), reverse=True)
-    if fev_files:
-        with open(fev_files[0], 'r', encoding='utf-8') as f:
+    fev_file = get_latest_final_eval()
+    if fev_file:
+        with open(fev_file, 'r', encoding='utf-8') as f:
             fev = json.load(f)
         summary.append(f"=== 最终评测 ({fev.get('timestamp','?')}) ===")
         models = fev.get('models', [])
@@ -87,9 +89,9 @@ def load_data():
             )
 
     # extended_metrics
-    em_files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'extended_metrics', 'extended_metrics_*.json')), reverse=True)
-    if em_files:
-        with open(em_files[0], 'r', encoding='utf-8') as f:
+    em_file = get_latest_extended_metrics()
+    if em_file:
+        with open(em_file, 'r', encoding='utf-8') as f:
             em = json.load(f)
         summary.append(f"\n=== 扩展指标 ({em.get('timestamp','?')}) ===")
         for m, r in em.get('results', {}).items():
@@ -98,9 +100,9 @@ def load_data():
             summary.append(f"  {m}: JSON格式率{jf:.0%}, 工具调用率{tc:.0%}")
 
     # error_bucket
-    eb_files = sorted(glob.glob(os.path.join(PROJECT_ROOT, 'outputs', 'error_bucket', 'error_bucket_*.json')), reverse=True)
-    if eb_files:
-        with open(eb_files[0], 'r', encoding='utf-8') as f:
+    eb_file = get_latest_error_bucket()
+    if eb_file:
+        with open(eb_file, 'r', encoding='utf-8') as f:
             eb = json.load(f)
         summary.append(f"\n=== 错误分布 ===")
         dist = eb.get('distribution', {})
