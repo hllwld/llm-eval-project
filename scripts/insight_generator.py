@@ -123,15 +123,35 @@ def run():
     api_key = os.getenv('DEEPSEEK_API_KEY', '')
     client = OpenAI(api_key=api_key, base_url='https://api.deepseek.com')
 
-    resp = client.chat.completions.create(
-        model='deepseek-v4-flash',
-        messages=[{'role': 'user', 'content': PROMPT.format(data_summary=data)}],
-        temperature=0.3, max_tokens=2000, timeout=60,
-        response_format={'type': 'json_object'},
-    )
-
-    content = resp.choices[0].message.content
-    result = json.loads(content)
+    result = None
+    for attempt in range(3):
+        try:
+            resp = client.chat.completions.create(
+                model='deepseek-v4-flash',
+                messages=[{'role': 'user', 'content': PROMPT.format(data_summary=data)}],
+                temperature=0.3, max_tokens=2000, timeout=60,
+            )
+            raw = resp.choices[0].message.content.strip()
+            if raw.startswith('```'):
+                raw = raw.split('```')[1]
+                if raw.startswith('json'):
+                    raw = raw[4:]
+                raw = raw.strip()
+            result = json.loads(raw)
+            break
+        except Exception as e:
+            if attempt < 2:
+                import time as t
+                t.sleep(0.5)
+            else:
+                print(f'[WARN] AI insight generation failed after 3 attempts: {e}')
+                result = {
+                    'insights': [{'sentiment': 'neutral',
+                                  'title': f'自动分析失败: {str(e)[:60]}',
+                                  'detail': '请检查 eval 数据或 API 状态'}],
+                    'improvements': [],
+                    'summary': 'LLM analysis unavailable — review raw data manually.',
+                }
 
     # Save
     now = datetime.now().strftime('%Y%m%d_%H%M')

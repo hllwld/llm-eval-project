@@ -59,13 +59,9 @@ CLASSIFY_PROMPT += """
 - Judge评分: {judge_score}
 
 ## 要求:
-返回 JSON，包含:
-- bucket: 最匹配的错误桶 ID
-- confidence: 置信度 (0-1)
-- reason: 简短原因 (一行中文)
-- severity: 严重程度 (low/medium/high)
-
-只返回 JSON，不要其他文字。"""
+严格只输出一行合法 JSON，不要```json```代码块，不要任何解释文字，不要换行。
+JSON 格式必须为:
+{"bucket":"<错误桶ID>","confidence":<0-1>,"reason":"<一句话中文原因>","severity":"<low|medium|high>"}"""
 
 
 def load_raw_data(json_path: Optional[str] = None) -> List[Dict]:
@@ -149,19 +145,45 @@ def classify_errors(samples: List[Dict], judge_model: str = 'deepseek-v4-flash')
             subset=subset, judge_score=j_score
         )
 
-        try:
-            resp = client.chat.completions.create(
-                model=judge_model,
-                messages=[{'role': 'user', 'content': prompt}],
-                temperature=0.1, max_tokens=200, timeout=30,
-                response_format={'type': 'json_object'},
-            )
-            result = json.loads(resp.choices[0].message.content)
+        result = None
+        for attempt in range(3):
+            try:
+                resp = client.chat.completions.create(
+                    model=judge_model,
+                    messages=[{'role': 'user', 'content': prompt}],
+                    temperature=0.1, max_tokens=300, timeout=30,
+                )
+                raw = resp.choices[0].message.content.strip()
+                # Strip markdown code fences if present
+                if raw.startswith('```'):
+                    raw = raw.split('```')[1]
+                    if raw.startswith('json'):
+                        raw = raw[4:]
+                    raw = raw.strip()
+                result = json.loads(raw)
+                break
+            except Exception:
+                if attempt < 2:
+                    import time as _time
+                    _time.sleep(0.5)
+                continue
+
+        if result and isinstance(result, dict):
             result['question'] = question[:100]
             result['rouge_l'] = rouge
             results.append(result)
-        except Exception as e:
-            results.append({'bucket': 'unknown', 'confidence': 0, 'reason': str(e)[:80],
+        else:
+            # Heuristic fallback based on subset
+            if 'code_' in subset.lower():
+                fallback_bucket = 'code_logic'
+                fallback_reason = '代码类低分(分类失败，按子集推断)'
+            elif any(kw in str(judge).lower() for kw in ['security', 'jailbreak']):
+                fallback_bucket = 'security_unsafe'
+                fallback_reason = '安全类低分(分类失败，按内容推断)'
+            else:
+                fallback_bucket = 'logic_gap'
+                fallback_reason = '低分(LLM分类失败，按子集推断)'
+            results.append({'bucket': fallback_bucket, 'confidence': 0.3, 'reason': fallback_reason,
                           'severity': 'medium', 'question': question[:100], 'rouge_l': rouge})
 
         if (i+1) % 10 == 0:

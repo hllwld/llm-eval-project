@@ -76,6 +76,9 @@ def collect():
 
         # Collect if: Judge low OR Rouge very low
         is_bad = j_overall < JUDGE_THRESHOLD or rouge < ROUGE_THRESHOLD
+        # Skip false positives where Judge itself failed to parse
+        if judge.get('_judge_error') and not (rouge < ROUGE_THRESHOLD):
+            continue
         if not is_bad:
             continue
 
@@ -100,7 +103,12 @@ def collect():
             'security_unsafe': ('知识错误', 'RAG不可解'),
             'correct_but_low_score': ('推理错误', 'RAG不可解'),
         }
-        tags = bucket_tags.get(bucket, ('推理错误', '部分可解'))
+        if bucket in bucket_tags:
+            tags = bucket_tags[bucket]
+        elif 'code_' in subset.lower():
+            tags = ('代码错误', '部分可解')
+        else:
+            tags = ('推理错误', '部分可解')
 
         badcases.append({
             'model': item.get('_model', 'unknown'),

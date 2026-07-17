@@ -107,41 +107,54 @@ class LLMJudge:
 """
         
         # 调用 DeepSeek 作为 Judge
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model_name,
-                messages=[
-                    {"role": "system", "content": "你是一个严格、客观的大模型评测专家。请严格按照 JSON 格式输出评分结果。"},
-                    {"role": "user", "content": judge_prompt}
-                ],
-                temperature=0.1,  # 低温度保证评分稳定
-                max_tokens=1024,
-                response_format={"type": "json_object"}  # DeepSeek 支持 JSON 模式
-            )
-            
-            result_text = response.choices[0].message.content
-            result = json.loads(result_text)
-            
+        result = None
+        for attempt in range(3):
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.model_name,
+                    messages=[
+                        {"role": "system", "content": "你是一个严格、客观的大模型评测专家。请严格按照 JSON 格式输出评分结果。不要用 ``` 代码块包裹，直接输出纯 JSON。"},
+                        {"role": "user", "content": judge_prompt}
+                    ],
+                    temperature=0.1,  # 低温度保证评分稳定
+                    max_tokens=1024,
+                )
+
+                raw = response.choices[0].message.content.strip()
+                # Strip markdown code fences if present
+                if raw.startswith('```'):
+                    raw = raw.split('```')[1]
+                    if raw.startswith('json'):
+                        raw = raw[4:]
+                    raw = raw.strip()
+                result = json.loads(raw)
+                break
+            except Exception:
+                if attempt < 2:
+                    import time as t
+                    t.sleep(0.3)
+
+        if result and isinstance(result, dict):
             # 确保所有字段都存在
             if subset == "reasoning":
                 required_fields = ['format_score', 'step_score', 'correctness_score', 'overall_score']
             else:
                 required_fields = ['correctness_score', 'quality_score', 'format_score', 'overall_score']
-            
+
             for field in required_fields:
                 if field not in result:
                     result[field] = 0
-            
+
             return result
-            
-        except Exception as e:
-            print(f'[WARN] Judge API error: {e}')
+        else:
+            print(f'[WARN] Judge parse failed after retries')
             return {
                 'format_score': 0,
                 'step_score': 0,
                 'correctness_score': 0,
                 'overall_score': 0,
-                'error': str(e)
+                'quality_score': 0,
+                '_judge_error': True,
             }
     
     def batch_judge(
