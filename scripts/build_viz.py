@@ -333,9 +333,9 @@ _chart_reasoning_judge = {
 _chart_code = {
     'labels': _mcq_models,
     'datasets': [
-        {'label': 'ROUGE-L (%)', 'data': [FEV[m]['code_rouge']*100 for m in _mcq_models] if FEV else [],
+        {'label': 'ROUGE-L (%)', 'data': [FEV[m].get('code_base_rouge', 0)*100 for m in _mcq_models] if FEV else [],
          'backgroundColor': 'rgba(26,35,126,0.7)', 'borderRadius': 4, 'yAxisID': 'y'},
-        {'label': 'Judge Overall', 'data': [FEV[m]['code_judge']['overall'] for m in _mcq_models] if FEV else [],
+        {'label': 'Judge Overall', 'data': [FEV[m].get('code_base_judge', {}).get('overall', 0) for m in _mcq_models] if FEV else [],
          'backgroundColor': 'rgba(255,152,0,0.7)', 'borderRadius': 4, 'yAxisID': 'y1'},
     ]
 }
