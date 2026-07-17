@@ -296,14 +296,21 @@ class FinalEval:
             total = mt + rb + rr + cb + cr
             lines.append(f'| {name} | {mt} | {rb} | {rr} | {cb} | {cr} | **{total}** |')
 
-        lines += [
-            '',
-            '## 6. Conclusion',
-            '',
-            '- MCQ: 所有模型基础知识题接近满分，区分度集中在 DeepSeek-V4-Pro 的知识短板',
-            '- Reasoning: RAG 改善 LLM Judge 评分（格式+步骤），ROUGE-L 因结构变长而下降（已知误判）',
-            '- Code: 新增代码知识库（10条模板），RAG 对代码格式和规范性提升待验证',
-        ]
+        # Load AI-generated insights if available
+        _insights_path = os.path.join(PROJECT_ROOT, 'outputs', 'insights', 'latest.json')
+        lines += ['', '## 6. Conclusion (AI 生成)', '']
+        if os.path.exists(_insights_path):
+            with open(_insights_path, 'r', encoding='utf-8') as _f:
+                _ins = json.load(_f)
+            for ins in _ins.get('insights', []):
+                emoji = '[+]' if ins.get('sentiment') == 'positive' else ('[-]' if ins.get('sentiment') == 'negative' else '[*]')
+                lines.append(f'- **{ins["title"]}**: {ins["detail"]}')
+            if _ins.get('improvements'):
+                lines += ['', '### 改进建议', '']
+                for imp in _ins['improvements']:
+                    lines.append(f'- **[{imp["priority"]}]** {imp["measure"]} — {imp["effect"]}')
+        else:
+            lines += ['- Run insight_generator.py to generate AI analysis', '']
 
         report = '\n'.join(lines)
         with open(REPORT_PATH, 'w', encoding='utf-8') as f:
