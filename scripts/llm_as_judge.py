@@ -25,22 +25,26 @@ class LLMJudge:
         question: str,
         expected_answer: str,
         model_response: str,
-        subset: str = "reasoning"
+        subset: str = "reasoning",
+        system_prompt: str = ""
     ) -> Dict[str, Any]:
         """
         让 DeepSeek 充当评委，对模型回答进行多维度评分
-        
+
         Args:
             question: 原始问题
             expected_answer: 标准答案（参考答案）
             model_response: 被评测模型的回答
             subset: 子集类型 (reasoning / code)
-        
+            system_prompt: 模型收到的系统指令（用于判断格式要求是否合理）
+
         Returns:
             包含各维度评分的字典
         """
-        
+
         # ----- 根据子集类型定制评分维度 -----
+        _sys_line = f'\n【模型收到的指令】\n{system_prompt}\n' if system_prompt else ''
+
         if subset == "reasoning":
             judge_prompt = f"""
 你是一个大模型评测专家。请对以下【模型回答】进行打分，从三个维度评估：
@@ -50,11 +54,12 @@ class LLMJudge:
 
 【参考答案】
 {expected_answer}
-
+{_sys_line}
 【模型回答】
 {model_response}
 
 请用 1-5 分（1=极差，5=优秀）对以下三个维度评分，并给出简短理由：
+注意：评分时请结合【模型收到的指令】判断。如果指令要求"直接回答"或"简洁输出"，模型只给简短答案不应扣分；如果指令要求分步推导而模型只给了最终答案，则应扣分。
 
 1. **格式规范性** (Format)：回答是否结构清晰，是否包含分步推理、编号等。
 2. **推理步骤完整性** (Step Completeness)：关键推理步骤是否完整，逻辑是否连贯。
@@ -65,7 +70,7 @@ class LLMJudge:
     "format_score": (1-5),
     "format_reason": "简要说明",
     "step_score": (1-5),
-    "step_reason": "简要说明", 
+    "step_reason": "简要说明",
     "correctness_score": (1-5),
     "correctness_reason": "简要说明",
     "overall_score": (1-5，三个维度的平均值),
@@ -82,11 +87,12 @@ class LLMJudge:
 
 【参考答案】
 {expected_answer}
-
+{_sys_line}
 【模型回答】
 {model_response}
 
 请用 1-5 分（1=极差，5=优秀）对以下维度评分：
+注意：评分时请结合【模型收到的指令】判断。如果指令要求只输出代码，模型给出了额外解释应扣分；如果指令允许解释，则不应扣分。
 
 1. **代码正确性** (Correctness)：代码是否能正确执行并得到预期结果？
 2. **代码质量** (Quality)：代码是否简洁、规范、可读性高？
@@ -186,7 +192,8 @@ class LLMJudge:
                 question=sample.get('question', ''),
                 expected_answer=sample.get('expected', ''),
                 model_response=sample.get('response', ''),
-                subset=subset
+                subset=subset,
+                system_prompt=sample.get('system_prompt', ''),
             )
 
             results.append({**sample, 'judge_scores': result})

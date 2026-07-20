@@ -176,7 +176,8 @@ class FinalEval:
             time.sleep(0.3)
 
         # LLM Judge
-        samples = [{'question': r['question'], 'expected': r['expected'], 'response': r['response']} for r in results]
+        sys_prompt = messages[0]['content'] if messages and messages[0].get('role') == 'system' else ''
+        samples = [{'question': r['question'], 'expected': r['expected'], 'response': r['response'], 'system_prompt': sys_prompt} for r in results]
         judged = self.judge.batch_judge(samples, subset=subset)
         for r, j in zip(results, judged):
             r['judge'] = j['judge_scores']
