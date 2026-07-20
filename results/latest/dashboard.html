@@ -93,8 +93,8 @@
         <div class="kpi">
             <div class="kpi-item"><div class="num">5</div><div class="label">评测模型数</div></div>
             <div class="kpi-item"><div class="num">6</div><div class="label">评测数据集</div></div>
-            <div class="kpi-item"><div class="num">66</div><div class="label">Badcase 总数</div></div>
-            <div class="kpi-item"><div class="num">70%</div><div class="label">RAG 可改善率</div></div>
+            <div class="kpi-item"><div class="num">58</div><div class="label">Badcase 总数</div></div>
+            <div class="kpi-item"><div class="num">78%</div><div class="label">RAG 可改善率</div></div>
         </div>
     </div>
 
@@ -119,7 +119,7 @@
         <div class="table-wrap">
         <table>
             <thead><tr><th>模型</th><th>知识 (20题)</th><th>安全 (8题)</th><th>总分</th></tr></thead>
-            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">96%</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">96%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">90%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">93%</td></tr></tbody>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">96%</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">96%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">100%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">100%</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">95%</td><td style="text-align:center;">100%</td><td style="text-align:center;font-weight:bold;">96%</td></tr></tbody>
         </table>
         </div>
         <p style="margin-top:8px;font-size:12px;color:#888;">
@@ -134,7 +134,7 @@
         <div class="table-wrap">
         <table>
             <thead><tr><th>模型</th><th>Base</th><th>RAG</th><th>Delta</th></tr></thead>
-            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">44.55%</td><td style="text-align:center;">39.49%</td><td style="text-align:center;">-5.06%</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">51.36%</td><td style="text-align:center;">38.44%</td><td style="text-align:center;">-12.92%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">33.82%</td><td style="text-align:center;">32.35%</td><td style="text-align:center;">-1.47%</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">46.85%</td><td style="text-align:center;">41.03%</td><td style="text-align:center;">-5.83%</td></tr></tbody>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">48.64%</td><td style="text-align:center;">39.87%</td><td style="text-align:center;">-8.77%</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">49.43%</td><td style="text-align:center;">38.71%</td><td style="text-align:center;">-10.72%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">32.84%</td><td style="text-align:center;">33.62%</td><td style="text-align:center;">+0.78%</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">50.41%</td><td style="text-align:center;">41.13%</td><td style="text-align:center;">-9.27%</td></tr></tbody>
         </table>
         </div>
         <p style="margin-top:6px;font-size:12px;color:#888;">Rouge 下降 = RAG 输出结构化变长导致，LLM Judge 反证质量提升</p>
@@ -150,7 +150,7 @@
         <div class="table-wrap">
         <table>
             <thead><tr><th>模型</th><th>Mode</th><th>Format</th><th>Step</th><th>Correct</th><th>Overall</th></tr></thead>
-            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">Base</td><td style="text-align:center;">2.87</td><td style="text-align:center;">2.80</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">3.55</td></tr><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">RAG</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">5.00</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">Base</td><td style="text-align:center;">4.47</td><td style="text-align:center;">4.53</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">4.65</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">RAG</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">5.00</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">Base</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">5.00</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">RAG</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">5.00</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">Base</td><td style="text-align:center;">3.73</td><td style="text-align:center;">3.73</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">4.11</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">RAG</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">5.00</td></tr></tbody>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">Base</td><td style="text-align:center;">4.40</td><td style="text-align:center;">4.27</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">4.55</td></tr><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">RAG</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">5.00</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">Base</td><td style="text-align:center;">4.73</td><td style="text-align:center;">4.73</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">4.73</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">RAG</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">5.00</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">Base</td><td style="text-align:center;">4.93</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">4.98</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">RAG</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">5.00</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">Base</td><td style="text-align:center;">4.67</td><td style="text-align:center;">4.53</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">4.71</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">RAG</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;">5.00</td><td style="text-align:center;font-weight:bold;">5.00</td></tr></tbody>
         </table>
         </div>
         <p style="margin-top:6px;font-size:12px;color:#888;">RAG 模式下全部模型达满分 5.00</p>
@@ -162,7 +162,7 @@
         <div class="table-wrap">
         <table>
             <thead><tr><th>模型</th><th>Base Rouge</th><th>RAG Rouge</th><th>Base Judge</th><th>RAG Judge</th></tr></thead>
-            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">43.24%</td><td style="text-align:center;">37.46%</td><td style="text-align:center;">3.80</td><td style="text-align:center;font-weight:bold;">3.50</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">40.06%</td><td style="text-align:center;">44.63%</td><td style="text-align:center;">4.00</td><td style="text-align:center;font-weight:bold;">3.30</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">25.89%</td><td style="text-align:center;">36.01%</td><td style="text-align:center;">3.70</td><td style="text-align:center;font-weight:bold;">3.50</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">43.29%</td><td style="text-align:center;">35.57%</td><td style="text-align:center;">3.80</td><td style="text-align:center;font-weight:bold;">3.10</td></tr></tbody>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">39.98%</td><td style="text-align:center;">40.92%</td><td style="text-align:center;">3.90</td><td style="text-align:center;font-weight:bold;">3.90</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">33.69%</td><td style="text-align:center;">39.59%</td><td style="text-align:center;">4.00</td><td style="text-align:center;font-weight:bold;">3.70</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">25.62%</td><td style="text-align:center;">36.37%</td><td style="text-align:center;">3.60</td><td style="text-align:center;font-weight:bold;">3.60</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">44.30%</td><td style="text-align:center;">35.48%</td><td style="text-align:center;">3.50</td><td style="text-align:center;font-weight:bold;">3.70</td></tr></tbody>
         </table>
         </div>
         <div class="chart-wrap"><canvas id="chart_code"></canvas></div>
@@ -174,7 +174,7 @@
         <div class="table-wrap">
         <table>
             <thead><tr><th>模型</th><th>PASS</th><th>WARN</th><th>FAIL</th><th>通过率</th></tr></thead>
-            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">5</td><td style="text-align:center;">2</td><td style="text-align:center;color:#F44336;font-weight:bold;">1</td><td style="text-align:center;font-weight:bold;">5/8 (62%)</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">7</td><td style="text-align:center;">1</td><td style="text-align:center;color:#F44336;font-weight:bold;">0</td><td style="text-align:center;font-weight:bold;">7/8 (88%)</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">4</td><td style="text-align:center;">4</td><td style="text-align:center;color:#F44336;font-weight:bold;">0</td><td style="text-align:center;font-weight:bold;">4/8 (50%)</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">4</td><td style="text-align:center;">3</td><td style="text-align:center;color:#F44336;font-weight:bold;">1</td><td style="text-align:center;font-weight:bold;">4/8 (50%)</td></tr></tbody>
+            <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">4</td><td style="text-align:center;">4</td><td style="text-align:center;color:#F44336;font-weight:bold;">0</td><td style="text-align:center;font-weight:bold;">4/8 (50%)</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">4</td><td style="text-align:center;">4</td><td style="text-align:center;color:#F44336;font-weight:bold;">0</td><td style="text-align:center;font-weight:bold;">4/8 (50%)</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">4</td><td style="text-align:center;">3</td><td style="text-align:center;color:#F44336;font-weight:bold;">1</td><td style="text-align:center;font-weight:bold;">4/8 (50%)</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">2</td><td style="text-align:center;">2</td><td style="text-align:center;color:#F44336;font-weight:bold;">4</td><td style="text-align:center;font-weight:bold;">2/8 (25%)</td></tr></tbody>
         </table>
         </div>
         <p style="margin-top:6px;font-size:12px;color:#888;">安全知识 MCQ 全员满分，对抗测试暴露真实差距</p>
@@ -190,7 +190,7 @@
                 <div class="table-wrap">
                 <table>
                     <thead><tr><th>模型</th><th>JSON Format</th><th>Tool Call</th></tr></thead>
-                    <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">60%</td><td style="text-align:center;">100%</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">40%</td><td style="text-align:center;">83%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">40%</td><td style="text-align:center;">100%</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">40%</td><td style="text-align:center;">83%</td></tr></tbody>
+                    <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">40%</td><td style="text-align:center;">100%</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">60%</td><td style="text-align:center;">100%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">40%</td><td style="text-align:center;">100%</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">80%</td><td style="text-align:center;">83%</td></tr></tbody>
                 </table>
                 </div>
             </div>
@@ -199,7 +199,7 @@
                 <div class="table-wrap">
                 <table>
                     <thead><tr><th>模型</th><th>Avg Latency</th><th>Hallucination</th></tr></thead>
-                    <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">24174ms</td><td style="text-align:center;">2%</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">5124ms</td><td style="text-align:center;">2%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">26538ms</td><td style="text-align:center;">0%</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">7198ms</td><td style="text-align:center;">6%</td></tr></tbody>
+                    <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">3526ms</td><td style="text-align:center;">2%</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">4032ms</td><td style="text-align:center;">0%</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">6432ms</td><td style="text-align:center;">0%</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">12226ms</td><td style="text-align:center;">2%</td></tr></tbody>
                 </table>
                 </div>
                 <div class="chart-wrap"><canvas id="chart_latency"></canvas></div>
@@ -214,7 +214,7 @@
             <div class="table-wrap">
             <table>
                 <thead><tr><th>模型</th><th>MCQ Total Tokens</th></tr></thead>
-                <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">30,420</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">27,366</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">29,352</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">47,200</td></tr></tbody>
+                <tbody><tr><td><strong>DeepSeek-V3</strong></td><td style="text-align:center;">31,662</td></tr><tr><td><strong>DeepSeek-V4-Pro</strong></td><td style="text-align:center;">28,418</td></tr><tr><td><strong>Qwen-Plus</strong></td><td style="text-align:center;">28,971</td></tr><tr><td><strong>GLM-5.2</strong></td><td style="text-align:center;">46,448</td></tr></tbody>
             </table>
             </div>
             <div class="chart-wrap"><canvas id="chart_token"></canvas></div>
@@ -226,18 +226,18 @@
         <!-- Badcase 按模型分布 -->
         <div class="card">
             <h2>Badcase 按模型分布</h2>
-            <div class="bar-row"><span class="bar-label">Qwen-Plus</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:100.0%;height:100%;background:#4CAF50;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">21</span></div></div></div>
-<div class="bar-row"><span class="bar-label">GLM-5.2</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:76.19047619047619%;height:100%;background:#2196F3;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">16</span></div></div></div>
-<div class="bar-row"><span class="bar-label">DeepSeek-V3</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:71.42857142857143%;height:100%;background:#FF9800;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">15</span></div></div></div>
-<div class="bar-row"><span class="bar-label">DeepSeek-V4-Pro</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:61.904761904761905%;height:100%;background:#9C27B0;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">13</span></div></div></div>
+            <div class="bar-row"><span class="bar-label">Qwen-Plus</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:100.0%;height:100%;background:#4CAF50;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">17</span></div></div></div>
+<div class="bar-row"><span class="bar-label">GLM-5.2</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:94.11764705882352%;height:100%;background:#2196F3;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">16</span></div></div></div>
+<div class="bar-row"><span class="bar-label">DeepSeek-V3</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:76.47058823529412%;height:100%;background:#FF9800;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">13</span></div></div></div>
+<div class="bar-row"><span class="bar-label">DeepSeek-V4-Pro</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:70.58823529411765%;height:100%;background:#9C27B0;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">12</span></div></div></div>
         </div>
 
         <!-- 错误类型分布 -->
         <div class="card">
             <h2>错误分类（一级标签）</h2>
-            <div class="bar-row"><span class="bar-label">知识错误</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:1.8518518518518516%;height:100%;background:#2196F3;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">1 条 (1.5%)</span></div></div></div>
-<div class="bar-row"><span class="bar-label">推理错误</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:100.0%;height:100%;background:#F44336;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">54 条 (81.8%)</span></div></div></div>
-<div class="bar-row"><span class="bar-label">代码错误</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:16.666666666666664%;height:100%;background:#FF9800;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">9 条 (13.6%)</span></div></div></div>
+            <div class="bar-row"><span class="bar-label">知识错误</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:1.8867924528301887%;height:100%;background:#2196F3;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">1 条 (1.7%)</span></div></div></div>
+<div class="bar-row"><span class="bar-label">推理错误</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:100.0%;height:100%;background:#F44336;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">53 条 (91.4%)</span></div></div></div>
+<div class="bar-row"><span class="bar-label">代码错误</span><div style="flex:1;height:18px;background:#eee;border-radius:3px;overflow:hidden;min-width:40px"><div style="width:7.547169811320755%;height:100%;background:#FF9800;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;box-sizing:border-box;"><span style="color:#fff;font-size:11px;">4 条 (6.9%)</span></div></div></div>
         </div>
     </div>
 
@@ -251,19 +251,19 @@
                 <tr>
                     <td><span class="badge" style="background:#2196F3;">RAG可解</span></td>
                     <td style="text-align:center;font-weight:bold;">1</td>
-                    <td style="text-align:center;">1.5%</td>
+                    <td style="text-align:center;">1.7%</td>
                     <td class="nowrap">知识类错误，补充文档即可纠正</td>
                 </tr>
                 <tr>
                     <td><span class="badge" style="background:#FF9800;">部分可解</span></td>
-                    <td style="text-align:center;font-weight:bold;">45</td>
-                    <td style="text-align:center;">68.2%</td>
+                    <td style="text-align:center;font-weight:bold;">44</td>
+                    <td style="text-align:center;">75.9%</td>
                     <td class="nowrap">上下文/推理类，RAG辅助 + Prompt优化</td>
                 </tr>
                 <tr>
                     <td><span class="badge" style="background:#F44336;">RAG不可解</span></td>
-                    <td style="text-align:center;font-weight:bold;">20</td>
-                    <td style="text-align:center;">30.3%</td>
+                    <td style="text-align:center;font-weight:bold;">13</td>
+                    <td style="text-align:center;">22.4%</td>
                     <td class="nowrap">数学推理/安全类，需微调或CoT优化</td>
                 </tr>
             </tbody>
@@ -302,7 +302,7 @@
 
     <!-- 逐条 Badcase -->
     <div class="card">
-        <h2>逐条 Badcase 分析（共 65 条 | 64 条 Rouge 误判）</h2>
+        <h2>逐条 Badcase 分析（共 58 条 | 57 条 Rouge 误判）</h2>
         
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
@@ -315,7 +315,7 @@
             <span>输出：...</span>
         </div>
         <div class="badcase-tags">
-            代码错误 → code_logic → 部分可解 | 代码不完整，未实现断点续传核心逻辑（如Range分段、断点恢复、文件合并等）
+            推理错误 → logic_gap → 部分可解 | 模型输出的代码不完整，缺少断点续传和合并等核心逻辑实现，导致功能缺失。
         </div>
         <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:1 Rouge:0</div>
     </div>
@@ -330,43 +330,28 @@
             <span>输出：...</span>
         </div>
         <div class="badcase-tags">
-            代码错误 → code_logic → 部分可解 | 代码不完整，未实现断点续传核心逻辑（如Range分段、断点恢复、文件合并等）
+            推理错误 → logic_gap → 部分可解 | 模型输出的代码不完整，缺少断点续传和合并等核心逻辑实现，导致功能缺失。
         </div>
         <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:1 Rouge:0</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#3 DeepSeek-V4-Pro — reasoning (Base)</strong>
+            <strong>#3 DeepSeek-V3 — reasoning (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>把 1 到 100 的所有整数相加，总和是多少？</div>
         <div class="badcase-answer">
             <span>答案：5050（高斯求和公式：n(n+1)/2 = 100×101/2 = 5050）</span>
-            <span>输出：5050...</span>
+            <span>输出：1到100的所有整数相加的总和是5050。...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2 Rouge:0.2</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.5</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#4 GLM-5.2 — reasoning (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>把 1 到 100 的所有整数相加，总和是多少？</div>
-        <div class="badcase-answer">
-            <span>答案：5050（高斯求和公式：n(n+1)/2 = 100×101/2 = 5050）</span>
-            <span>输出：5050...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2 Rouge:0.2</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#5 GLM-5.2 — code (Base)</strong>
+            <strong>#4 DeepSeek-V3 — code (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 写一个装饰器，打印函数的执行时间。</div>
@@ -379,263 +364,59 @@ def timer(func):
         print(f'{func.__name__} took {time.time()-start:.4f}s')
       </span>
             <span>输出：1. 推理过程：
-1. 装饰器本质是高阶函数：接收原函数作为参数，返回一个包装后的新函数。
-2. 计时原理：在包装函数内部，使用 `time.perf_counter()`（比 `time.time(...</span>
+   - 装饰器的本质是一个高阶函数，它接收一个函数并返回一个包装后的函数。
+   - 为了打印执行时间，需要在调用原函数前后分别记录时间戳，并计算差值。
+   - 使用 `time...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2 Rouge:0.2069</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#6 DeepSeek-V3 — reasoning (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>一个水箱每分钟进水 3 升，出水 2 升。原本有 5 升水，10 分钟后有多少升？</div>
-        <div class="badcase-answer">
-            <span>答案：15 升（5 + (3-2)×10 = 15）</span>
-            <span>输出：10分钟后，水箱内水量为15升。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2.3 Rouge:0.5</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#7 DeepSeek-V3 — reasoning (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>小明买 3 支笔和 2 个本子共花 17 元，1 支笔 3 元，问 1 个本子多少钱？</div>
-        <div class="badcase-answer">
-            <span>答案：4 元（设本子单价 x：3×3 + 2x = 17 → 2x = 8 → x = 4）</span>
-            <span>输出：一个本子4元。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2.3 Rouge:0.1818</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.6265</div>
     </div>
     <div class="badcase" style="border-left-color:#F44336;">
         <div class="badcase-header">
-            <strong>#8 DeepSeek-V3 — reasoning (Base)</strong>
+            <strong>#5 DeepSeek-V4-Pro — code (Base)</strong>
             <span class="badge" style="background:#F44336;">RAG不可解</span>
         </div>
-        <div class="badcase-body"><strong>题目：</strong>一个数列：2, 4, 8, 16, ...，第 8 项是多少？</div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 实现冒泡排序算法。</div>
         <div class="badcase-answer">
-            <span>答案：256（等比数列，公比 2，第 n 项 = 2ⁿ，第 8 项 = 2⁸ = 256）</span>
-            <span>输出：第8项是256。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型回答正确，无错误
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2.3 Rouge:0.4444</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#9 DeepSeek-V3 — reasoning (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>一个班级 50 人，男生占 60%，女生有多少人？</div>
-        <div class="badcase-answer">
-            <span>答案：20 人（50 × (1-0.6) = 50 × 0.4 = 20）</span>
-            <span>输出：女生有20人。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2.3 Rouge:0.2</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#10 DeepSeek-V3 — reasoning (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>如果今天是星期三，100 天后是星期几？</div>
-        <div class="badcase-answer">
-            <span>答案：星期五（100 ÷ 7 = 14 余 2，星期三 + 2 天 = 星期五）</span>
-            <span>输出：100天后是星期五。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2.3 Rouge:0.3333</div>
-    </div>
-    <div class="badcase" style="border-left-color:#F44336;">
-        <div class="badcase-header">
-            <strong>#11 DeepSeek-V3 — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>甲完成一件工作需要 6 天，乙需要 12 天，两人合作需要几天？</div>
-        <div class="badcase-answer">
-            <span>答案：4 天（1÷(1/6+1/12) = 1÷(3/12) = 4）</span>
-            <span>输出：两人合作需要 4 天。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型推理和答案均正确，但可能因格式或评分机制被误判为低分
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2.3 Rouge:0.1818</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#12 GLM-5.2 — reasoning (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>小明买 3 支笔和 2 个本子共花 17 元，1 支笔 3 元，问 1 个本子多少钱？</div>
-        <div class="badcase-answer">
-            <span>答案：4 元（设本子单价 x：3×3 + 2x = 17 → 2x = 8 → x = 4）</span>
-            <span>输出：1个本子4元。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2.3 Rouge:0.1667</div>
-    </div>
-    <div class="badcase" style="border-left-color:#F44336;">
-        <div class="badcase-header">
-            <strong>#13 GLM-5.2 — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>一个数列：2, 4, 8, 16, ...，第 8 项是多少？</div>
-        <div class="badcase-answer">
-            <span>答案：256（等比数列，公比 2，第 n 项 = 2ⁿ，第 8 项 = 2⁸ = 256）</span>
-            <span>输出：256...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型回答正确，无错误
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2.3 Rouge:0.25</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#14 DeepSeek-V3 — reasoning (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>把 1 到 100 的所有整数相加，总和是多少？</div>
-        <div class="badcase-answer">
-            <span>答案：5050（高斯求和公式：n(n+1)/2 = 100×101/2 = 5050）</span>
-            <span>输出：1到100的所有整数相加的总和是5050。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:2.7 Rouge:0.5</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#15 DeepSeek-V3 — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 读取一个 CSV 文件，计算某一列的平均值。</div>
-        <div class="badcase-answer">
-            <span>答案：import csv
-def col_avg(filename, col_index):
-    with open(filename, "r") as f:
-        reader = csv.reader(f)
-        next(reader)
-        vals = [float(row[col_index]) for row in reader]
-    return </span>
-            <span>输出：可以使用 Python 的 `csv` 模块或 `pandas` 库来读取 CSV 文件并计算某一列的平均值。以下是两种常见方法：
+            <span>答案：def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr</span>
+            <span>输出：以下是冒泡排序的 Python 实现，包括基本版本和一个优化版本（检测提前终止），并附有简要说明：
 
-### 方法1：使用 `csv` 模块（标准库，无需额外安装）
-`...</span>
+```python
+def bubble_sort(arr):
+    """
+    基本的冒泡...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+            推理错误 → correct_but_low_score → RAG不可解 | 模型实现了正确的冒泡排序，但Judge评分可能因格式或额外内容较低
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.2667</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.4044</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#16 DeepSeek-V3 — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个函数，判断一个数是否为质数。</div>
-        <div class="badcase-answer">
-            <span>答案：def is_prime(n):
-    if n < 2: return False
-    for i in range(2, int(n**0.5)+1):
-        if n % i == 0: return False
-    return True</span>
-            <span>输出：1. **推理过程**：  
-   - **边界条件**：首先处理小于等于1的数，根据质数定义，它们不是质数（质数是大于1的自然数，且只有1和自身两个正因数）。因此，若输入 `n <= 1`，直接返回...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.4211</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#17 DeepSeek-V4-Pro — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 读取一个 CSV 文件，计算某一列的平均值。</div>
-        <div class="badcase-answer">
-            <span>答案：import csv
-def col_avg(filename, col_index):
-    with open(filename, "r") as f:
-        reader = csv.reader(f)
-        next(reader)
-        vals = [float(row[col_index]) for row in reader]
-    return </span>
-            <span>输出：你可以使用 Python 的 `pandas` 或标准库 `csv` 来读取 CSV 文件并计算某一列的平均值。以下是两种方法的示例。
-
-### 方法一：使用 pandas（推荐，简洁高效）
-
-```...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.2676</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#18 DeepSeek-V4-Pro — code (Base)</strong>
+            <strong>#6 DeepSeek-V4-Pro — code (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 写一个多线程下载器，支持断点续传。</div>
         <div class="badcase-answer">
             <span>答案：思路：使用 requests 库的 Range header 分段下载，每段一个线程，最后合并。核心代码需 import requests, threading；通过 Content-Length 获取文件总大小，按线程数等分，各线程写入临时文件，下载完毕后按顺序合并。</span>
-            <span>输出：以下是一个用 Python 实现的多线程下载器，支持 **断点续传**，使用标准库 `urllib` 和 `threading`，不依赖第三方库。
-
-```python
-import os
-impor...</span>
+            <span>输出：以下是一个 Python 多线程下载器实现，支持断点续传。代码使用 `requests` 获取文件大小与分块下载，`ThreadPoolExecutor` 管理线程，自动保存下载进度到临时 `.par...</span>
         </div>
         <div class="badcase-tags">
-            代码错误 → code_logic → 部分可解 | 代码不完整，未实现断点续传核心逻辑（如Range分段、断点恢复、文件合并等）
+            推理错误 → logic_gap → 部分可解 | 模型输出的代码不完整，缺少断点续传和合并等核心逻辑实现，导致功能缺失。
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.0694</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.0482</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#19 DeepSeek-V4-Pro — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 实现二分查找算法，在有序列表中查找目标值。</div>
-        <div class="badcase-answer">
-            <span>答案：def binary_search(arr, target):
-    left, right = 0, len(arr)-1
-    while left <= right:
-        mid = (left+right)//2
-        if arr[mid]==target: return mid
-        elif arr[mid]<target: left=mid+1
-</span>
-            <span>输出：1. 推理过程：
-   - 步骤1：明确前提——二分查找要求输入列表必须是有序的（通常为升序），否则无法保证正确性。若列表无序，需要先排序，但会增加时间复杂度。
-   - 步骤2：设置两个指针，左指针...</span>
-        </div>
-        <div class="badcase-tags">
-            格式错误 → format_violation → 部分可解 | 模型输出被截断，代码不完整，导致无法运行
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.5952</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#20 DeepSeek-V4-Pro — code (Base)</strong>
+            <strong>#7 DeepSeek-V4-Pro — code (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>写一个 Python 函数，判断一个字符串是否为回文串（忽略大小写和空格）。</div>
@@ -644,17 +425,40 @@ impor...</span>
     s = ''.join(c.lower() for c in s if c.isalnum())
     return s == s[::-1]</span>
             <span>输出：1. 推理过程：
-   - 明确需求：判断字符串是否为回文，需忽略大小写和空格。这意味着比较时应将所有字母统一为同一大小写，并移除空格。
-   - 预处理思路：先将字符串全部转为小写（或大写），然后剔...</span>
+   - 第一步：明确回文串定义——正读和反读都相同的字符串。题目要求忽略大小写和空格，因此需要预处理字符串。
+   - 第二步：设计预处理方法：将字符串转换为统一小写（或大写），并...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.3556</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.3448</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#21 DeepSeek-V4-Pro — code (Base)</strong>
+            <strong>#8 DeepSeek-V4-Pro — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个装饰器，打印函数的执行时间。</div>
+        <div class="badcase-answer">
+            <span>答案：import time
+def timer(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f'{func.__name__} took {time.time()-start:.4f}s')
+      </span>
+            <span>输出：1. 推理过程：
+   - 第一步：装饰器的本质是一个高阶函数，它接受一个函数作为参数，并返回一个新的函数，用于在原函数执行前后添加额外逻辑。
+   - 第二步：为了测量执行时间，需要在调用原函数前记...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.5854</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#9 DeepSeek-V4-Pro — code (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 实现一个 LRU 缓存类（使用 OrderedDict）。</div>
@@ -667,18 +471,44 @@ class LRUCache:
     def get(self, key):
         if key not in </span>
             <span>输出：1. 推理过程：
-   - LRU（Least Recently Used）缓存的核心原则：当缓存达到容量上限时，移除最久未被访问的数据，同时每次访问或插入数据都将其标记为最近使用。
-   - Pyt...</span>
+   - **LRU 缓存原理**：LRU（Least Recently Used）缓存的核心思想是，当缓存空间已满时，优先淘汰最长时间未被访问的数据。每次访问或插入一个元素，都把它...</span>
         </div>
         <div class="badcase-tags">
-            代码错误 → code_logic → 部分可解 | put方法在缓存满时移除了最久未使用的项，但缺少添加新键值对的代码行，导致逻辑不完整
+            代码错误 → code_syntax → 部分可解 | 模型输出代码被截断，缺少完整语句，导致语法错误无法运行
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.6911</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.5077</div>
     </div>
-    <div class="badcase" style="border-left-color:#F44336;">
+    <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#22 Qwen-Plus — code (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
+            <strong>#10 Qwen-Plus — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个函数，判断一个数是否为质数。</div>
+        <div class="badcase-answer">
+            <span>答案：def is_prime(n):
+    if n < 2: return False
+    for i in range(2, int(n**0.5)+1):
+        if n % i == 0: return False
+    return True</span>
+            <span>输出：以下是一个判断质数的 Python 函数：
+
+```python
+def is_prime(n):
+    """
+    判断一个整数 n 是否为质数
+    
+    参数:
+        n ...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.2857</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#11 Qwen-Plus — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 实现斐波那契数列的前 N 项（N 由参数传入）。</div>
         <div class="badcase-answer">
@@ -691,38 +521,18 @@ class LRUCache:
     return result</span>
             <span>输出：以下是几种用 Python 实现斐波那契数列前 N 项的方法（推荐使用**迭代法**，高效且无递归栈溢出风险）：
 
-### ✅ 方法一：迭代法（推荐，时间 O(N)，空间 O(1)）
-```pytho...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出代码功能正确且符合题目要求，但可能因包含额外注释和示例导致Rouge/Judge评分偏低
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.1818</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#23 Qwen-Plus — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>写一个 Python 函数，判断一个字符串是否为回文串（忽略大小写和空格）。</div>
-        <div class="badcase-answer">
-            <span>答案：def is_palindrome(s):
-    s = ''.join(c.lower() for c in s if c.isalnum())
-    return s == s[::-1]</span>
-            <span>输出：以下是一个判断字符串是否为回文串的 Python 函数，**忽略大小写和空格**（也通常会忽略标点符号，但题目未明确要求；为健壮性，可一并过滤非字母数字字符）：
-
-```python
-def is_p...</span>
+### ✅ 方法1：迭代法（推荐 —— 时间 O(N)，空间 O(1)）
+```py...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.2857</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.1827</div>
     </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
+    <div class="badcase" style="border-left-color:#F44336;">
         <div class="badcase-header">
-            <strong>#24 Qwen-Plus — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
+            <strong>#12 Qwen-Plus — code (Base)</strong>
+            <span class="badge" style="background:#F44336;">RAG不可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 实现冒泡排序算法。</div>
         <div class="badcase-answer">
@@ -738,38 +548,35 @@ def is_p...</span>
 ```python
 def bubble_sort(arr):
     """
-    冒泡排序算法
+    冒泡排序算法（优化版）
     
-    时间复杂度...</span>
+    ...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+            推理错误 → correct_but_low_score → RAG不可解 | 模型实现了正确的冒泡排序，但Judge评分可能因格式或额外内容较低
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.3535</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.3474</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#25 Qwen-Plus — code (Base)</strong>
+            <strong>#13 Qwen-Plus — code (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个函数，判断一个数是否为质数。</div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个多线程下载器，支持断点续传。</div>
         <div class="badcase-answer">
-            <span>答案：def is_prime(n):
-    if n < 2: return False
-    for i in range(2, int(n**0.5)+1):
-        if n % i == 0: return False
-    return True</span>
-            <span>输出：1. 推理过程：  
-   1. **边界情况处理**：质数定义为大于1的自然数，且仅有1和它本身两个正因数。因此，≤1 的数（如0、1、负数）直接返回 `False`；2是唯一的偶质数，应单独返回 ...</span>
+            <span>答案：思路：使用 requests 库的 Range header 分段下载，每段一个线程，最后合并。核心代码需 import requests, threading；通过 Content-Length 获取文件总大小，按线程数等分，各线程写入临时文件，下载完毕后按顺序合并。</span>
+            <span>输出：以下是一个使用 Python 编写的**多线程断点续传下载器**，基于 `requests`（支持 `Range` 头）和 `threading`，具备以下特性：
+
+✅ 支持断点续传（通过 `Cont...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+            推理错误 → logic_gap → 部分可解 | 模型输出的代码不完整，缺少断点续传和合并等核心逻辑实现，导致功能缺失。
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.3486</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.0384</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#26 Qwen-Plus — code (Base)</strong>
+            <strong>#14 Qwen-Plus — code (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 写一个装饰器，打印函数的执行时间。</div>
@@ -782,55 +589,33 @@ def timer(func):
         print(f'{func.__name__} took {time.time()-start:.4f}s')
       </span>
             <span>输出：1. 推理过程：  
-   1. 装饰器本质是一个高阶函数：接收被装饰的函数作为参数，返回一个新函数（包装函数），用于增强原函数行为。  
-   2. 要打印执行时间，需在调用原函数前记录起始时间（如...</span>
+   1. 装饰器本质是一个高阶函数：接收被装饰的函数作为参数，返回一个新的包装函数（wrapper），用于增强原函数行为。  
+   2. 要测量执行时间，需在调用原函数前记录...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.5051</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.5</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#27 Qwen-Plus — code (Base)</strong>
+            <strong>#15 GLM-5.2 — reasoning (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 实现一个 LRU 缓存类（使用 OrderedDict）。</div>
+        <div class="badcase-body"><strong>题目：</strong>小明买 3 支笔和 2 个本子共花 17 元，1 支笔 3 元，问 1 个本子多少钱？</div>
         <div class="badcase-answer">
-            <span>答案：from collections import OrderedDict
-class LRUCache:
-    def __init__(self, capacity):
-        self.cache = OrderedDict()
-        self.capacity = capacity
-    def get(self, key):
-        if key not in </span>
-            <span>输出：1. 推理过程：  
-   1. 明确 LRU 缓存的核心行为：支持 `get(key)` 和 `put(key, value)` 操作；缓存有固定容量 `capacity`；当缓存满时，插入新元素需...</span>
+            <span>答案：4 元（设本子单价 x：3×3 + 2x = 17 → 2x = 8 → x = 4）</span>
+            <span>输出：1个本子4元。...</span>
         </div>
         <div class="badcase-tags">
-            代码错误 → code_logic → 部分可解 | put方法在缓存满时移除了最久未使用的项，但缺少添加新键值对的代码行，导致逻辑不完整
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.6184</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.1667</div>
     </div>
-    <div class="badcase" style="border-left-color:#F44336;">
+    <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#28 GLM-5.2 — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>三个连续偶数的和是 36，这三个数分别是多少？</div>
-        <div class="badcase-answer">
-            <span>答案：10, 12, 14（设中间数为 x：3x = 36 → x = 12）</span>
-            <span>输出：这三个连续偶数分别是 10、12 和 14。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型推理和答案完全正确，但Judge评分可能因格式或长度等因素误判
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.5455</div>
-    </div>
-    <div class="badcase" style="border-left-color:#F44336;">
-        <div class="badcase-header">
-            <strong>#29 GLM-5.2 — code (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
+            <strong>#16 GLM-5.2 — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 实现斐波那契数列的前 N 项（N 由参数传入）。</div>
         <div class="badcase-answer">
@@ -841,49 +626,104 @@ class LRUCache:
         result.append(a)
         a, b = b, a + b
     return result</span>
-            <span>输出：1. 推理过程：
-1. 输入校验：首先判断参数 N 的合法性。如果 N <= 0，返回空列表 `[]`；如果 N == 1，返回 `[0]`；如果 N == 2，返回 `[0, 1]`。
-2. 算法选...</span>
+            <span>输出：以下是使用 Python 实现斐波那契数列前 N 项的代码：
+
+```python
+def fibonacci(n):
+    if n <= 0:
+        return []
+    eli...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出代码功能正确且符合题目要求，但可能因包含额外注释和示例导致Rouge/Judge评分偏低
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.2617</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.2472</div>
+    </div>
+    <div class="badcase" style="border-left-color:#F44336;">
+        <div class="badcase-header">
+            <strong>#17 GLM-5.2 — code (Base)</strong>
+            <span class="badge" style="background:#F44336;">RAG不可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 读取一个 CSV 文件，计算某一列的平均值。</div>
+        <div class="badcase-answer">
+            <span>答案：import csv
+def col_avg(filename, col_index):
+    with open(filename, "r") as f:
+        reader = csv.reader(f)
+        next(reader)
+        vals = [float(row[col_index]) for row in reader]
+    return </span>
+            <span>输出：这里提供两种常用的方法：使用 `pandas` 库（推荐，适合数据处理）和使用 Python 内置的 `csv` 模块（无需安装额外库）。
+
+### 方法一：使用 `pandas` 库（推荐）
+如果还...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → correct_but_low_score → RAG不可解 | 模型答案正确，可能因格式或长度导致评分低
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.2069</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#30 DeepSeek-V3 — reasoning (Base)</strong>
+            <strong>#18 GLM-5.2 — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>写一个 Python 函数，判断一个字符串是否为回文串（忽略大小写和空格）。</div>
+        <div class="badcase-answer">
+            <span>答案：def is_palindrome(s):
+    s = ''.join(c.lower() for c in s if c.isalnum())
+    return s == s[::-1]</span>
+            <span>输出：1. 推理过程：
+1. 预处理字符串：首先将字符串统一转换为小写，以实现忽略大小写的要求。
+2. 去除空格：使用字符串的 `replace(" ", "")` 方法去除所有空格字符（如果需要忽略所有非...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.2703</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#19 GLM-5.2 — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个装饰器，打印函数的执行时间。</div>
+        <div class="badcase-answer">
+            <span>答案：import time
+def timer(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f'{func.__name__} took {time.time()-start:.4f}s')
+      </span>
+            <span>输出：1. 推理过程：
+1. 装饰器本质是高阶函数：接收函数作为参数，返回一个包装后的函数。
+2. 引入 `time` 模块，使用 `time.time()` 记录函数执行前后的时间戳，计算差值即可得到执行...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3 Rouge:0.2222</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#20 DeepSeek-V3 — reasoning (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>一个两位数，十位数是个位数的 2 倍，且两数之和为 12，这个数是多少？</div>
         <div class="badcase-answer">
             <span>答案：84（设个位 x，十位 2x：2x + x = 12 → x = 4，十位 = 8）</span>
-            <span>输出：这个两位数是84。十位数字8是个位数字4的2倍，且8+4=12，符合题意。...</span>
+            <span>输出：这个两位数是84。十位数8是个位数4的2倍，且两数之和为12。...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3.3 Rouge:0.375</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3.33 Rouge:0.2857</div>
     </div>
-    <div class="badcase" style="border-left-color:#F44336;">
+    <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#31 GLM-5.2 — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>一个圆形花坛半径 7 米，面积约多少平方米？（π≈3.14）</div>
-        <div class="badcase-answer">
-            <span>答案：约 153.86 m²（π×7² = 3.14×49 = 153.86）</span>
-            <span>输出：面积约153.86平方米。...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出完全正确，与参考答案一致，无错误可归因
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:3.3 Rouge:0.3636</div>
-    </div>
-    <div class="badcase" style="border-left-color:#F44336;">
-        <div class="badcase-header">
-            <strong>#32 DeepSeek-V3 — code (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
+            <strong>#21 DeepSeek-V3 — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 实现斐波那契数列的前 N 项（N 由参数传入）。</div>
         <div class="badcase-answer">
@@ -894,43 +734,64 @@ class LRUCache:
         result.append(a)
         a, b = b, a + b
     return result</span>
-            <span>输出：以下是用 Python 实现斐波那契数列前 N 项的代码，其中 `N` 作为参数传入：
+            <span>输出：以下是 Python 实现斐波那契数列前 N 项的代码，采用迭代方式，从 `0, 1` 开始定义（即 F(0)=0, F(1)=1）。函数接受参数 `n`，返回前 `n` 项的列表。
 
-```python
-def fibonacci(n):
-    """返回斐波那契数列的前 n 项（列表形式）...</span>
+```pyth...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出代码功能正确且符合题目要求，但可能因包含额外注释和示例导致Rouge/Judge评分偏低
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2785</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2258</div>
     </div>
     <div class="badcase" style="border-left-color:#F44336;">
         <div class="badcase-header">
-            <strong>#33 DeepSeek-V3 — code (Base)</strong>
+            <strong>#22 DeepSeek-V3 — code (Base)</strong>
             <span class="badge" style="background:#F44336;">RAG不可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 读取一个 CSV 文件，计算某一列的平均值。</div>
+        <div class="badcase-answer">
+            <span>答案：import csv
+def col_avg(filename, col_index):
+    with open(filename, "r") as f:
+        reader = csv.reader(f)
+        next(reader)
+        vals = [float(row[col_index]) for row in reader]
+    return </span>
+            <span>输出：可以使用 `pandas` 库快速读取 CSV 并计算某一列的平均值，示例代码如下：
+
+```python
+import pandas as pd
+
+df = pd.read_csv('data.cs...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → correct_but_low_score → RAG不可解 | 模型答案正确，可能因格式或长度导致评分低
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2772</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#23 DeepSeek-V3 — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>写一个 Python 函数，统计字符串中每个字符出现的次数，返回字典。</div>
         <div class="badcase-answer">
             <span>答案：def char_count(s):
     from collections import Counter
     return dict(Counter(s))</span>
-            <span>输出：以下是统计字符串中每个字符出现次数的 Python 函数，返回字典：
-
-```python
-from collections import Counter
-
-def count_chars(s: st...</span>
+            <span>输出：1. 推理过程：
+   - 首先明确函数功能：输入一个字符串，输出一个字典，键为字符，值为该字符出现的次数。
+   - 最简单的方法是使用 Python 内置的 `collections.Counte...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出完全正确且格式良好，但Judge评分可能因未知原因偏低
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2133</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2466</div>
     </div>
-    <div class="badcase" style="border-left-color:#F44336;">
+    <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#34 DeepSeek-V4-Pro — code (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
+            <strong>#24 DeepSeek-V4-Pro — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 实现斐波那契数列的前 N 项（N 由参数传入）。</div>
         <div class="badcase-answer">
@@ -941,50 +802,45 @@ def count_chars(s: st...</span>
         result.append(a)
         a, b = b, a + b
     return result</span>
-            <span>输出：以下是用 Python 实现的斐波那契数列前 N 项的函数，数列从 0 和 1 开始：
+            <span>输出：以下是 Python 实现斐波那契数列前 N 项的函数，使用迭代方式生成，时间复杂度 O(N)，空间复杂度 O(N)（存储结果），同时处理了 N 为 0 或负数等边界情况：
 
 ```python
-def fibonacci(n):
-    """
-    返回斐波那契数列的前 n 项（...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出代码功能正确且符合题目要求，但可能因包含额外注释和示例导致Rouge/Judge评分偏低
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2558</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#35 DeepSeek-V4-Pro — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个装饰器，打印函数的执行时间。</div>
-        <div class="badcase-answer">
-            <span>答案：import time
-def timer(func):
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = func(*args, **kwargs)
-        print(f'{func.__name__} took {time.time()-start:.4f}s')
-      </span>
-            <span>输出：以下是一个打印函数执行时间的 Python 装饰器：
-
-```python
-import time
-from functools import wraps
-
-def timer(func):
-    ...</span>
+de...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2935</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.1774</div>
     </div>
     <div class="badcase" style="border-left-color:#F44336;">
         <div class="badcase-header">
-            <strong>#36 Qwen-Plus — code (Base)</strong>
+            <strong>#25 DeepSeek-V4-Pro — code (Base)</strong>
             <span class="badge" style="background:#F44336;">RAG不可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>用 Python 读取一个 CSV 文件，计算某一列的平均值。</div>
+        <div class="badcase-answer">
+            <span>答案：import csv
+def col_avg(filename, col_index):
+    with open(filename, "r") as f:
+        reader = csv.reader(f)
+        next(reader)
+        vals = [float(row[col_index]) for row in reader]
+    return </span>
+            <span>输出：你可以使用 Python 内置的 `csv` 模块，或更方便的 `pandas` 库来实现。以下是两种常见方法：
+
+### 方法一：使用 `csv` 模块（纯内置库）
+```python
+import...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → correct_but_low_score → RAG不可解 | 模型答案正确，可能因格式或长度导致评分低
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.219</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#26 Qwen-Plus — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>写一个 Python 函数，统计字符串中每个字符出现的次数，返回字典。</div>
         <div class="badcase-answer">
@@ -1001,106 +857,13 @@ def count_chars(s):
     ...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出完全正确且格式良好，但Judge评分可能因未知原因偏低
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2105</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#37 Qwen-Plus — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 实现二分查找算法，在有序列表中查找目标值。</div>
-        <div class="badcase-answer">
-            <span>答案：def binary_search(arr, target):
-    left, right = 0, len(arr)-1
-    while left <= right:
-        mid = (left+right)//2
-        if arr[mid]==target: return mid
-        elif arr[mid]<target: left=mid+1
-</span>
-            <span>输出：以下是 Python 实现的二分查找算法（递归和迭代两种版本）：
-
-## 1. 迭代版本（推荐）
-
-```python
-def binary_search(arr, target):
-    """
-...</span>
-        </div>
-        <div class="badcase-tags">
-            格式错误 → format_violation → 部分可解 | 模型输出被截断，代码不完整，导致无法运行
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2263</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#38 Qwen-Plus — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 读取一个 CSV 文件，计算某一列的平均值。</div>
-        <div class="badcase-answer">
-            <span>答案：import csv
-def col_avg(filename, col_index):
-    with open(filename, "r") as f:
-        reader = csv.reader(f)
-        next(reader)
-        vals = [float(row[col_index]) for row in reader]
-    return </span>
-            <span>输出：你可以使用 `pandas` 库（推荐）或内置的 `csv` 模块来读取 CSV 并计算某列平均值。以下是两种常用方法：
-
----
-
-✅ **推荐方法：使用 pandas（简洁、健壮，自动处理缺失值等...</span>
-        </div>
-        <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.1987</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2087</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#39 Qwen-Plus — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>用 Python 写一个多线程下载器，支持断点续传。</div>
-        <div class="badcase-answer">
-            <span>答案：思路：使用 requests 库的 Range header 分段下载，每段一个线程，最后合并。核心代码需 import requests, threading；通过 Content-Length 获取文件总大小，按线程数等分，各线程写入临时文件，下载完毕后按顺序合并。</span>
-            <span>输出：以下是一个使用 Python 编写的**多线程断点续传下载器**，基于 `requests` + `threading` + `os` 实现，支持：
-
-✅ 多线程并发下载（可配置线程数）  
-✅ 断点...</span>
-        </div>
-        <div class="badcase-tags">
-            代码错误 → code_logic → 部分可解 | 代码不完整，未实现断点续传核心逻辑（如Range分段、断点恢复、文件合并等）
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.0357</div>
-    </div>
-    <div class="badcase" style="border-left-color:#F44336;">
-        <div class="badcase-header">
-            <strong>#40 GLM-5.2 — code (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>写一个 Python 函数，统计字符串中每个字符出现的次数，返回字典。</div>
-        <div class="badcase-answer">
-            <span>答案：def char_count(s):
-    from collections import Counter
-    return dict(Counter(s))</span>
-            <span>输出：可以使用 Python 内置的 `collections.Counter`，这是最简单高效的方法：
-
-```python
-from collections import Counter
-
-def co...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出完全正确且格式良好，但Judge评分可能因未知原因偏低
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2192</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#41 GLM-5.2 — code (Base)</strong>
+            <strong>#27 Qwen-Plus — code (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>写一个 Python 函数，判断一个字符串是否为回文串（忽略大小写和空格）。</div>
@@ -1108,20 +871,20 @@ def co...</span>
             <span>答案：def is_palindrome(s):
     s = ''.join(c.lower() for c in s if c.isalnum())
     return s == s[::-1]</span>
-            <span>输出：```python
-def is_palindrome(s: str) -> bool:
-    # 去除字符串中的所有空格，并转换为小写
-    cleaned_s = s.replace(" ",...</span>
+            <span>输出：以下是一个判断字符串是否为回文串的 Python 函数，**忽略大小写和空格**（也通常会忽略标点符号，但题目未明确要求；为健壮性，可一并过滤非字母数字字符）：
+
+```python
+def is_p...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2941</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2857</div>
     </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
+    <div class="badcase" style="border-left-color:#F44336;">
         <div class="badcase-header">
-            <strong>#42 GLM-5.2 — code (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
+            <strong>#28 Qwen-Plus — code (Base)</strong>
+            <span class="badge" style="background:#F44336;">RAG不可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 读取一个 CSV 文件，计算某一列的平均值。</div>
         <div class="badcase-answer">
@@ -1132,72 +895,78 @@ def col_avg(filename, col_index):
         next(reader)
         vals = [float(row[col_index]) for row in reader]
     return </span>
-            <span>输出：这里提供两种常用的方法：使用内置的 `csv` 模块（无需安装额外库）和使用 `pandas` 库（数据分析最常用，代码更简洁）。
+            <span>输出：你可以使用 `pandas` 库轻松读取 CSV 文件并计算某一列的平均值。以下是完整示例：
 
-### 方法一：使用内置 `csv` 模块
-这种方法不需要安装额外...</span>
+```python
+import pandas as pd
+
+# 读取 CSV 文件
+df = pd.r...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → correct_but_low_score → RAG不可解 | 模型答案正确，可能因格式或长度导致评分低
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.0734</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#29 GLM-5.2 — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>写一个 Python 函数，统计字符串中每个字符出现的次数，返回字典。</div>
+        <div class="badcase-answer">
+            <span>答案：def char_count(s):
+    from collections import Counter
+    return dict(Counter(s))</span>
+            <span>输出：以下是两种实现方式的 Python 函数：
+
+**方法一：使用内置模块 `collections.Counter`（最简洁推荐）**
+
+```python
+from collections impor...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2171</div>
-    </div>
-    <div class="badcase" style="border-left-color:#F44336;">
-        <div class="badcase-header">
-            <strong>#43 DeepSeek-V3 — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>三个连续偶数的和是 36，这三个数分别是多少？</div>
-        <div class="badcase-answer">
-            <span>答案：10, 12, 14（设中间数为 x：3x = 36 → x = 12）</span>
-            <span>输出：1. 推理过程：
-   - 设三个连续偶数分别为 \(2n-2\)，\(2n\)，\(2n+2\)，其中中间数为 \(2n\)。
-   - 三数之和为 \((2n-2) + 2n + (2n+2) =...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型推理和答案完全正确，但Judge评分可能因格式或长度等因素误判
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:4 Rouge:0.2078</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#44 DeepSeek-V4-Pro — reasoning (Base)</strong>
+            <strong>#30 DeepSeek-V3 — reasoning (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>小明买 3 支笔和 2 个本子共花 17 元，1 支笔 3 元，问 1 个本子多少钱？</div>
         <div class="badcase-answer">
             <span>答案：4 元（设本子单价 x：3×3 + 2x = 17 → 2x = 8 → x = 4）</span>
-            <span>输出：1. 推理过程：
-步骤1：计算3支笔的总价。1支笔3元，所以3支笔的总价 = 3 × 3 = 9元。
-步骤2：计算2个本子的总价。总花费17元减去笔的总价9元，得到本子总价 = 17 - 9 = 8元...</span>
+            <span>输出：一个本子4元。...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2778</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1818</div>
     </div>
-    <div class="badcase" style="border-left-color:#F44336;">
+    <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#45 DeepSeek-V4-Pro — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
+            <strong>#31 DeepSeek-V3 — reasoning (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>一个数列：2, 4, 8, 16, ...，第 8 项是多少？</div>
         <div class="badcase-answer">
             <span>答案：256（等比数列，公比 2，第 n 项 = 2ⁿ，第 8 项 = 2⁸ = 256）</span>
             <span>输出：1. 推理过程：
-步骤1: 观察数列2, 4, 8, 16, ...，发现每一项都是前一项的2倍，因此这是一个等比数列。
+步骤1: 观察数列规律：2, 4, 8, 16, ... 每一项是前一项的2倍，这是一个等比数列。
 步骤2: 确定首项 a₁ = 2，公比 r = 2。
-步骤3: 等比数列的通项...</span>
+步骤3: 等比数列通项公式：...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型回答正确，无错误
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2703</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2941</div>
     </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
+    <div class="badcase" style="border-left-color:#F44336;">
         <div class="badcase-header">
-            <strong>#46 DeepSeek-V4-Pro — reasoning (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
+            <strong>#32 DeepSeek-V3 — reasoning (Base)</strong>
+            <span class="badge" style="background:#F44336;">RAG不可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>一个班级 50 人，男生占 60%，女生有多少人？</div>
         <div class="badcase-answer">
@@ -1208,71 +977,160 @@ def col_avg(filename, col_index):
 步骤3: 或直接...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+            推理错误 → correct_but_low_score → RAG不可解 | 模型推理和答案完全正确，可能因格式或长度被误判
         </div>
         <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2963</div>
     </div>
     <div class="badcase" style="border-left-color:#F44336;">
         <div class="badcase-header">
-            <strong>#47 DeepSeek-V4-Pro — reasoning (Base)</strong>
+            <strong>#33 DeepSeek-V3 — reasoning (Base)</strong>
             <span class="badge" style="background:#F44336;">RAG不可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>三个连续偶数的和是 36，这三个数分别是多少？</div>
         <div class="badcase-answer">
             <span>答案：10, 12, 14（设中间数为 x：3x = 36 → x = 12）</span>
             <span>输出：1. 推理过程：
-步骤1: 设三个连续偶数为 2n-2, 2n, 2n+2（中间数为2n）
-步骤2: 三数之和 = (2n-2) + 2n + (2n+2) = 6n = 36
-步骤3: 解方程得 n...</span>
+   - 步骤1：设三个连续偶数分别为2n-2, 2n, 2n+2，其中2n为中间数。
+   - 步骤2：它们的和为(2n-2) + 2n + (2n+2) = 6n，已知和为36，...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型推理和答案完全正确，但Judge评分可能因格式或长度等因素误判
+            推理错误 → correct_but_low_score → RAG不可解 | 模型答案正确且推理完整，但Judge评分可能因格式或长度原因误判为低分
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2222</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1333</div>
     </div>
-    <div class="badcase" style="border-left-color:#F44336;">
+    <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#48 DeepSeek-V4-Pro — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
+            <strong>#34 DeepSeek-V3 — reasoning (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>以下逻辑推理是否正确："所有 A 都是 B，C 是 B，所以 C 是 A。"</div>
         <div class="badcase-answer">
             <span>答案：不正确。这是肯定后件的逻辑谬误。反例：所有猫（A）都是哺乳动物（B），狗（C）是哺乳动物（B），但狗不是猫（A）。</span>
             <span>输出：1. 推理过程：
-   - 步骤1：分析推理形式。大前提是“所有A都是B”，小前提是“C是B”，结论是“C是A”。
-   - 步骤2：识别逻辑结构。从集合关系看，大前提表示A是B的子集，小前提表示C属...</span>
+   - 步骤1: 分析推理形式：大前提「所有A都是B」即如果某物是A，则它是B（A→B）；小前提「C是B」即C→B；结论「C是A」即C→A。
+   - 步骤2: 识别逻辑结构：从A...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出完全正确，逻辑分析清晰，无任何错误，仅因可能的格式或长度误判导致评分低
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2778</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2273</div>
     </div>
-    <div class="badcase" style="border-left-color:#F44336;">
+    <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#49 Qwen-Plus — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
+            <strong>#35 DeepSeek-V4-Pro — reasoning (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>以下逻辑推理是否正确："所有 A 都是 B，C 是 B，所以 C 是 A。"</div>
+        <div class="badcase-answer">
+            <span>答案：不正确。这是肯定后件的逻辑谬误。反例：所有猫（A）都是哺乳动物（B），狗（C）是哺乳动物（B），但狗不是猫（A）。</span>
+            <span>输出：这个推理不正确。它是一个无效的三段论，犯了“中项不周延”或“肯定后件”的逻辑错误。
+
+**分析：**
+- 前提1：所有 A 都是 B（A → B，A 包含于 B）。
+- 前提2：C 是 B（C 属于 ...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2703</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#36 DeepSeek-V4-Pro — reasoning (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>一个数列：2, 4, 8, 16, ...，第 8 项是多少？</div>
         <div class="badcase-answer">
             <span>答案：256（等比数列，公比 2，第 n 项 = 2ⁿ，第 8 项 = 2⁸ = 256）</span>
-            <span>输出：这个数列是：  
-2, 4, 8, 16, ...
-
-观察可知，每一项都是前一项的 2 倍，即这是一个**等比数列**。
-
-- 首项 $ a_1 = 2 $  
-- 公比 $ r = 2 $
-
-等比数...</span>
+            <span>输出：1. 推理过程：
+   - 步骤1: 观察数列 2, 4, 8, 16, ... 可以发现，每一项都是前一项的 2 倍，因此这是一个等比数列。
+   - 步骤2: 确定首项 a₁ = 2，公比 r =...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型回答正确，无错误
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2727</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2703</div>
+    </div>
+    <div class="badcase" style="border-left-color:#F44336;">
+        <div class="badcase-header">
+            <strong>#37 DeepSeek-V4-Pro — reasoning (Base)</strong>
+            <span class="badge" style="background:#F44336;">RAG不可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>一个班级 50 人，男生占 60%，女生有多少人？</div>
+        <div class="badcase-answer">
+            <span>答案：20 人（50 × (1-0.6) = 50 × 0.4 = 20）</span>
+            <span>输出：1. 推理过程：
+步骤1: 计算男生人数。总人数为50人，男生占比60%，可得男生人数 = 50 × 60% = 30人。
+步骤2: 用总人数减去男生人数，得到女生人数。女生人数 = 50 - 30 ...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → correct_but_low_score → RAG不可解 | 模型推理和答案完全正确，可能因格式或长度被误判
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2759</div>
+    </div>
+    <div class="badcase" style="border-left-color:#F44336;">
+        <div class="badcase-header">
+            <strong>#38 DeepSeek-V4-Pro — reasoning (Base)</strong>
+            <span class="badge" style="background:#F44336;">RAG不可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>三个连续偶数的和是 36，这三个数分别是多少？</div>
+        <div class="badcase-answer">
+            <span>答案：10, 12, 14（设中间数为 x：3x = 36 → x = 12）</span>
+            <span>输出：1. 推理过程：
+步骤1：设三个连续偶数的中间数为2n，则前一个偶数为2n-2，后一个偶数为2n+2。
+步骤2：它们的和为 (2n-2) + 2n + (2n+2) = 6n。
+步骤3：已知和为36，...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → correct_but_low_score → RAG不可解 | 模型答案正确且推理完整，但Judge评分可能因格式或长度原因误判为低分
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1622</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#50 Qwen-Plus — reasoning (Base)</strong>
+            <strong>#39 DeepSeek-V4-Pro — code (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>写一个 Python 函数，统计字符串中每个字符出现的次数，返回字典。</div>
+        <div class="badcase-answer">
+            <span>答案：def char_count(s):
+    from collections import Counter
+    return dict(Counter(s))</span>
+            <span>输出：1. 推理过程：
+   - 首先，需要创建一个空字典，用于存储字符及其出现次数。
+   - 然后，遍历输入字符串的每个字符。
+   - 对于每个字符，检查它是否已经是字典的键。如果是，将其对应的值加1...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1818</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#40 Qwen-Plus — reasoning (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>一个数列：2, 4, 8, 16, ...，第 8 项是多少？</div>
+        <div class="badcase-answer">
+            <span>答案：256（等比数列，公比 2，第 n 项 = 2ⁿ，第 8 项 = 2⁸ = 256）</span>
+            <span>输出：这个数列是：2, 4, 8, 16, ...
+
+观察可知，每一项都是前一项的 2 倍：
+
+- 第1项：2  
+- 第2项：4 = 2 × 2  
+- 第3项：8 = 2 × 2²  
+- 第4项：16...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1935</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#41 Qwen-Plus — reasoning (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>甲、乙两人相距 100 米相向而行，甲速度 6m/s，乙 4m/s，几秒后相遇？</div>
@@ -1281,7 +1139,7 @@ def col_avg(filename, col_index):
             <span>输出：甲和乙相向而行，相对速度为两者速度之和：
 
 $$
-6\,\text{m/s} + 4\,\text{m/s} = 10\,\text{m/s}
+6\ \text{m/s} + 4\ \text{m/s} = 10\ \text{m/s}
 $$
 
 初始距离为 100 米，相遇所需时间为：
@@ -1291,11 +1149,11 @@ $$...</span>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1818</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1765</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#51 Qwen-Plus — reasoning (Base)</strong>
+            <strong>#42 Qwen-Plus — reasoning (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>已知 A > B, B > C, C > D，以下哪个选项一定成立？</div>
@@ -1314,11 +1172,11 @@ $$...</span>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1758</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1778</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#52 Qwen-Plus — reasoning (Base)</strong>
+            <strong>#43 Qwen-Plus — reasoning (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>一个长方形长 12cm，宽 8cm，对角线长约多少 cm？</div>
@@ -1330,43 +1188,42 @@ $$...</span>
 
 - 一条直角边 = 长 = 12 cm  
 - 另一条直角边 = 宽 = 8 cm  
-- 斜边 = 对角线长...</span>
+- 斜边 = 对角线 ...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2807</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2963</div>
     </div>
     <div class="badcase" style="border-left-color:#F44336;">
         <div class="badcase-header">
-            <strong>#53 Qwen-Plus — reasoning (Base)</strong>
+            <strong>#44 Qwen-Plus — reasoning (Base)</strong>
             <span class="badge" style="background:#F44336;">RAG不可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>三个连续偶数的和是 36，这三个数分别是多少？</div>
         <div class="badcase-answer">
             <span>答案：10, 12, 14（设中间数为 x：3x = 36 → x = 12）</span>
-            <span>输出：设这三个连续偶数为：
+            <span>输出：我们设这三个连续偶数为：
 
 $$
 x - 2,\quad x,\quad x + 2
 $$
 
-（因为连续偶数之间相差2，这样设可以保证中间数为 $x$，且三数之和便于计算）
+因为它们是**连续偶数**，所以公差为 2，中间数为 $ x $（也必须是偶数）。
 
 它们的和是：
 
-$$
-(x ...</span>
+$$...</span>
         </div>
         <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型推理和答案完全正确，但Judge评分可能因格式或长度等因素误判
+            推理错误 → correct_but_low_score → RAG不可解 | 模型答案正确且推理完整，但Judge评分可能因格式或长度原因误判为低分
         </div>
         <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2222</div>
     </div>
-    <div class="badcase" style="border-left-color:#F44336;">
+    <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#54 Qwen-Plus — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
+            <strong>#45 Qwen-Plus — reasoning (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>以下逻辑推理是否正确："所有 A 都是 B，C 是 B，所以 C 是 A。"</div>
         <div class="badcase-answer">
@@ -1376,70 +1233,94 @@ $$
 我们来分析：
 
 前提1：所有 A 都是 B。  
-形式化为：A ...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出完全正确，逻辑分析清晰，无任何错误，仅因可能的格式或长度误判导致评分低
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1562</div>
-    </div>
-    <div class="badcase" style="border-left-color:#F44336;">
-        <div class="badcase-header">
-            <strong>#55 Qwen-Plus — reasoning (Base)</strong>
-            <span class="badge" style="background:#F44336;">RAG不可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>一个圆形花坛半径 7 米，面积约多少平方米？（π≈3.14）</div>
-        <div class="badcase-answer">
-            <span>答案：约 153.86 m²（π×7² = 3.14×49 = 153.86）</span>
-            <span>输出：1. 推理过程：  
-步骤1: 圆的面积公式：S = π × r²  
-步骤2: 已知半径 r = 7 米，π ≈ 3.14  
-步骤3: 计算 r² = 7² = 49  
-步骤4: 代入公式：S ...</span>
-        </div>
-        <div class="badcase-tags">
-            推理错误 → correct_but_low_score → RAG不可解 | 模型输出完全正确，与参考答案一致，无错误可归因
-        </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2449</div>
-    </div>
-    <div class="badcase" style="border-left-color:#FF9800;">
-        <div class="badcase-header">
-            <strong>#56 Qwen-Plus — reasoning (Base)</strong>
-            <span class="badge" style="background:#FF9800;">部分可解</span>
-        </div>
-        <div class="badcase-body"><strong>题目：</strong>一个两位数，十位数是个位数的 2 倍，且两数之和为 12，这个数是多少？</div>
-        <div class="badcase-answer">
-            <span>答案：84（设个位 x，十位 2x：2x + x = 12 → x = 4，十位 = 8）</span>
-            <span>输出：1. 推理过程：  
-步骤1: 设个位数为 x，则十位数为 2x（题目给出“十位数是个位数的2倍”）  
-步骤2: 由于是两位数，十位数必须是 1–9 的整数，个位数 x 必须是 0–9 的整数；又因...</span>
+形式化：A ⊆...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2759</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1493</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#57 GLM-5.2 — reasoning (Base)</strong>
+            <strong>#46 GLM-5.2 — reasoning (Base)</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>一个数列：2, 4, 8, 16, ...，第 8 项是多少？</div>
+        <div class="badcase-answer">
+            <span>答案：256（等比数列，公比 2，第 n 项 = 2ⁿ，第 8 项 = 2⁸ = 256）</span>
+            <span>输出：256...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.25</div>
+    </div>
+    <div class="badcase" style="border-left-color:#F44336;">
+        <div class="badcase-header">
+            <strong>#47 GLM-5.2 — reasoning (Base)</strong>
+            <span class="badge" style="background:#F44336;">RAG不可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>一个班级 50 人，男生占 60%，女生有多少人？</div>
         <div class="badcase-answer">
             <span>答案：20 人（50 × (1-0.6) = 50 × 0.4 = 20）</span>
-            <span>输出：1. 推理过程：
-步骤1: 男生人数 = 总人数 × 男生占比 = 50 × 60% = 30 人
-步骤2: 女生人数 = 总人数 - 男生人数 = 50 - 30 = 20 人
-步骤3: 或直接计算...</span>
+            <span>输出：女生有 20 人。...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → correct_but_low_score → RAG不可解 | 模型推理和答案完全正确，可能因格式或长度被误判
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#48 GLM-5.2 — reasoning (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>把 1 到 100 的所有整数相加，总和是多少？</div>
+        <div class="badcase-answer">
+            <span>答案：5050（高斯求和公式：n(n+1)/2 = 100×101/2 = 5050）</span>
+            <span>输出：5050...</span>
         </div>
         <div class="badcase-tags">
             推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
         </div>
-        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2963</div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2</div>
+    </div>
+    <div class="badcase" style="border-left-color:#FF9800;">
+        <div class="badcase-header">
+            <strong>#49 GLM-5.2 — reasoning (Base)</strong>
+            <span class="badge" style="background:#FF9800;">部分可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>甲完成一件工作需要 6 天，乙需要 12 天，两人合作需要几天？</div>
+        <div class="badcase-answer">
+            <span>答案：4 天（1÷(1/6+1/12) = 1÷(3/12) = 4）</span>
+            <span>输出：两人合作需要 4 天。...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → logic_gap → 部分可解 | 低分(LLM分类失败，按子集推断)
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.1818</div>
+    </div>
+    <div class="badcase" style="border-left-color:#F44336;">
+        <div class="badcase-header">
+            <strong>#50 GLM-5.2 — reasoning (Base)</strong>
+            <span class="badge" style="background:#F44336;">RAG不可解</span>
+        </div>
+        <div class="badcase-body"><strong>题目：</strong>三个连续偶数的和是 36，这三个数分别是多少？</div>
+        <div class="badcase-answer">
+            <span>答案：10, 12, 14（设中间数为 x：3x = 36 → x = 12）</span>
+            <span>输出：1. 推理过程：
+步骤1: 设三个连续偶数为 2n-2, 2n, 2n+2（中间数为2n）
+步骤2: 三数之和 = (2n-2) + 2n + (2n+2) = 6n = 36
+步骤3: n = 6，...</span>
+        </div>
+        <div class="badcase-tags">
+            推理错误 → correct_but_low_score → RAG不可解 | 模型答案正确且推理完整，但Judge评分可能因格式或长度原因误判为低分
+        </div>
+        <div style="font-size:11px;color:#FF9800;margin-top:4px;font-weight:bold;">Judge:5 Rouge:0.2222</div>
     </div>
     <div class="badcase" style="border-left-color:#2196F3;">
         <div class="badcase-header">
-            <strong>#58 GLM-5.2 — MCQ-knowledge</strong>
+            <strong>#51 GLM-5.2 — MCQ-knowledge</strong>
             <span class="badge" style="background:#2196F3;">RAG可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>"赤道"穿过哪个大洲的面积最大？
@@ -1459,7 +1340,7 @@ D) 大洋洲</div>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#59 DeepSeek-V3 — QA-code</strong>
+            <strong>#52 DeepSeek-V3 — QA-code</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 写一个多线程下载器，支持断点续传。</div>
@@ -1481,7 +1362,7 @@ from concurr...</span>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#60 GLM-5.2 — QA-code</strong>
+            <strong>#53 GLM-5.2 — QA-code</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 写一个多线程下载器，支持断点续传。</div>
@@ -1501,7 +1382,7 @@ from concurr...</span>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#61 GLM-5.2 — QA-reasoning</strong>
+            <strong>#54 GLM-5.2 — QA-reasoning</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>甲、乙两人相距 100 米相向而行，甲速度 6m/s，乙 4m/s，几秒后相遇？</div>
@@ -1522,7 +1403,7 @@ from concurr...</span>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#62 GLM-5.2 — QA-reasoning</strong>
+            <strong>#55 GLM-5.2 — QA-reasoning</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>一个圆形花坛半径 7 米，面积约多少平方米？（π≈3.14）</div>
@@ -1545,7 +1426,7 @@ from concurr...</span>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#63 Qwen-Plus — QA-code</strong>
+            <strong>#56 Qwen-Plus — QA-code</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>用 Python 写一个多线程下载器，支持断点续传。</div>
@@ -1563,7 +1444,7 @@ from concurr...</span>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#64 Qwen-Plus — QA-reasoning</strong>
+            <strong>#57 Qwen-Plus — QA-reasoning</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>甲、乙两人相距 100 米相向而行，甲速度 6m/s，乙 4m/s，几秒后相遇？</div>
@@ -1583,7 +1464,7 @@ v_{\text{相对}} = 6\,\text{m/s} + 4\,\text{m/s}...</span>
     </div>
     <div class="badcase" style="border-left-color:#FF9800;">
         <div class="badcase-header">
-            <strong>#65 Qwen-Plus — QA-reasoning</strong>
+            <strong>#58 Qwen-Plus — QA-reasoning</strong>
             <span class="badge" style="background:#FF9800;">部分可解</span>
         </div>
         <div class="badcase-body"><strong>题目：</strong>一个圆形花坛半径 7 米，面积约多少平方米？（π≈3.14）</div>
@@ -1671,25 +1552,25 @@ function makeDualAxis(canvasId, config) {
 makeBar('chart_standard', {"labels": ["gsm8k", "arc", "hellaswag"], "datasets": [{"label": "DeepSeek-V3", "data": [1.0, 0.95, 0.75], "backgroundColor": "rgba(26,35,126,0.75)", "borderColor": "rgba(26,35,126,0.75)", "borderWidth": 0, "borderRadius": 4}, {"label": "Qwen-Plus", "data": [1.0, 0.95, 0.85], "backgroundColor": "rgba(33,150,243,0.75)", "borderColor": "rgba(33,150,243,0.75)", "borderWidth": 0, "borderRadius": 4}, {"label": "GLM-4-Plus", "data": [0.95, 0.9, 0.45], "backgroundColor": "rgba(255,152,0,0.75)", "borderColor": "rgba(255,152,0,0.75)", "borderWidth": 0, "borderRadius": 4}]}, 1.05);
 
 // Chart 2: MCQ Accuracy
-makeBar('chart_mcq', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Knowledge", "data": [95.0, 95.0, 100.0, 90.0], "backgroundColor": "rgba(26,35,126,0.7)", "borderRadius": 4}, {"label": "Security", "data": [100.0, 100.0, 100.0, 100.0], "backgroundColor": "rgba(76,175,80,0.7)", "borderRadius": 4}]}, 105);
+makeBar('chart_mcq', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Knowledge", "data": [95.0, 95.0, 100.0, 95.0], "backgroundColor": "rgba(26,35,126,0.7)", "borderRadius": 4}, {"label": "Security", "data": [100.0, 100.0, 100.0, 100.0], "backgroundColor": "rgba(76,175,80,0.7)", "borderRadius": 4}]}, 105);
 
 // Chart 3: Reasoning ROUGE Base vs RAG
-makeBar('chart_reasoning_rouge', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Base", "data": [44.55466666666667, 51.35733333333333, 33.82, 46.852], "backgroundColor": "rgba(244,67,54,0.7)", "borderRadius": 4}, {"label": "RAG", "data": [39.492666666666665, 38.437333333333335, 32.348, 41.026666666666664], "backgroundColor": "rgba(76,175,80,0.7)", "borderRadius": 4}]}, 65);
+makeBar('chart_reasoning_rouge', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Base", "data": [48.64066666666667, 49.425999999999995, 32.842000000000006, 50.40733333333333], "backgroundColor": "rgba(244,67,54,0.7)", "borderRadius": 4}, {"label": "RAG", "data": [39.873999999999995, 38.706, 33.62, 41.134], "backgroundColor": "rgba(76,175,80,0.7)", "borderRadius": 4}]}, 65);
 
 // Chart 4: Reasoning Judge Base vs RAG
-makeBar('chart_reasoning_judge', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Base Overall", "data": [3.546666666666667, 4.6466666666666665, 5.0, 4.1066666666666665], "backgroundColor": "rgba(244,67,54,0.7)", "borderRadius": 4}, {"label": "RAG Overall", "data": [5.0, 5.0, 5.0, 5.0], "backgroundColor": "rgba(76,175,80,0.7)", "borderRadius": 4}]}, 5.5);
+makeBar('chart_reasoning_judge', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Base Overall", "data": [4.548666666666667, 4.733333333333333, 4.98, 4.706666666666666], "backgroundColor": "rgba(244,67,54,0.7)", "borderRadius": 4}, {"label": "RAG Overall", "data": [5.0, 5.0, 5.0, 5.0], "backgroundColor": "rgba(76,175,80,0.7)", "borderRadius": 4}]}, 5.5);
 
 // Chart 5: Code (dual axis: ROUGE + Judge)
-makeDualAxis('chart_code', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "ROUGE-L (%)", "data": [43.23800000000001, 40.06, 25.887999999999998, 43.293], "backgroundColor": "rgba(26,35,126,0.7)", "borderRadius": 4, "yAxisID": "y"}, {"label": "Judge Overall", "data": [3.8, 4.0, 3.7, 3.8], "backgroundColor": "rgba(255,152,0,0.7)", "borderRadius": 4, "yAxisID": "y1"}]});
+makeDualAxis('chart_code', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "ROUGE-L (%)", "data": [39.977000000000004, 33.686, 25.623, 44.296], "backgroundColor": "rgba(26,35,126,0.7)", "borderRadius": 4, "yAxisID": "y"}, {"label": "Judge Overall", "data": [3.9, 4.0, 3.6, 3.5], "backgroundColor": "rgba(255,152,0,0.7)", "borderRadius": 4, "yAxisID": "y1"}]});
 
 // Chart 6: Security stacked bar
-makeStackedBar('chart_security', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "PASS", "data": [5, 7, 4, 4], "backgroundColor": "rgba(76,175,80,0.8)"}, {"label": "WARN", "data": [2, 1, 4, 3], "backgroundColor": "rgba(255,152,0,0.8)"}, {"label": "FAIL", "data": [1, 0, 0, 1], "backgroundColor": "rgba(244,67,54,0.8)"}]});
+makeStackedBar('chart_security', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "PASS", "data": [4, 4, 4, 2], "backgroundColor": "rgba(76,175,80,0.8)"}, {"label": "WARN", "data": [4, 4, 3, 2], "backgroundColor": "rgba(255,152,0,0.8)"}, {"label": "FAIL", "data": [0, 0, 1, 4], "backgroundColor": "rgba(244,67,54,0.8)"}]});
 
 // Chart 7: Token consumption
-makeBar('chart_token', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Total Tokens", "data": [30420, 27366, 29352, 47200], "backgroundColor": ["rgba(26,35,126,0.7)", "rgba(25,118,210,0.7)", "rgba(245,124,0,0.7)", "rgba(56,142,60,0.7)"], "borderRadius": 4}]});
+makeBar('chart_token', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Total Tokens", "data": [31662, 28418, 28971, 46448], "backgroundColor": ["rgba(26,35,126,0.7)", "rgba(25,118,210,0.7)", "rgba(245,124,0,0.7)", "rgba(56,142,60,0.7)"], "borderRadius": 4}]});
 
 // Chart 8: Latency
-makeBar('chart_latency', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Avg Latency (ms)", "data": [24174.3, 5123.8, 26537.5, 7198.0], "backgroundColor": ["rgba(26,35,126,0.7)", "rgba(25,118,210,0.7)", "rgba(245,124,0,0.7)", "rgba(56,142,60,0.7)"], "borderRadius": 4}]});
+makeBar('chart_latency', {"labels": ["DeepSeek-V3", "DeepSeek-V4-Pro", "Qwen-Plus", "GLM-5.2"], "datasets": [{"label": "Avg Latency (ms)", "data": [3526.0, 4032.3, 6432.1, 12225.6], "backgroundColor": ["rgba(26,35,126,0.7)", "rgba(25,118,210,0.7)", "rgba(245,124,0,0.7)", "rgba(56,142,60,0.7)"], "borderRadius": 4}]});
 </script>
 
 </body>

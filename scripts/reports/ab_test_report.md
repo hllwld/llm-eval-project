@@ -1,5 +1,5 @@
 # A/B Test Report
-> 2026-07-18 04:20 | Models: 4
+> 2026-07-20 14:29 | Models: 4
 
 ## 1. 成本对比
 
@@ -14,47 +14,47 @@
 
 | 排名 | 模型 | MCQ | Reasoning Judge | Code Judge | Avg Score | 成本/题 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | **Qwen-Plus** | 100% | 5.00 | 0.00 | 0.667 | $0.0010 |
-| 2 | **DeepSeek-V4-Pro** | 96% | 4.65 | 0.00 | 0.631 | $0.0009 |
-| 3 | **GLM-5.2** | 93% | 4.11 | 0.00 | 0.583 | $0.0017 |
-| 4 | **DeepSeek-V3** | 96% | 3.55 | 0.00 | 0.558 | $0.0002 |
+| 1 | **Qwen-Plus** | 100% | 4.98 | 0.00 | 0.665 | $0.0010 |
+| 2 | **DeepSeek-V4-Pro** | 96% | 4.73 | 0.00 | 0.637 | $0.0009 |
+| 3 | **GLM-5.2** | 96% | 4.71 | 0.00 | 0.635 | $0.0017 |
+| 4 | **DeepSeek-V3** | 96% | 4.55 | 0.00 | 0.625 | $0.0002 |
 
 ## 3. 统计显著性 (两两对比)
 
 | 对比 | 维度 | p-value | 显著性 |
 | --- | --- | --- | --- |
-| DeepSeek-V3 vs DeepSeek-V4-Pro | Reasoning Judge | 0.0 | *** |
+| DeepSeek-V3 vs DeepSeek-V4-Pro | Reasoning Judge | 0.1526 | ns |
 | DeepSeek-V3 vs DeepSeek-V4-Pro | Code Judge | 1.0 | ns |
-| DeepSeek-V3 vs Qwen-Plus | Reasoning Judge | 0.0 | *** |
+| DeepSeek-V3 vs Qwen-Plus | Reasoning Judge | 0.0008 | *** |
 | DeepSeek-V3 vs Qwen-Plus | Code Judge | 1.0 | ns |
-| DeepSeek-V3 vs GLM-5.2 | Reasoning Judge | 0.0 | *** |
+| DeepSeek-V3 vs GLM-5.2 | Reasoning Judge | 0.221 | ns |
 | DeepSeek-V3 vs GLM-5.2 | Code Judge | 1.0 | ns |
-| DeepSeek-V4-Pro vs Qwen-Plus | Reasoning Judge | 0.0062 | ** |
+| DeepSeek-V4-Pro vs Qwen-Plus | Reasoning Judge | 0.056 | ns |
 | DeepSeek-V4-Pro vs Qwen-Plus | Code Judge | 1.0 | ns |
-| DeepSeek-V4-Pro vs GLM-5.2 | Reasoning Judge | 0.0 | *** |
+| DeepSeek-V4-Pro vs GLM-5.2 | Reasoning Judge | 0.8364 | ns |
 | DeepSeek-V4-Pro vs GLM-5.2 | Code Judge | 1.0 | ns |
-| Qwen-Plus vs GLM-5.2 | Reasoning Judge | 0.0 | *** |
+| Qwen-Plus vs GLM-5.2 | Reasoning Judge | 0.0342 | * |
 | Qwen-Plus vs GLM-5.2 | Code Judge | 1.0 | ns |
 
 ## 4. 置信区间 (95% CI, Bootstrap)
 
 | 模型 | Reasoning Judge CI | Code Judge CI |
 | --- | --- | --- |
-| DeepSeek-V3 | [3.29, 3.80] | [0.00, 0.31] |
-| DeepSeek-V4-Pro | [4.39, 4.90] | [0.00, 0.31] |
-| Qwen-Plus | [4.75, 5.00] | [0.00, 0.31] |
-| GLM-5.2 | [3.85, 4.36] | [0.00, 0.31] |
+| DeepSeek-V3 | [4.30, 4.80] | [0.00, 0.31] |
+| DeepSeek-V4-Pro | [4.48, 4.99] | [0.00, 0.31] |
+| Qwen-Plus | [4.73, 5.00] | [0.00, 0.31] |
+| GLM-5.2 | [4.45, 4.96] | [0.00, 0.31] |
 
 ## 5. 结论
 
-**推荐模型**: Qwen-Plus (综合分 0.667)
+**推荐模型**: Qwen-Plus (综合分 0.665)
 
 ### 选型矩阵
 
 | 场景 | 推荐 | 原因 |
 | --- | --- | --- |
 | 知识问答 | Qwen-Plus | MCQ 100% |
-| 推理 | Qwen-Plus | Judge 5.00 |
+| 推理 | Qwen-Plus | Judge 4.98 |
 | 代码 | Qwen-Plus | Judge 0.00 |
 | 成本最低 | DeepSeek-V3 | $0.0002/题 |
 
