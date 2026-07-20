@@ -108,7 +108,7 @@
         </table>
         </div>
         <p style="margin-top:12px;font-size:12px;color:#888;">
-            样本数：每数据集 20 条 | 评测时间：2026-07-07 | EvalScope v1.8.1
+            样本数：每数据集 20 条 | EvalScope v1.8.1
         </p>
         <div class="chart-wrap"><canvas id="chart_standard"></canvas></div>
     </div>
@@ -275,13 +275,14 @@
     <div class="card">
         <h2>关键洞察（LLM 自动分析）</h2>
         <ul style="line-height:2;padding-left:20px;">
-                        <li><strong>Qwen-Plus 知识满分但代码Judge最低</strong> — MCQ知识100%、安全100%，推理Judge Base最高4.93，但代码Judge Base仅3.20（最低），RAG 2.80（最低）。</li>
-            <li><strong>所有模型推理RAG满分，但代码RAG Judge普遍下降</strong> — 推理RAG Judge均为5.00；代码RAG Judge中DeepSeek-V3从3.40降至3.10，DeepSeek-V4-Pro从3.80降至3.00，GLM-5.2从3.50降至2.30。</li>
-            <li><strong>GLM-5.2 延迟极高且幻觉率最高</strong> — 延迟11905ms（其他模型3035-6234ms），幻觉率8%（其他0-2%）。</li>
-            <li><strong>DeepSeek-V4-Pro 推理提升但代码RAG下降且延迟增加</strong> — 推理Judge Base从4.08升至4.76，但代码RAG Judge从3.10降至3.00；延迟从3035ms升至4882ms。</li>
-            <li><strong>GLM-5.2 JSON格式率最低</strong> — JSON格式率40%，其他模型均为60%。</li>
-            <li><strong>工具调用率除DeepSeek-V4-Pro外均100%</strong> — DeepSeek-V4-Pro工具调用率83%，其他模型100%。</li>
-            <li><strong>错误分布中unknown占比高达90%</strong> — unknown错误45条（90%），答案正确但评分低4条（8%），格式违规1条（2%）。</li>
+            <li><strong>Qwen-Plus 推理最强但延迟高且JSON格式率低</strong> — Qwen-Plus 推理 Judge Base 4.98（最高），RAG 5.00，但延迟 6432ms（是V3的1.8倍），JSON格式率仅40%，存在性能与格式的双重瓶颈</li>
+            <li><strong>DeepSeek-V4-Pro 代码子集 RAG 导致 Judge 下降</strong> — 代码 Judge Base 4.00（最高）降至 RAG 3.70（-0.30），而其他模型RAG持平或上升；幻觉率0%，JSON格式率60%居中</li>
+            <li><strong>推理子集 RAG 全面满分，Base 差距明显</strong> — 所有模型推理 RAG Judge 均为 5.00，但 Base 从 4.55（V3）到 4.98（Qwen-Plus），说明RAG弥补了基础推理差距</li>
+            <li><strong>GLM-5.2 延迟极高且工具调用率最低</strong> — 延迟 12226ms（其余模型均低于6500ms），工具调用率83%（其余100%），JSON格式率80%最高但实用性受限于延迟</li>
+            <li><strong>逻辑链断裂是主要错误类型，占比66%</strong> — 错误分布中逻辑链断裂33条（66.0%），远超答案正确但评分低（28%）和代码语法错误（4%），是推理质量核心短板</li>
+            <li><strong>DeepSeek-V3 延迟最优但幻觉率2%</strong> — 延迟 3526ms（最低），但幻觉率2%（与GLM并列），且JSON格式率仅40%，需权衡速度与可靠性</li>
+            <li><strong>所有模型 MCQ 知识与安全几乎满分，区分度不足</strong> — MCQ知识除Qwen-Plus 100%外均为95%，安全全部100%，这些指标已接近饱和，难以反映模型真实差异</li>
+
         </ul>
     </div>
 
@@ -291,11 +292,12 @@
         <table>
             <thead><tr><th style="width:30px;">#</th><th style="width:45%;">措施</th><th style="width:50px;">优先级</th><th style="width:35%;">预期效果</th></tr></thead>
             <tbody>
-                                <tr><td>1</td><td>优化代码RAG检索策略，减少噪声引入，特别是针对GLM-5.2代码RAG Judge下降明显的情况</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">预期代码RAG Judge回升，缩小与Base的差距</td></tr>
-                <tr><td>2</td><td>针对GLM-5.2高幻觉率（8%），加强安全策略和训练数据清洗，引入对抗训练或输出过滤</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">降低幻觉率至2%以下</td></tr>
-                <tr><td>3</td><td>修复评分系统中unknown错误占比90%的问题，检查标签匹配和评分逻辑</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">提高评分准确性和评测可信度</td></tr>
-                <tr><td>4</td><td>优化GLM-5.2的JSON格式率（40%），在prompt中强化格式要求并增加示例</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">提升JSON格式率至60%以上</td></tr>
-                <tr><td>5</td><td>考虑对GLM-5.2进行模型压缩或替换为延迟更低的模型，以解决11905ms的高延迟</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">降低延迟至5000ms以内</td></tr>
+                <tr><td>1</td><td>优化推理子集 Prompt 以减少逻辑链断裂，引入显式中间步骤引导</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">针对占比66%的逻辑链断裂，通过CoT提示或分解推理步骤，预期可降低30%以上错误</td></tr>
+                <tr><td>2</td><td>提升 JSON 格式率：为 Qwen-Plus 和 DeepSeek-V3 增加结构化输出约束示例及强制格式校验</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">将JSON格式率从40%提升至80%以上，减少下游解析错误</td></tr>
+                <tr><td>3</td><td>分析 DeepSeek-V4-Pro 代码子集 RAG 导致 Judge 下降的原因，优化检索文档质量或限制检索范围</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">恢复代码Judge至Base水平（4.00以上），避免RAG引入噪声</td></tr>
+                <tr><td>4</td><td>针对延迟敏感场景，推荐选用 DeepSeek-V3（3526ms），并评估其2%幻觉率是否可接受</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">在速度优先场景下延迟降低40%以上，但需配合安全过滤缓解幻觉</td></tr>
+                <tr><td>5</td><td>对“答案正确但评分低”的14条（28%）进行人工复审，校准Judge评分标准</td><td style="text-align:center;color:#4CAF50;font-weight:bold;">低</td><td class="nowrap">减少评分偏差，提升评估结果的可靠性，为后续优化提供准确方向</td></tr>
+
             </tbody>
         </table>
     </div>
@@ -1490,7 +1492,7 @@ S = 3.14 \times 7^2...</span>
 </div>
 
 <div class="footer">
-    生成时间：2026-07-16 | 项目：llm-eval-project | 框架：EvalScope v1.8.1 + Chart.js
+    2026-07-20 | 项目：llm-eval-project | Chart.js
 </div>
 
 <script>

@@ -10,6 +10,7 @@ import json
 import os
 import yaml
 from collections import Counter
+from datetime import datetime
 
 from paths import (
     PROJECT_ROOT, DATA_DIR, DASHBOARD_HTML as ROOT_HTML,
@@ -181,6 +182,21 @@ def bar_row(label, percent, color, text, max_pct=100):
         f'{bar(w, color, text)}</div>')
 
 TAG_COLOR = {'RAG可解': '#2196F3', '部分可解': '#FF9800', 'RAG不可解': '#F44336'}
+
+def render_insights(insights_data):
+    """Generate insights <li> items from JSON data"""
+    items = []
+    for ins in insights_data.get('insights', []):
+        items.append(f'            <li><strong>{ins["title"]}</strong> — {ins["detail"]}</li>')
+    return '\n'.join(items)
+
+def render_improvements(insights_data):
+    """Generate improvement <tr> rows from JSON data"""
+    rows = []
+    for imp in insights_data.get('improvements', []):
+        color = '#F44336' if imp['priority'] == '高' else ('#FF9800' if imp['priority'] == '中' else '#4CAF50')
+        rows.append(f'                <tr><td>{imp["id"]}</td><td>{imp["measure"]}</td><td style="text-align:center;color:{color};font-weight:bold;">{imp["priority"]}</td><td class="nowrap">{imp["effect"]}</td></tr>')
+    return '\n'.join(rows)
 
 def badcase_card(bc, i):
     c = TAG_COLOR.get(bc['level3'], '#999')
@@ -550,7 +566,7 @@ html = f'''<!DOCTYPE html>
         </table>
         </div>
         <p style="margin-top:12px;font-size:12px;color:#888;">
-            样本数：每数据集 20 条 | 评测时间：2026-07-07 | EvalScope v1.8.1
+            样本数：每数据集 20 条 | EvalScope v1.8.1
         </p>
         <div class="chart-wrap"><canvas id="chart_standard"></canvas></div>
     </div>
@@ -712,13 +728,8 @@ html = f'''<!DOCTYPE html>
     <div class="card">
         <h2>关键洞察（LLM 自动分析）</h2>
         <ul style="line-height:2;padding-left:20px;">
-                        <li><strong>Qwen-Plus 知识满分但代码Judge最低</strong> — MCQ知识100%、安全100%，推理Judge Base最高4.93，但代码Judge Base仅3.20（最低），RAG 2.80（最低）。</li>
-            <li><strong>所有模型推理RAG满分，但代码RAG Judge普遍下降</strong> — 推理RAG Judge均为5.00；代码RAG Judge中DeepSeek-V3从3.40降至3.10，DeepSeek-V4-Pro从3.80降至3.00，GLM-5.2从3.50降至2.30。</li>
-            <li><strong>GLM-5.2 延迟极高且幻觉率最高</strong> — 延迟11905ms（其他模型3035-6234ms），幻觉率8%（其他0-2%）。</li>
-            <li><strong>DeepSeek-V4-Pro 推理提升但代码RAG下降且延迟增加</strong> — 推理Judge Base从4.08升至4.76，但代码RAG Judge从3.10降至3.00；延迟从3035ms升至4882ms。</li>
-            <li><strong>GLM-5.2 JSON格式率最低</strong> — JSON格式率40%，其他模型均为60%。</li>
-            <li><strong>工具调用率除DeepSeek-V4-Pro外均100%</strong> — DeepSeek-V4-Pro工具调用率83%，其他模型100%。</li>
-            <li><strong>错误分布中unknown占比高达90%</strong> — unknown错误45条（90%），答案正确但评分低4条（8%），格式违规1条（2%）。</li>
+{render_insights(_insights_data)}
+
         </ul>
     </div>
 
@@ -728,11 +739,8 @@ html = f'''<!DOCTYPE html>
         <table>
             <thead><tr><th style="width:30px;">#</th><th style="width:45%;">措施</th><th style="width:50px;">优先级</th><th style="width:35%;">预期效果</th></tr></thead>
             <tbody>
-                                <tr><td>1</td><td>优化代码RAG检索策略，减少噪声引入，特别是针对GLM-5.2代码RAG Judge下降明显的情况</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">预期代码RAG Judge回升，缩小与Base的差距</td></tr>
-                <tr><td>2</td><td>针对GLM-5.2高幻觉率（8%），加强安全策略和训练数据清洗，引入对抗训练或输出过滤</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">降低幻觉率至2%以下</td></tr>
-                <tr><td>3</td><td>修复评分系统中unknown错误占比90%的问题，检查标签匹配和评分逻辑</td><td style="text-align:center;color:#F44336;font-weight:bold;">高</td><td class="nowrap">提高评分准确性和评测可信度</td></tr>
-                <tr><td>4</td><td>优化GLM-5.2的JSON格式率（40%），在prompt中强化格式要求并增加示例</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">提升JSON格式率至60%以上</td></tr>
-                <tr><td>5</td><td>考虑对GLM-5.2进行模型压缩或替换为延迟更低的模型，以解决11905ms的高延迟</td><td style="text-align:center;color:#FF9800;font-weight:bold;">中</td><td class="nowrap">降低延迟至5000ms以内</td></tr>
+{render_improvements(_insights_data)}
+
             </tbody>
         </table>
     </div>
@@ -746,7 +754,7 @@ html = f'''<!DOCTYPE html>
 </div>
 
 <div class="footer">
-    生成时间：2026-07-16 | 项目：llm-eval-project | 框架：EvalScope v1.8.1 + Chart.js
+    {datetime.now().strftime('%Y-%m-%d')} | 项目：llm-eval-project | Chart.js
 </div>
 
 <script>
