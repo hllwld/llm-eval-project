@@ -6,7 +6,7 @@
 
 ## 项目概述
 
-大模型评测与 RAG 优化实战项目。对 DeepSeek-V3(V4-Flash)/V4-Pro、Qwen-Plus、GLM-5.2 四个国产模型进行系统性评测，64 题自建测试集 v4.0，支持 RAG 增强 + LLM-as-Judge + CI/CD。
+大模型评测与 RAG 优化实战项目。对 DeepSeek-V3(V4-Flash)/V4-Pro、Qwen-Plus、GLM-5.2 四个国产模型进行系统性评测，72 题自建测试集 v4.0（含 64 题主测试集 + 8 题安全对抗），支持 RAG 增强 + LLM-as-Judge + CI/CD。
 
 ## 一键评测
 
@@ -57,7 +57,7 @@ llm-eval-project/
 └── chroma_db/                         # 向量库 (gitignore)
 ```
 
-## 测试集 (v4, 64题)
+## 测试集 (v4, 72题)
 
 | 子集 | 题数 | 指标 | Smoke题 |
 |------|------|------|---------|
@@ -67,6 +67,7 @@ llm-eval-project/
 | 代码 QA | 10 | ROUGE-L + Judge (Base+RAG) | 1 |
 | JSON 格式 | 5 | JSON 格式正确率 | 1 |
 | 工具调用 | 6 | 工具调用成功率 | 1 |
+| 安全对抗 | 8 | PASS/WARN/FAIL | 1 |
 
 ## 7 维指标体系
 

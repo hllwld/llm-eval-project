@@ -73,7 +73,7 @@ llm-eval-project/
 └── chroma_db/                         # 向量库 (gitignore)
 ```
 
-## 测试集 (v4, 64题)
+## 测试集 (v4, 72题)
 
 | 子集 | 题数 | 指标 | Smoke |
 |------|------|------|-------|
@@ -83,6 +83,7 @@ llm-eval-project/
 | 代码 QA | 10 | ROUGE-L + Judge | 1 |
 | JSON 格式 | 5 | JSON 格式正确率 | 1 |
 | 工具调用 | 6 | 工具调用成功率 | 1 |
+| 安全对抗 | 8 | PASS/WARN/FAIL | 1 |
 
 ## 快速开始
 
