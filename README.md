@@ -18,7 +18,7 @@ python run_pipeline.py --tier smoke  # 快速验证（7题，CI用）
 
 | 能力 | 脚本 | 说明 |
 |------|------|------|
-| 统一评测 | `final_eval.py` | 64题, MCQ+QA推理+代码, Base/RAG双模 |
+| 统一评测 | `final_eval.py` | 72题, MCQ+QA推理+代码, Base/RAG双模 |
 | 扩展指标 | `extended_metrics.py` | JSON格式率 + 工具调用成功率 |
 | A/B Test | `ab_test.py` | p-value + 95% CI + 成本对比 + 排行榜 |
 | Error Bucket | `error_bucket.py` | LLM自动11类错误分桶 |
@@ -59,7 +59,7 @@ llm-eval-project/
 ├── data/
 │   ├── custom_testset/
 │   │   ├── CHANGELOG.md               # 测试集版本变更日志
-│   │   ├── mcq/ (CSV) + qa/ (JSONL)   # 64题 (含 tier: smoke/full)
+│   │   ├── mcq/ (CSV) + qa/ (JSONL)   # 72题 (含 tier: smoke/full)
 │   │   └── metadata.yaml
 │   ├── knowledge_base/
 │   │   ├── reasoning_steps.jsonl      # 推理知识库 (15条)
@@ -93,7 +93,7 @@ pip install -r requirements.txt
 # 快速验证 (7题, ~2分钟)
 python run_pipeline.py --tier smoke
 
-# 全量评测 (64题, 含所有报告)
+# 全量评测 (72题, ~33分钟)
 python run_pipeline.py
 ```
 
@@ -107,4 +107,4 @@ python run_pipeline.py
 
 ---
 
-*创建时间: 2026-06-22 | 更新: 2026-07-17*
+*创建时间: 2026-06-22 | 更新: 2026-07-20*
